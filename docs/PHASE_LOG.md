@@ -26,9 +26,9 @@ Created the initial `InitialIdentity` EF migration. Added MVC ProblemDetails, de
 - SQL Server: `scripts/smoke-sql.ps1` returned LOGIN, ME, ADMIN_POLICY, REFRESH, LOGOUT, REVOKE and READY all PASS; random temporary DB dropped with exit code 0.
 - .NET 10 Microsoft.Testing.Platform: `dotnet test` with a solution target discovered zero tests; direct `--project` invocation from the directory containing `global.json` is the verified path and is used in CI.
 
-## 2026-11-02 · Phase 5 — In progress: GitHub delivery
+## 2026-11-02 · Phase 5 — Completed: GitHub delivery
 
-Create public repository alongside the existing public Mkx template repos, push the initial source, verify GitHub Actions and attach initial package/release.
+Created public repository https://github.com/urmiaking/Mkx.Templates.Api and pushed initial commit 6a2451e to main. GitHub Actions run https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41358930031 completed with success for build, test, NuGet pack, generated project build and generated project tests. Published https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.1.0 (non-draft release) with attached Mkx.Templates.Api.0.1.0.nupkg. Created issues #1/#2/#3 for planned phases 6/7/8. No NuGet.org publication was attempted; it is planned in Phase 8.
 
 ## Deferred phases
 

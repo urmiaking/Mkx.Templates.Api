@@ -9,10 +9,10 @@ Last updated: 2026-11-02. Phase completion requires implementation, actual verif
 | 2 | Identity username/password, JWT Bearer, refresh rotation, revocation and admin policy | Completed (baseline) | 6 unit/API tests + real database-backed auth smoke |
 | 3 | SQL Server migrations, rate limiting, CORS, errors, Swagger, Docker, health | Completed (baseline) | InitialIdentity migration, database ready health |
 | 4 | Source/generator/build/security verification | Completed | 0-warning source/generated builds; 6/6 tests for each; full SQL smoke and cleanup |
-| 5 | GitHub repository, CI, push, release | In progress | GitHub verification pending |
-| 6 | Optional external OIDC (BirSign/Keycloak), OpenIddict server, API keys | Planned | Use OAuth authorization code + PKCE for native clients |
-| 7 | Account registration/recovery, OTP/MFA, WebAuthn/passkeys | Planned | Provider-specific configuration |
-| 8 | Typed TypeScript and Dart SDKs, mobile samples, public NuGet publication | Planned | Stabilize API contracts first |
+| 5 | GitHub repository, CI, push, release | Completed | Public repository; successful GitHub Actions run 41358930031; v0.1.0 released with NuGet asset |
+| 6 | Optional external OIDC (BirSign/Keycloak), OpenIddict server, API keys | Planned | [Issue #1](https://github.com/urmiaking/Mkx.Templates.Api/issues/1); OAuth code + PKCE for native clients |
+| 7 | Account registration/recovery, OTP/MFA, WebAuthn/passkeys | Planned | [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2); provider-specific configuration |
+| 8 | Typed TypeScript and Dart SDKs, mobile samples, public NuGet publication | Planned | [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3); stabilize API contracts first |
 
 ## Definition of done
 
