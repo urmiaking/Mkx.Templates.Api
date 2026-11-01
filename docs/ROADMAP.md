@@ -10,6 +10,7 @@ Last updated: 2026-11-02. Phase completion requires implementation, actual verif
 | 3 | SQL Server migrations, rate limiting, CORS, errors, Swagger, Docker, health | Completed (baseline) | InitialIdentity migration, database ready health |
 | 4 | Source/generator/build/security verification | Completed | 0-warning source/generated builds; 6/6 tests for each; full SQL smoke and cleanup |
 | 5 | GitHub repository, CI, push, release | Completed | Public repository; successful GitHub Actions run 41358930031; v0.1.0 released with NuGet asset |
+| 5.1 | Stabilize v0.1.x: refresh replay, auth fallback, SQL smoke, package | Completed locally; CI pending | [Issue #4](https://github.com/urmiaking/Mkx.Templates.Api/issues/4); 8/8 source and generated tests; SQL replay/logout-all and cleanup PASS; GitHub check pending |
 | 6 | Optional external OIDC (BirSign/Keycloak), OpenIddict server, API keys | Planned | [Issue #1](https://github.com/urmiaking/Mkx.Templates.Api/issues/1); OAuth code + PKCE for native clients |
 | 7 | Account registration/recovery, OTP/MFA, WebAuthn/passkeys | Planned | [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2); provider-specific configuration |
 | 8 | Typed TypeScript and Dart SDKs, mobile samples, public NuGet publication | Planned | [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3); stabilize API contracts first |
@@ -24,3 +25,5 @@ Last updated: 2026-11-02. Phase completion requires implementation, actual verif
 6. Update [Phase Log](PHASE_LOG.md) with verification results and limitations.
 
 **Version 0.1.0 is an API authentication baseline, not an OAuth/OIDC provider.** External federation, self-service registration, OTP, passkeys, API keys, and client SDK generation are future phases. JWT access tokens remain valid until expiration after refresh-token revocation.
+
+Stabilization patch v0.1.1: see Phase Log and Issue #4. Initial v0.1.0 remains available as the previous release.

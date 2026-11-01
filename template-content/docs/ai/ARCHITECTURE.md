@@ -9,3 +9,10 @@ This API-only template follows Mkx.Templates.Blazor backend's pragmatic layers: 
 - Tests: API pipeline and authorization smoke checks.
 
 Controllers are adapters; use cases live in Application; HTTP contracts stay in Shared. No CQRS/MediatR. JWT signing key must come from a secret source. OAuth code + PKCE is deferred to a future standards-based OIDC module.
+
+## Stable security baseline (v0.1.1)
+
+- All endpoints require an authenticated caller unless explicitly AllowAnonymous; the login, refresh, live and ready health endpoints are public.
+- Access tokens are JWT Bearer with 15-minute lifetimes. Refresh tokens are opaque, stored as SHA-256 hashes, atomically rotated in an EF SQL transaction, and related by token family. A repeated rotated token invalidates its family, including a losing concurrent rotation request.
+- Auth endpoints are per-IP rate limited and return no-store responses. Trusted reverse-proxy configuration must be explicit in each deployment.
+- Do not rely on UI authorization hiding; the server enforces role checks. CORS is allowlist-only for browsers.

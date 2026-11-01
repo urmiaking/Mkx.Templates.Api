@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +12,12 @@ namespace Mkx.Templates.Server.Controllers;
 [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
 public sealed class AuthController(IAuthService auth) : ControllerBase
 {
+    [AllowAnonymous]
     [HttpPost(ApiRoutes.Login)]
     public async Task<IActionResult> Login(LoginRequest request, CancellationToken ct)
         => await auth.LoginAsync(request, ct) is { } tokens ? Ok(tokens) : Unauthorized();
 
+    [AllowAnonymous]
     [HttpPost(ApiRoutes.Refresh)]
     public async Task<IActionResult> Refresh(RefreshRequest request, CancellationToken ct)
         => await auth.RefreshAsync(request, ct) is { } tokens ? Ok(tokens) : Unauthorized();

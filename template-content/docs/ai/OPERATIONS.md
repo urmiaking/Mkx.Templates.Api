@@ -12,3 +12,11 @@
 8. In production configure TLS termination, proxy trust, secret rotation and audit/monitoring appropriate to deployment.
 
 Known limits: no self-service registration, password recovery, SMS/OTP, passkeys or OIDC provider in this first version. Logout invalidates refresh tokens but already-issued access JWTs remain valid until expiry.
+
+## Authorization and rate limits
+
+- Authorization is required by default for new API routes (fallback policy). To make a public route, explicitly mark it [AllowAnonymous], review its exposure, and test it.
+- /health/live and /health/ready are explicitly anonymous so infrastructure probes can work. They return health status only. Swagger is available only in Development.
+- Auth endpoints use a per-remote-IP rate limiter. The default RateLimit:AuthRequestsPerMinute is 10, configurable from environment/secret-managed configuration. Set trusted reverse-proxy forwarding deliberately; do not blindly trust client-supplied X-Forwarded-For.
+- A second use of a rotated refresh token invalidates the entire refresh family. Logout and logout-all invalidate refresh tokens; already issued access JWTs remain valid until expiry.
+- Accounts with TwoFactorEnabled are denied local password login and refresh until the optional MFA phase provides a complete two-step authentication protocol; never bypass the second factor.

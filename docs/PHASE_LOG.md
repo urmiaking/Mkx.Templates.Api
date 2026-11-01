@@ -33,3 +33,15 @@ Created public repository https://github.com/urmiaking/Mkx.Templates.Api and pus
 ## Deferred phases
 
 6: OIDC/OpenIddict/API Keys; 7: recovery, MFA/OTP, passkeys and registration; 8: TypeScript/Dart SDKs and examples. These are documented plans and **not** delivered features in 0.1.0.
+
+## 2026-11-02 · Phase 5.1 — Stabilization of API baseline (local validation completed)
+
+- Recovered a clean main branch at 4db4c1a; prior GitHub CI for initial source/docs was green.
+- Hardened refresh-token handling: a rotated token replay invalidates the complete family, including a losing competing refresh request. Kept EF SQL retry execution strategy and atomic update transaction.
+- Added fallback authorization: new endpoints require authentication unless marked AllowAnonymous. Accounts with TwoFactorEnabled are denied local login/refresh until MFA is actually supported. Login/refresh and live/ready health endpoints are explicitly public.
+- Auth IP rate limiting is configurable (RateLimit:AuthRequestsPerMinute, default 10; local integration smoke overrides to 60 only in that process).
+- Tests expanded from six to eight, including authorization fallback and anonymous malformed login validation.
+- Real SQL smoke passed LOGIN, ME, ADMIN_POLICY, REFRESH, REPLAY, REPLAY_FAMILY_REVOCATION, RELOGIN, LOGOUT, REVOKE, LOGOUT_ALL and READY; ephemeral database dropped successfully.
+- NuGet template package version raised to 0.1.1 and successfully installed from the .nupkg. Generated Stable.Smoke solution built with 0 warnings/errors; all 8 generated tests passed. GitHub CI/release still awaiting verification.
+
+Scope remains API-only Identity + JWT. OIDC, passkeys, SMS/OTP, account recovery and generated mobile SDKs are still planned, not delivered.

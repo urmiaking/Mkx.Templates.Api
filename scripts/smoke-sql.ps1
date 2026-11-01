@@ -14,6 +14,7 @@ $env:BootstrapAdmin__Enabled = 'true'
 $env:BootstrapAdmin__Username = 'template-smoke-admin'
 $env:BootstrapAdmin__Password = (Secret 40)+'aA1!'
 $env:ASPNETCORE_ENVIRONMENT = 'Development'
+$env:RateLimit__AuthRequestsPerMinute = '60'
 $env:Logging__LogLevel__Microsoft__EntityFrameworkCore = 'Warning'
 $listener = [Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback,0)
 $listener.Start(); $port=$listener.LocalEndpoint.Port; $listener.Stop()
@@ -39,11 +40,32 @@ try {
   if($users.total -lt 1){throw 'Admin policy failed'}; Write-Output 'ADMIN_POLICY=PASS'
   $refresh=Invoke-RestMethod "$base/api/auth/refresh" -Method Post -ContentType 'application/json' -Body (@{refreshToken=$login.refreshToken}|ConvertTo-Json)
   if(-not $refresh.accessToken -or $refresh.refreshToken -eq $login.refreshToken){throw 'Rotation failed'}; Write-Output 'REFRESH=PASS'
+
+  # Reusing the rotated token must revoke the whole family, including its active successor.
+  $replayRejected=$false
+  try{Invoke-WebRequest "$base/api/auth/refresh" -UseBasicParsing -Method Post -ContentType 'application/json' -Body (@{refreshToken=$login.refreshToken}|ConvertTo-Json)|Out-Null}catch{$replayRejected=($_.Exception.Response.StatusCode.value__ -eq 401)}
+  if(-not $replayRejected){throw 'Previous refresh token was accepted'}; Write-Output 'REPLAY=PASS'
+  $familyRejected=$false
+  try{Invoke-WebRequest "$base/api/auth/refresh" -UseBasicParsing -Method Post -ContentType 'application/json' -Body (@{refreshToken=$refresh.refreshToken}|ConvertTo-Json)|Out-Null}catch{$familyRejected=($_.Exception.Response.StatusCode.value__ -eq 401)}
+  if(-not $familyRejected){throw 'Rotated token family was not revoked'}; Write-Output 'REPLAY_FAMILY_REVOCATION=PASS'
+
+  # A new session has a separate family and remains usable after the first family is revoked.
+  $login=Invoke-RestMethod "$base/api/auth/login" -Method Post -ContentType 'application/json' -Body (@{username=$env:BootstrapAdmin__Username;password=$env:BootstrapAdmin__Password}|ConvertTo-Json)
+  $refresh=Invoke-RestMethod "$base/api/auth/refresh" -Method Post -ContentType 'application/json' -Body (@{refreshToken=$login.refreshToken}|ConvertTo-Json)
+  if(-not $refresh.refreshToken){throw 'Re-login after replay failed'}; Write-Output 'RELOGIN=PASS'
   $logout=Invoke-WebRequest "$base/api/auth/logout" -UseBasicParsing -Method Post -ContentType 'application/json' -Headers @{Authorization="Bearer $($refresh.accessToken)"} -Body (@{refreshToken=$refresh.refreshToken}|ConvertTo-Json)
   if($logout.StatusCode -ne 204){throw 'Logout failed'}; Write-Output 'LOGOUT=PASS'
   $rejected=$false
   try{Invoke-WebRequest "$base/api/auth/refresh" -UseBasicParsing -Method Post -ContentType 'application/json' -Body (@{refreshToken=$refresh.refreshToken}|ConvertTo-Json)|Out-Null}catch{$rejected=($_.Exception.Response.StatusCode.value__ -eq 401)}
   if(-not $rejected){throw 'Revoked token reused'}; Write-Output 'REVOKE=PASS'
+
+  # Logout-all revokes the current login's refresh token.
+  $lastLogin=Invoke-RestMethod "$base/api/auth/login" -Method Post -ContentType 'application/json' -Body (@{username=$env:BootstrapAdmin__Username;password=$env:BootstrapAdmin__Password}|ConvertTo-Json)
+  $logoutAll=Invoke-WebRequest "$base/api/auth/logout-all" -UseBasicParsing -Method Post -Headers @{Authorization="Bearer $($lastLogin.accessToken)"}
+  if($logoutAll.StatusCode -ne 204){throw 'Logout-all failed'}
+  $allRejected=$false
+  try{Invoke-WebRequest "$base/api/auth/refresh" -UseBasicParsing -Method Post -ContentType 'application/json' -Body (@{refreshToken=$lastLogin.refreshToken}|ConvertTo-Json)|Out-Null}catch{$allRejected=($_.Exception.Response.StatusCode.value__ -eq 401)}
+  if(-not $allRejected){throw 'Logout-all left refresh token usable'}; Write-Output 'LOGOUT_ALL=PASS'
   if("$(Invoke-RestMethod "$base/health/ready")" -ne 'Healthy'){throw 'Ready check failed'}; Write-Output 'READY=PASS'
   Write-Output 'ALL_SQL_SMOKE_CHECKS_PASSED'
 }catch{
@@ -55,6 +77,6 @@ try {
   if($proc -and -not $proc.HasExited){Stop-Process $proc.Id -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 1}
   $env:BootstrapAdmin__Enabled='false'
   if($created){dotnet ef database drop --force --project src/Core/Mkx.Templates.Infrastructure --startup-project src/Server/Mkx.Templates.Server --no-build --no-color; Write-Output "DATABASE_CLEANUP_EXIT=$LASTEXITCODE"}
-  Remove-Item Env:BootstrapAdmin__Password,Env:BootstrapAdmin__Username,Env:Jwt__SigningKey,Env:ConnectionStrings__DefaultConnection,Env:ASPNETCORE_URLS,Env:Logging__LogLevel__Microsoft__EntityFrameworkCore -ErrorAction SilentlyContinue
+  Remove-Item Env:BootstrapAdmin__Password,Env:BootstrapAdmin__Username,Env:Jwt__SigningKey,Env:ConnectionStrings__DefaultConnection,Env:ASPNETCORE_URLS,Env:RateLimit__AuthRequestsPerMinute,Env:Logging__LogLevel__Microsoft__EntityFrameworkCore -ErrorAction SilentlyContinue
   Remove-Item ($log+'.out'),($log+'.err') -Force -ErrorAction SilentlyContinue
 }

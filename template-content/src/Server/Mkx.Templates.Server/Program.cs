@@ -61,12 +61,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             NameClaimType = ClaimTypes.Name, RoleClaimType = ClaimTypes.Role
         };
     });
-builder.Services.AddAuthorizationBuilder().AddPolicy("AdminOnly", p => p.RequireRole("Administrator"));
+builder.Services.AddAuthorization(options =>
+{
+    // New controllers are protected by default unless explicitly marked [AllowAnonymous].
+    options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser().Build();
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Administrator"));
+});
 
 var origins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 if (origins.Length > 0)
     builder.Services.AddCors(o => o.AddPolicy("Clients", p => p.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod()));
 
+var authPermitLimit = Math.Clamp(builder.Configuration.GetValue("RateLimit:AuthRequestsPerMinute", 10), 1, 1000);
 builder.Services.AddRateLimiter(o =>
 {
     o.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -74,7 +81,7 @@ builder.Services.AddRateLimiter(o =>
         partitionKey: ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown",
         factory: _ => new FixedWindowRateLimiterOptions
         {
-            PermitLimit = 10, Window = TimeSpan.FromMinutes(1), QueueLimit = 0, AutoReplenishment = true
+            PermitLimit = authPermitLimit, Window = TimeSpan.FromMinutes(1), QueueLimit = 0, AutoReplenishment = true
         }));
 });
 builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("database");
@@ -103,7 +110,7 @@ if (origins.Length > 0) app.UseCors("Clients");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHealthChecks("/health/ready");
+app.MapHealthChecks("/health/ready").AllowAnonymous();
 app.MapGet("/health/live", () => Results.Ok(new { status = "healthy" })).AllowAnonymous();
 app.Run();
 

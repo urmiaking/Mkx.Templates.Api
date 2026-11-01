@@ -3,7 +3,7 @@
   <TargetFramework>netstandard2.0</TargetFramework>
   <PackageType>Template</PackageType>
   <PackageId>Mkx.Templates.Api</PackageId>
-  <PackageVersion>0.1.0</PackageVersion>
+  <PackageVersion>0.1.1</PackageVersion>
   <Title>Mkx API Solution Template</Title>
   <Authors>Mkx</Authors>
   <Description>.NET 10 backend-only solution template with Identity, JWT Bearer, rotated refresh tokens and EF Core.</Description>
