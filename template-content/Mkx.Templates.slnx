@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/Mkx.Templates.Domain/Mkx.Templates.Domain.csproj" />
+    <Project Path="src/Core/Mkx.Templates.Infrastructure/Mkx.Templates.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Server/">
+    <Project Path="src/Server/Mkx.Templates.Application/Mkx.Templates.Application.csproj" />
+    <Project Path="src/Server/Mkx.Templates.Server/Mkx.Templates.Server.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/Mkx.Templates.Shared/Mkx.Templates.Shared.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Mkx.Templates.Tests/Mkx.Templates.Tests.csproj" />
+  </Folder>
+</Solution>

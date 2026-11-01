@@ -1,0 +1,32 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build application
+        working-directory: template-content
+        run: dotnet build Mkx.Templates.slnx -c Release
+      - name: Test application
+        working-directory: template-content
+        run: dotnet test --project Tests/Mkx.Templates.Tests/Mkx.Templates.Tests.csproj -c Release
+      - name: Package template
+        run: dotnet pack Mkx.Templates.Api.csproj -c Release -o artifacts
+      - name: Instantiate and verify packaged template
+        shell: bash
+        run: |
+          PKG=$(find artifacts -maxdepth 1 -name 'Mkx.Templates.Api.*.nupkg' -print -quit)
+          test -n "$PKG"
+          dotnet new install "./$PKG"
+          dotnet new mkx-api -n Smoke.Api -o "$RUNNER_TEMP/generated"
+          dotnet build "$RUNNER_TEMP/generated/Smoke.Api.slnx" -c Release
+          cd "$RUNNER_TEMP/generated"
+          dotnet test --project Tests/Smoke.Api.Tests/Smoke.Api.Tests.csproj -c Release
