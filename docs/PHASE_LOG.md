@@ -34,7 +34,7 @@ Created public repository https://github.com/urmiaking/Mkx.Templates.Api and pus
 
 6: OIDC/OpenIddict/API Keys; 7: recovery, MFA/OTP, passkeys and registration; 8: TypeScript/Dart SDKs and examples. These are documented plans and **not** delivered features in 0.1.0.
 
-## 2026-11-02 · Phase 5.1 — Stabilization of API baseline (local validation completed)
+## 2026-11-02 · Phase 5.1 — Completed: Stable API baseline
 
 - Recovered a clean main branch at 4db4c1a; prior GitHub CI for initial source/docs was green.
 - Hardened refresh-token handling: a rotated token replay invalidates the complete family, including a losing competing refresh request. Kept EF SQL retry execution strategy and atomic update transaction.
@@ -45,3 +45,9 @@ Created public repository https://github.com/urmiaking/Mkx.Templates.Api and pus
 - NuGet template package version raised to 0.1.1 and successfully installed from the .nupkg. Generated Stable.Smoke solution built with 0 warnings/errors; all 8 generated tests passed. GitHub CI for commit 48f9ce0 (run 41360215260) passed the application build, tests, NuGet pack, generated solution build and tests. Updated checkout/setup-dotnet actions to the latest stable GitHub release majors (v7/v6); verify these in the next CI run before the release.
 
 Scope remains API-only Identity + JWT. OIDC, passkeys, SMS/OTP, account recovery and generated mobile SDKs are still planned, not delivered.
+### GitHub handoff (completed)
+
+- Main branch stabilization commit: 48f9ce0. GitHub Actions run https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41360215260 succeeded.
+- CI maintenance commit: 6073b30, updating checkout to v7 and setup-dotnet to v6. Final workflow https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41360362576 succeeded including source build, source tests, package generation, generated app build and generated app tests.
+- GitHub v0.1.1 release: https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.1.1, with attached Mkx.Templates.Api.0.1.1.nupkg; package is installed and usable with dotnet new mkx-api.
+- Local working tree clean and no secrets or build outputs intentionally committed. Phase 5.1 finished; Issues #1-3 remain future scope.

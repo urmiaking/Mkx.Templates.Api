@@ -1,5 +1,7 @@
 # Mkx.Templates.Api
 
+**Stable release:** [v0.1.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.1.1) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41360362576).
+
 A backend-only ASP.NET Core 10 solution template, designed around the **same pragmatic Domain / Infrastructure / Shared / Application / Server layers as Mkx.Templates.Blazor**—without a frontend, Blazor, SSR or WASM.
 
 The v0.1.0 baseline includes ASP.NET Core Identity (username/password and confirmed accounts), JWT Bearer, hashed rotating refresh tokens and revocation, role authorization, SQL Server/EF Core, Swagger, scoped CORS, rate limiting, health checks, Docker and six automated security/API tests.
