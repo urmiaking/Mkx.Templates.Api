@@ -46,3 +46,5 @@ Phase 6.3c released as [v0.3.1](https://github.com/urmiaking/Mkx.Templates.Api/r
 Phase 6.3d is available in [v0.4.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.4.0); [CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41484726806) succeeded with 36/36 source and generated tests. Interactive user sign-in/code redemption and production federation remain open on [Issue #1](https://github.com/urmiaking/Mkx.Templates.Api/issues/1).
 
 Phase 7.1 released in [v0.5.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.5.1) with 43/43 tests and [successful CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41488496536); OTP/MFA, passkeys and live SMTP-provider verification stay in [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2).
+
+Phase 7.2 TOTP MFA shipped in [v0.6.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.6.0), [CI success](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41491699396), 46/46 source/generated tests. Remaining phase 7.3 and provider-specific OTP work tracked by [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2).

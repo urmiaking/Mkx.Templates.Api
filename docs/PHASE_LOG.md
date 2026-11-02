@@ -135,3 +135,9 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - Added unique SQL RedeemedAuthenticatorCodes per-user+digest replay fence (migration AddAuthenticatorReplayFence), three-minute expiry/lazy cleanup, and verification before digest consumption. This prevents reuse of a current TOTP across separate API instances.
 - SQLite Identity tests cover actual RFC6238 codes, enrollment, setup password proof, replay rejection, recovery redemption, old-session revocation, disable, locked/unconfirmed restrictions; HTTP tests enforce anonymous 401 on settings. Source: 46/46 tests, zero build warnings/errors. Full SQL Server migration and existing authentication/API-key/refresh smoke passed with disposable database cleanup. Standalone full SQL MFA HTTP flow not tested.
 - No SMS/email login OTP, physical device enrollment, passkeys/WebAuthn or live IdP human login claimed. Phase 7.3 remains planned.
+
+### Phase 7.2 released: v0.6.0
+
+- Commit 21cfffe pushed to main; CI https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41491699396 succeeded, including source build, 46 source tests, NuGet pack, generated solution build and 46 generated tests.
+- Published non-draft release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.6.0 with Mkx.Templates.Api.0.6.0.nupkg. Local source/generated builds zero warnings and errors; disposable SQL Server smoke migration and cleanup succeeded.
+- Issue #2 remains open for SMS/email OTP, WebAuthn/passkeys and live-device/provider verification. No claim that full SQL MFA HTTP journey was exercised.
