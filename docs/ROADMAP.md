@@ -12,7 +12,7 @@ Last updated: 2026-11-02. Phase completion requires implementation, actual verif
 | 5 | GitHub repository, CI, push, release | Completed | Public repository; successful GitHub Actions run 41358930031; v0.1.0 released with NuGet asset |
 | 5.1 | Stabilize v0.1.x: refresh replay, auth fallback, SQL smoke, package | Completed | [Issue #4](https://github.com/urmiaking/Mkx.Templates.Api/issues/4); 8/8 source and generated tests, SQL smoke PASS, [CI success](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41360362576), [v0.1.1 Release](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.1.1) |
 | 6.1 | Optional external OIDC JWT access-token validation, isolated from local JWT | Completed (resource-server baseline) | HTTPS issuer + API audience validation; isolated policies; local tests pass; live IdP integration pending |
-| 6.2 | Hashed scope-restricted service API keys, admin create/list/revoke and SQL persistence | Completed (baseline) | 17/17 source and generated tests; SQL Server create/auth/scope denial/revoke PASS; migration AddApiClientKeys |
+| 6.2 | Hashed scope-restricted service API keys, admin create/list/revoke and SQL persistence | Completed (baseline) | 17/17 source and generated tests; SQL Server create/auth/scope denial/revoke PASS; migration AddApiClientKeys; [CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41471177480), [v0.2.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.2.0) |
 | 6.3 | Optional authorization server (OpenIddict), token introspection, provider account linking | Planned | Depends on actual client/provider needs and verified OIDC token contract |
 | 6 | Optional external OIDC (BirSign/Keycloak), OpenIddict server, API keys | In progress (6.1 and 6.2 complete; 6.3 planned) | [Issue #1](https://github.com/urmiaking/Mkx.Templates.Api/issues/1); OAuth code + PKCE for native clients |
 | 7 | Account registration/recovery, OTP/MFA, WebAuthn/passkeys | Planned | [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2); provider-specific configuration |
@@ -30,3 +30,5 @@ Last updated: 2026-11-02. Phase completion requires implementation, actual verif
 **Version 0.1.0 is an API authentication baseline, not an OAuth/OIDC provider.** External federation, self-service registration, OTP, passkeys, API keys, and client SDK generation are future phases. JWT access tokens remain valid until expiration after refresh-token revocation.
 
 Stabilization patch v0.1.1: see Phase Log and Issue #4. Initial v0.1.0 remains available as the previous release.
+
+Version v0.2.0 delivers phases 6.1 and 6.2. Phase 6.3 remains open; see [Issue #1](https://github.com/urmiaking/Mkx.Templates.Api/issues/1). OIDC provider interoperability with BirSign/Keycloak has **not** been verified against a live provider.
