@@ -73,3 +73,10 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - Added template-content/docs/ai/OPENAPI.md and OPAQUE_INTROSPECTION.md, template AGENTS.md guidance and .matemcp OpenAPI skill for future agents.
 - 28/28 local tests passing, zero warnings/errors source build. NuGet 0.3.0 was packed and installed; generated Portal.Smoke solution built with zero warnings/errors and passed 28/28 generated tests. Local disposable SQL Server smoke passed LOGIN, ME, API_KEY_CREATE, API_KEY_USE, API_KEY_SCOPE_DENIED, API_KEY_REVOKE, REFRESH, REPLAY, LOGOUT and LOGOUT_ALL plus readiness, with database cleanup exit 0. GitHub CI/release evidence to follow.
 - A self-hosted OpenIddict authorization server and external account linking remain deferred pending a complete secure login/consent and PKCE design. The delivered API is a resource server, not an OAuth issuer.
+
+### Phase delivery verification
+
+- Commit 8f21280 pushed to main. GitHub Actions https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41475844059 completed successfully with source build, 28 automated tests, NuGet packaging, generated-solution build and its 28 tests.
+- Published non-draft GitHub Release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.3.0 with attached Mkx.Templates.Api.0.3.0.nupkg. Package installed and generated Portal.Smoke solution built and passed tests without errors.
+- Real SQL Server smoke verified existing authentication, replay/rotation and API-key use/revoke policies; temporary database cleanup exit code 0.
+- Swagger/API documentation issue #5 can be closed. Issue #1 stays open solely for optional OpenIddict authorization-server/account-linking and live IdP verification; there is no hidden partially enabled authorization server.
