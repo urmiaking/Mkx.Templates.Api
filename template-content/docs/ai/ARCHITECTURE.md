@@ -31,3 +31,7 @@ Application AccountLifecycleService uses Identity user/token managers and IAccou
 ## Authenticator MFA
 
 AuthenticatorService owns enrollment and MFA state; AuthService enforces the second factor at Login. AuthenticatorReplayGuard persists unique per-user/secret TOTP digest fences in Infrastructure. Do not issue JWT before both factors. Refer to AUTHENTICATOR_MFA.md.
+
+## WebAuthn Passkeys
+
+Application PasskeyService calls the official .NET 10 IPasskeyHandler, and delegates credential persistence to UserManager. Domain PasskeyCeremony and Infrastructure EF SQL store its state, purpose, expiry and local account binding. Server PasskeysController exposes typed WebAuthn operations and enforces explicit local JWT or anonymous schemes, behind an opt-in Origin/RP policy. Never replace the official FIDO2 signature handler with application-level crypto. Read PASSKEYS.md.

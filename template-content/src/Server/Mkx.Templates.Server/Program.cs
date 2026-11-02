@@ -26,6 +26,39 @@ builder.Services.AddSwaggerGen(ApiDocumentation.Configure);
 builder.Services.AddSingleton(TimeProvider.System);
 var onboardingEnabled = builder.Configuration.GetValue<bool>("AccountLifecycle:Enabled");
 builder.Services.AddSingleton(new AccountLifecycleFeatureState(onboardingEnabled));
+var passkeysEnabled = builder.Configuration.GetValue<bool>("Passkeys:Enabled");
+builder.Services.AddSingleton(new PasskeyFeatureState(passkeysEnabled));
+if (passkeysEnabled)
+{
+    var relyingPartyId = builder.Configuration["Passkeys:RelyingPartyId"];
+    var origin = builder.Configuration["Passkeys:Origin"];
+    if (!Uri.TryCreate(origin, UriKind.Absolute, out var originUri) ||
+        (originUri.Scheme != Uri.UriSchemeHttps &&
+         !(originUri.Scheme == Uri.UriSchemeHttp &&
+           originUri.Host is "localhost" or "127.0.0.1")) ||
+        originUri.AbsolutePath != "/" || !string.IsNullOrEmpty(originUri.Query) ||
+        !string.IsNullOrEmpty(originUri.Fragment) ||
+        string.IsNullOrWhiteSpace(relyingPartyId) ||
+        !(originUri.Host.Equals(relyingPartyId, StringComparison.OrdinalIgnoreCase) ||
+          originUri.Host.EndsWith("." + relyingPartyId, StringComparison.OrdinalIgnoreCase)) ||
+        relyingPartyId.Contains('/') || relyingPartyId.Contains(':'))
+        throw new InvalidOperationException(
+            "Passkeys require a trusted HTTPS Origin and matching RelyingPartyId; only localhost may use HTTP.");
+
+    builder.Services.Configure<IdentityPasskeyOptions>(options =>
+    {
+        options.ServerDomain = relyingPartyId;
+        options.AuthenticatorTimeout = TimeSpan.FromMinutes(3);
+        options.ChallengeSize = 48;
+        options.UserVerificationRequirement = "required";
+        options.ResidentKeyRequirement = "required";
+        // Strictly constrain the browser origin. Cross-origin requests from a
+        // separate client domain must be intentionally configured here.
+        options.ValidateOrigin = context => ValueTask.FromResult(
+            string.Equals(context.Origin, originUri.GetLeftPart(UriPartial.Authority),
+                StringComparison.Ordinal));
+    });
+}
 if (onboardingEnabled)
 {
     // Avoid granting authentication to an unverified email or losing pending proof tokens at restart.
@@ -49,7 +82,9 @@ if (onboardingEnabled)
     builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
         o.TokenLifespan = TimeSpan.FromMinutes(20));
 }
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IAuthService>(sp => sp.GetRequiredService<AuthService>());
+builder.Services.AddScoped<IPasskeyService, PasskeyService>();
 builder.Services.AddScoped<IAuthenticatorService, AuthenticatorService>();
 builder.Services.AddScoped<IAuthenticatorReplayGuard, AuthenticatorReplayGuard>();
 builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
@@ -210,6 +245,8 @@ builder.Services.AddRateLimiter(o =>
 builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("database");
 
 var app = builder.Build();
+if (app.Configuration.GetValue<bool>("Passkeys:Enabled") != passkeysEnabled)
+    throw new InvalidOperationException("Passkeys feature state changed after startup.");
 if (app.Configuration.GetValue<bool>("AccountLifecycle:Enabled") != onboardingEnabled)
     throw new InvalidOperationException("AccountLifecycle feature state changed after service registration. Restart with startup configuration.");
 if (app.Configuration.GetValue<bool>("Database:ApplyMigrationsOnStartup"))

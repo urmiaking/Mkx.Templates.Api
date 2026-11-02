@@ -1,6 +1,6 @@
 # Mkx.Templates.Api
 
-**Latest release:** [v0.6.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.6.0) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41488496536).
+**Latest release:** [v0.7.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.7.0) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41488496536).
 
 A backend-only ASP.NET Core 10 solution template, designed around the **same pragmatic Domain / Infrastructure / Shared / Application / Server layers as Mkx.Templates.Blazor**—without a frontend, Blazor, SSR or WASM.
 
@@ -62,3 +62,7 @@ Phase 7.1 introduces username registration with email confirmation and token-bas
 ## TOTP authenticator MFA
 
 Phase 7.2 supports standard authenticator apps, password plus six-digit TOTP or one-time recovery code, and secure disablement. A SQL-backed replay fence prevents reusing OTPs, and MFA changes revoke refresh tokens. Read template-content/docs/ai/AUTHENTICATOR_MFA.md. SMS OTP and WebAuthn/passkeys remain future work.
+
+## Optional WebAuthn / Passkeys (Phase 7.3)
+
+The .NET 10 API template now includes opt-in native Identity passkeys: discoverable account login, server-backed one-time challenges, registration after local account verification, list/remove and normal local JWT/refresh issuance after a verified WebAuthn assertion. Explicit Passkeys RelyingPartyId and Origin are mandatory; MFA accounts still need a second factor. See template-content/docs/ai/PASSKEYS.md. A full signed credential/device ceremony is not yet verified.

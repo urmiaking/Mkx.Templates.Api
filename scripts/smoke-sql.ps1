@@ -19,6 +19,9 @@ $env:Logging__LogLevel__Microsoft__EntityFrameworkCore = 'Warning'
 $listener = [Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback,0)
 $listener.Start(); $port=$listener.LocalEndpoint.Port; $listener.Stop()
 $base="http://127.0.0.1:$port"; $env:ASPNETCORE_URLS=$base
+$env:Passkeys__Enabled='true'
+$env:Passkeys__RelyingPartyId='127.0.0.1'
+$env:Passkeys__Origin=$base
 $log = Join-Path ([IO.Path]::GetTempPath()) ("mkx-smoke-"+[guid]::NewGuid().ToString('N'))
 $proc=$null; $created=$false
 try {
@@ -34,6 +37,29 @@ try {
   if(-not $ready){throw 'API startup timeout'}
   $login=Invoke-RestMethod "$base/api/auth/login" -Method Post -ContentType 'application/json' -Body (@{username=$env:BootstrapAdmin__Username;password=$env:BootstrapAdmin__Password}|ConvertTo-Json)
   if(-not $login.accessToken -or -not $login.refreshToken){throw 'Missing tokens'}; Write-Output 'LOGIN=PASS'
+
+  # Real SQL Server + HTTP passkey options, with no biometric device needed.
+  $passkeyOptions=Invoke-RestMethod "$base/api/passkeys/login/options" -Method Post -ContentType 'application/json' -Body '{}'
+  if(-not $passkeyOptions.ceremonyId -or -not $passkeyOptions.optionsJson.Contains('challenge')){
+    throw 'Discoverable passkey options were not issued'
+  }
+  Write-Output 'PASSKEY_LOGIN_OPTIONS=PASS'
+  $enroll=Invoke-RestMethod "$base/api/passkeys/register/options" -Method Post -Headers @{Authorization="Bearer $($login.accessToken)"} -ContentType 'application/json' -Body (@{password=$env:BootstrapAdmin__Password}|ConvertTo-Json)
+  if(-not $enroll.ceremonyId -or -not $enroll.optionsJson.Contains('challenge')){
+    throw 'Passkey enrollment options were not issued'
+  }
+  Write-Output 'PASSKEY_REGISTER_OPTIONS=PASS'
+  $invalidAttestation=$false
+  try{
+    Invoke-WebRequest "$base/api/passkeys/register/complete" -UseBasicParsing -Method Post -Headers @{Authorization="Bearer $($login.accessToken)"} -ContentType 'application/json' -Body (@{ceremonyId=$enroll.ceremonyId;credentialJson='{}'}|ConvertTo-Json)|Out-Null
+  }catch{$invalidAttestation=($_.Exception.Response.StatusCode.value__ -eq 400)}
+  if(-not $invalidAttestation){throw 'Invalid WebAuthn attestation was not rejected'}
+  $invalidAgain=$false
+  try{
+    Invoke-WebRequest "$base/api/passkeys/register/complete" -UseBasicParsing -Method Post -Headers @{Authorization="Bearer $($login.accessToken)"} -ContentType 'application/json' -Body (@{ceremonyId=$enroll.ceremonyId;credentialJson='{}'}|ConvertTo-Json)|Out-Null
+  }catch{$invalidAgain=($_.Exception.Response.StatusCode.value__ -eq 400)}
+  if(-not $invalidAgain){throw 'WebAuthn ceremony was replayable'}
+  Write-Output 'PASSKEY_INVALID_ATTESTATION_REPLAY_DENIED=PASS'
   $me=Invoke-RestMethod "$base/api/auth/me" -Headers @{Authorization="Bearer $($login.accessToken)"}
   if($me.username -ne $env:BootstrapAdmin__Username){throw 'Identity mismatch'}; Write-Output 'ME=PASS'
   $users=Invoke-RestMethod "$base/api/users" -Headers @{Authorization="Bearer $($login.accessToken)"}
@@ -99,6 +125,6 @@ try {
   if($proc -and -not $proc.HasExited){Stop-Process $proc.Id -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 1}
   $env:BootstrapAdmin__Enabled='false'
   if($created){dotnet ef database drop --force --project src/Core/Mkx.Templates.Infrastructure --startup-project src/Server/Mkx.Templates.Server --no-build --no-color; Write-Output "DATABASE_CLEANUP_EXIT=$LASTEXITCODE"}
-  Remove-Item Env:BootstrapAdmin__Password,Env:BootstrapAdmin__Username,Env:Jwt__SigningKey,Env:ConnectionStrings__DefaultConnection,Env:ASPNETCORE_URLS,Env:RateLimit__AuthRequestsPerMinute,Env:Logging__LogLevel__Microsoft__EntityFrameworkCore -ErrorAction SilentlyContinue
+  Remove-Item Env:BootstrapAdmin__Password,Env:BootstrapAdmin__Username,Env:Jwt__SigningKey,Env:ConnectionStrings__DefaultConnection,Env:ASPNETCORE_URLS,Env:RateLimit__AuthRequestsPerMinute,Env:Logging__LogLevel__Microsoft__EntityFrameworkCore,Env:Passkeys__Enabled,Env:Passkeys__RelyingPartyId,Env:Passkeys__Origin -ErrorAction SilentlyContinue
   Remove-Item ($log+'.out'),($log+'.err') -Force -ErrorAction SilentlyContinue
 }

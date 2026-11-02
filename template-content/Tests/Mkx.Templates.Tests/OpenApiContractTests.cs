@@ -56,7 +56,7 @@ public sealed class OpenApiContractTests
             Assert.NotEmpty(operation.GetProperty("tags").EnumerateArray().ToArray());
             Assert.DoesNotContain(operation.GetProperty("tags").EnumerateArray().Select(tag => tag.GetString()), tag => tag == "99 Other");
             Assert.DoesNotContain(":", operation.GetProperty("summary").GetString() ?? "");
-            if (path.Name is not ("/api/auth/login" or "/api/auth/refresh" or "/health/live") && !path.Name.StartsWith("/api/onboarding/", StringComparison.Ordinal))
+            if (path.Name is not ("/api/auth/login" or "/api/auth/refresh" or "/health/live" or "/api/passkeys/login/options" or "/api/passkeys/login/complete") && !path.Name.StartsWith("/api/onboarding/", StringComparison.Ordinal))
             {
                 Assert.NotEmpty(operation.GetProperty("security").EnumerateArray().ToArray());
                 Assert.True(operation.GetProperty("responses").TryGetProperty("401", out _));
@@ -72,6 +72,12 @@ public sealed class OpenApiContractTests
         AssertScheme(paths, "/api/onboarding/reset-password", "post", null);
         AssertScheme(paths, "/api/auth/refresh", "post", null);
         AssertScheme(paths, "/api/auth/me", "get", "LocalJwt");
+        AssertScheme(paths, "/api/passkeys/register/options", "post", "LocalJwt");
+        AssertScheme(paths, "/api/passkeys/register/complete", "post", "LocalJwt");
+        AssertScheme(paths, "/api/passkeys/login/options", "post", null);
+        AssertScheme(paths, "/api/passkeys/login/complete", "post", null);
+        AssertScheme(paths, "/api/passkeys", "get", "LocalJwt");
+        AssertScheme(paths, "/api/passkeys/remove", "post", "LocalJwt");
         AssertScheme(paths, "/api/auth/authenticator/status", "get", "LocalJwt");
         AssertScheme(paths, "/api/auth/authenticator/setup", "post", "LocalJwt");
         AssertScheme(paths, "/api/auth/authenticator/enable", "post", "LocalJwt");

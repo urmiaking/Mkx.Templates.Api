@@ -1,6 +1,6 @@
-﻿# Authenticator TOTP MFA and one-time recovery
+# Authenticator TOTP MFA and one-time recovery
 
-This API supports authenticator-app RFC6238 six-digit TOTP. It does not implement SMS login OTP, email login OTP or WebAuthn/passkeys. Username remains the login identity. All MFA management endpoints require a local Identity JWT, never ExternalOidc, opaque tokens or API keys. Requests are rate-limited; sensitive responses have no-store.
+This API supports authenticator-app RFC6238 six-digit TOTP. It does not implement SMS or email login OTP. Optional WebAuthn/passkeys are documented separately in PASSKEYS.md; users with TOTP MFA enabled must also verify that second factor after a passkey assertion. Username remains the login identity. All MFA management endpoints require a local Identity JWT, never ExternalOidc, opaque tokens or API keys. Requests are rate-limited; sensitive responses have no-store.
 
 ## Enrollment
 
@@ -23,6 +23,6 @@ Protect the Identity SQL Server and its user tokens/keys with encrypted backups,
 
 ## Verification and limitations
 
-Tests exercise real Identity TOTP enrollment and validation using generated RFC6238 codes, wrong password, wrong OTP, failed login without second factor, single-use recovery code, TOTP replay rejection, lockout/confirmation exclusions, refresh revocation on MFA changes, and anonymous HTTP route denial. Source and generated OpenAPI tests verify stable Authenticator operation IDs and LocalJwt security. Disposable SQL Server smoke applies the migration and verifies existing login/refresh/API key protections. A standalone end-to-end SQL Server MFA HTTP test and physical authenticator-device test were not executed. SMS/email login OTP and WebAuthn/passkeys remain planned.
+Tests exercise real Identity TOTP enrollment and validation using generated RFC6238 codes, wrong password, wrong OTP, failed login without second factor, single-use recovery code, TOTP replay rejection, lockout/confirmation exclusions, refresh revocation on MFA changes, and anonymous HTTP route denial. Source and generated OpenAPI tests verify stable Authenticator operation IDs and LocalJwt security. Disposable SQL Server smoke applies the migration and verifies existing login/refresh/API key protections. A standalone end-to-end SQL Server MFA HTTP test and physical authenticator-device test were not executed. SMS/email login OTP remain planned. Passkey backend support is available as opt-in per PASSKEYS.md, but live authenticator devices still need testing.
 
 For high-risk apps, consider audited step-up authentication and explicit access JWT invalidation as separate extensions; never infer MFA from external IdP claims without an explicitly reviewed policy.

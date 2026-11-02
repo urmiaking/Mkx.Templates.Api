@@ -11,10 +11,32 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<ExternalIdentityLink> ExternalIdentityLinks => Set<ExternalIdentityLink>();
     public DbSet<ExternalLinkChallenge> ExternalLinkChallenges => Set<ExternalLinkChallenge>();
     public DbSet<RedeemedAuthenticatorCode> RedeemedAuthenticatorCodes => Set<RedeemedAuthenticatorCode>();
+    public DbSet<PasskeyCeremony> PasskeyCeremonies => Set<PasskeyCeremony>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.Entity<AppUser>(b => { b.Property(x => x.DisplayName).HasMaxLength(160); });
+        // WebAuthn requires the v3 Identity passkey table. The concrete mapping
+        // is explicit so EF migration design-time, testing and runtime agree.
+        builder.Entity<IdentityUserPasskey<Guid>>(b =>
+        {
+            b.HasKey(x => x.CredentialId);
+            b.ToTable("AspNetUserPasskeys");
+            b.Property(x => x.CredentialId).HasMaxLength(1024);
+            b.ComplexProperty(x => x.Data).ToJson();
+            b.HasOne<AppUser>().WithMany().HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+        builder.Entity<PasskeyCeremony>(b =>
+        {
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Purpose).HasMaxLength(16).IsRequired();
+            b.Property(x => x.State).HasMaxLength(16000).IsRequired();
+            b.Property(x => x.SecurityStamp).HasMaxLength(128);
+            b.HasIndex(x => new { x.ExpiresAtUtc, x.ConsumedAtUtc });
+            b.HasOne<AppUser>().WithMany().HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
         builder.Entity<RedeemedAuthenticatorCode>(b =>
         {
             b.HasKey(x => new { x.UserId, x.Digest });

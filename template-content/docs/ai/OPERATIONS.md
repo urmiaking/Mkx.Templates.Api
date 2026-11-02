@@ -41,3 +41,7 @@ When enabling onboarding during first-time BootstrapAdmin creation, supply Boots
 ## Authenticator MFA
 
 See AUTHENTICATOR_MFA.md. Apply migration AddAuthenticatorReplayFence to existing installations before enabling MFA. Never expose authenticator secrets or recovery codes in logs. MFA users must supply a second factor at login; already-issued access JWTs expire naturally, while refresh sessions are revoked on MFA state changes.
+
+## WebAuthn Passkeys
+
+See PASSKEYS.md. Disabled by default: enabling requires trusted Passkeys__RelyingPartyId and Passkeys__Origin, HTTPS except loopback, and the AddPasskeyCeremonies SQL migration (including AspNetUserPasskeys). The authenticated browser frontend origin is verified exactly. Device/mobile associated-domain tests are still required before production sign-off. No passkey state is kept client-side; the API preserves MFA checks.

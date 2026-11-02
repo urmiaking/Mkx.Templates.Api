@@ -72,6 +72,51 @@ public sealed class ApiSmokeTests
     }
 
     [Fact]
+    public async Task PasskeysAreOffByDefaultAndProtectedManagementRejectsAnonymous()
+    {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+        using var request = new HttpRequestMessage(HttpMethod.Post, "/api/passkeys/login/options");
+        using var publicResponse = await client.SendAsync(request, TestContext.Current.CancellationToken);
+        Assert.Equal(HttpStatusCode.NotFound, publicResponse.StatusCode);
+
+        foreach (var (method, path) in new[]
+        {
+            (HttpMethod.Post, "/api/passkeys/register/options"),
+            (HttpMethod.Post, "/api/passkeys/register/complete"),
+            (HttpMethod.Get, "/api/passkeys"),
+            (HttpMethod.Post, "/api/passkeys/remove")
+        })
+        {
+            using var securedRequest = new HttpRequestMessage(method, path);
+            using var response = await client.SendAsync(securedRequest, TestContext.Current.CancellationToken);
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+    }
+
+    [Theory]
+    [InlineData("https://example.com", "evil.com")]
+    [InlineData("http://example.com", "example.com")]
+    [InlineData("https://evil-example.com", "example.com")]
+    public void PasskeysRejectUntrustedOriginOrRelyingParty(string origin, string relyingPartyId)
+    {
+        using var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(web =>
+        {
+            web.UseEnvironment("Development");
+            web.ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(
+                new Dictionary<string, string?>
+                {
+                    ["Jwt:SigningKey"] = new string('K', 64),
+                    ["BootstrapAdmin:Enabled"] = "false",
+                    ["Passkeys:Enabled"] = "true",
+                    ["Passkeys:RelyingPartyId"] = relyingPartyId,
+                    ["Passkeys:Origin"] = origin
+                }));
+        });
+        Assert.ThrowsAny<Exception>(() => factory.CreateClient());
+    }
+
+    [Fact]
     public async Task ExternalLinkEndpointsRejectAnonymousCalls()
     {
         using var factory = CreateFactory();

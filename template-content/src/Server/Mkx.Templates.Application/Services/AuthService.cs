@@ -155,6 +155,15 @@ public sealed class AuthService(
         return new AccountResponse(user.Id, user.UserName ?? "", user.DisplayName, roles.ToArray());
     }
 
+    // Only call from a server-verified WebAuthn assertion (never expose as an HTTP route).
+    internal async Task<TokenResponse?> IssueVerifiedPasskeySessionAsync(AppUser user, CancellationToken ct)
+    {
+        if (!user.EmailConfirmed || await users.IsLockedOutAsync(user))
+            return null;
+        await users.ResetAccessFailedCountAsync(user);
+        return await CreateSessionAsync(user, Guid.NewGuid(), ct);
+    }
+
     private async Task<TokenResponse> CreateSessionAsync(AppUser user, Guid family, CancellationToken ct)
     {
         var now = clock.GetUtcNow();

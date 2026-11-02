@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.0 - Opt-in WebAuthn/Passkeys for API-only apps (Phase 7.3)
+
+- .NET 10 Identity passkey handler verifies WebAuthn attestation and signed assertions; verified passkeys persist in the Identity v3 AspNetUserPasskeys table.
+- Discoverable usernameless passkey sign-in issues local JWT and rotating refresh tokens after verified assertion; local MFA still requires an additional TOTP or recovery code.
+- Local-JWT and password-protected registration/credential management, bound to user and security stamp.
+- SQL-backed, 3-minute, atomically one-use WebAuthn challenges with replay/owner/purpose/expiration checks and lazy pruning; explicit RP/Origin configuration is required before opt-in.
+- Swagger contracts, API and Identity tests, real SQL Server options and invalid-attestation replay smoke. Real signed device ceremony and mobile integration require further verification.
+
 ## 0.6.0 - TOTP authenticator MFA and recovery (Phase 7.2)
 
 - Authenticator setup, verification, disablement and eight single-use recovery codes with password reauthentication.

@@ -15,6 +15,7 @@ public static class ApiDocumentation
         ["Auth"] = "01 Authentication",
         ["Onboarding"] = "01 Authentication",
         ["Authenticator"] = "01 Authentication",
+        ["Passkeys"] = "01 Authentication",
         ["ExternalIdentity"] = "02 External identity",
         ["ExternalLinks"] = "02 External identity",
         ["OpaqueIdentity"] = "02 External identity",
@@ -84,6 +85,12 @@ public sealed class SecurityAndDocumentationFilter : IOperationFilter
             ("Auth", "Logout") => "Sign out from the current session",
             ("Auth", "LogoutAll") => "Revoke all refresh sessions",
             ("Auth", "Me") => "Get the current local account",
+            ("Passkeys", "RegisterOptions") => "Create short-lived passkey attestation options for a verified local user",
+            ("Passkeys", "RegisterComplete") => "Verify WebAuthn attestation and register a passkey to its owner",
+            ("Passkeys", "LoginOptions") => "Issue anonymous discoverable-passkey assertion options",
+            ("Passkeys", "LoginComplete") => "Verify a WebAuthn assertion and issue local JWT credentials",
+            ("Passkeys", "List") => "List the current local account registered passkeys",
+            ("Passkeys", "Remove") => "Remove a passkey after local password and MFA verification",
             ("Authenticator", "Status") => "Inspect local authenticator enrollment status",
             ("Authenticator", "Setup") => "Start TOTP enrollment after password reauthentication",
             ("Authenticator", "Enable") => "Activate authenticator MFA using a valid code",
@@ -109,6 +116,7 @@ public sealed class SecurityAndDocumentationFilter : IOperationFilter
         operation.Description ??= controller switch
         {
             "Auth" => "Local Identity credentials and session management.",
+            "Passkeys" => "Opt-in. WebAuthn challenges are SQL-backed, short-lived and one-use; RP ID and browser Origin must match configured values. Registration/removal requires local JWT and proof of account control; login uses cryptographic assertion. Additional MFA still required for MFA accounts.",
             "Authenticator" => "Local JWT only. Setup requires password; activation requires TOTP and returns recovery codes once. Never log the setup secret or codes. Enabled accounts require password plus a second factor for login.",
             "Onboarding" => "Opt-in; disabled by default. Username remains the sign-in identifier. Confirmation/recovery codes are emailed, not returned by API. Public requests are throttled and generic 202 responses avoid account enumeration.",
             "ExternalIdentity" => "Requires a validated external OAuth access token. No local administrator privileges.",
