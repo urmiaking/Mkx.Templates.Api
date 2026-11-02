@@ -5,3 +5,5 @@ When editing `Mkx.Templates.Api`, inspect `template-content/AGENTS.md`, `docs/RO
 For API route changes read template-content/docs/ai/OPENAPI.md and .matemcp/skills/openapi-contract/SKILL.md, then validate the generated OpenAPI JSON, UI CSS and packaged template tests.
 
 External account linking rule: follow template-content/docs/ai/ACCOUNT_LINKING.md. Keep the one-time hashed proof, explicit issuer+sub identity, exact external scope, distinct JWT schemes, local admin exclusion and migration/security regression tests.
+
+Account lifecycle guardrail: consult template-content/docs/ai/ACCOUNT_LIFECYCLE.md, preserve opt-in SMTP, persistent Data Protection key storage and username-only login. No unconfirmed token issuance, email-code logging, administrator anonymous recovery, or bypass of existing MFA fail-closed logic.

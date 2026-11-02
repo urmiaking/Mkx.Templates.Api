@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection;
 using System.Text;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,9 +24,36 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(ApiDocumentation.Configure);
 builder.Services.AddSingleton(TimeProvider.System);
+var onboardingEnabled = builder.Configuration.GetValue<bool>("AccountLifecycle:Enabled");
+builder.Services.AddSingleton(new AccountLifecycleFeatureState(onboardingEnabled));
+if (onboardingEnabled)
+{
+    // Avoid granting authentication to an unverified email or losing pending proof tokens at restart.
+    var directory = builder.Configuration["AccountLifecycle:KeyRingDirectory"];
+    var host = builder.Configuration["AccountLifecycle:Smtp:Host"];
+    var from = builder.Configuration["AccountLifecycle:Smtp:From"];
+    var username = builder.Configuration["AccountLifecycle:Smtp:Username"];
+    var password = builder.Configuration["AccountLifecycle:Smtp:Password"];
+    var port = builder.Configuration.GetValue<int>("AccountLifecycle:Smtp:Port");
+    if (string.IsNullOrWhiteSpace(directory) || !Path.IsPathFullyQualified(directory) ||
+        string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(from) ||
+        !System.Net.Mail.MailAddress.TryCreate(from, out _) ||
+        string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) ||
+        port is <= 0 or > 65535 or 465)
+        throw new InvalidOperationException(
+            "AccountLifecycle enabled: configure persistent KeyRingDirectory and complete STARTTLS SMTP settings.");
+
+    builder.Services.AddDataProtection()
+        .SetApplicationName("Mkx.Templates.Api")
+        .PersistKeysToFileSystem(new DirectoryInfo(directory));
+    builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
+        o.TokenLifespan = TimeSpan.FromMinutes(20));
+}
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
 builder.Services.AddScoped<IExternalAccountLinkService, ExternalAccountLinkService>();
+builder.Services.AddScoped<IAccountLifecycleService, AccountLifecycleService>();
+builder.Services.AddScoped<IAccountMessageSender, SmtpAccountMessageSender>();
 builder.Services.AddOptions<OpaqueIntrospectionOptions>()
     .Bind(builder.Configuration.GetSection(OpaqueIntrospectionOptions.Section))
     .Validate(options => options.IsValid(),
@@ -52,7 +80,7 @@ var connection = builder.Configuration.GetConnectionString("DefaultConnection")
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connection, sql => sql.EnableRetryOnFailure()));
 builder.Services.AddIdentityCore<AppUser>(options =>
 {
-    options.User.RequireUniqueEmail = false;
+    options.User.RequireUniqueEmail = onboardingEnabled;
     options.Password.RequiredLength = 12;
     options.Password.RequiredUniqueChars = 4;
     options.Password.RequireDigit = false;
@@ -164,6 +192,12 @@ var authPermitLimit = Math.Clamp(builder.Configuration.GetValue("RateLimit:AuthR
 builder.Services.AddRateLimiter(o =>
 {
     o.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    o.AddPolicy("onboarding", ctx => RateLimitPartition.GetFixedWindowLimiter(
+        partitionKey: ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        factory: _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 6, Window = TimeSpan.FromMinutes(5), QueueLimit = 0, AutoReplenishment = true
+        }));
     o.AddPolicy("auth", ctx => RateLimitPartition.GetFixedWindowLimiter(
         partitionKey: ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown",
         factory: _ => new FixedWindowRateLimiterOptions
@@ -174,6 +208,8 @@ builder.Services.AddRateLimiter(o =>
 builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("database");
 
 var app = builder.Build();
+if (app.Configuration.GetValue<bool>("AccountLifecycle:Enabled") != onboardingEnabled)
+    throw new InvalidOperationException("AccountLifecycle feature state changed after service registration. Restart with startup configuration.");
 if (app.Configuration.GetValue<bool>("Database:ApplyMigrationsOnStartup"))
 {
     using var scope = app.Services.CreateScope();

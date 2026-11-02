@@ -24,3 +24,6 @@ The Server layer owns named ExternalOidc JWT Bearer and ApiKey authentication sc
 ## External identity mapping
 
 Domain owns ExternalIdentityLink and ExternalLinkChallenge; Infrastructure owns unique indexes and one-time proof persistence; Application ExternalAccountLinkService uses separate verified local and external proofs; Server ExternalLinksController enforces two independent schemes. Refer to ACCOUNT_LINKING.md for restrictions and lifecycle.
+
+## Account lifecycle
+Application AccountLifecycleService uses Identity user/token managers and IAccountMessageSender; Server OnboardingController exposes anonymous, throttled operations, while SmtpAccountMessageSender handles opt-in STARTTLS delivery. Feature flags are fixed at startup to prevent configuration reload bypass. See ACCOUNT_LIFECYCLE.md.

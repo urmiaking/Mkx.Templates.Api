@@ -13,6 +13,7 @@ public static class ApiDocumentation
     private static readonly IReadOnlyDictionary<string, string> Groups = new Dictionary<string, string>
     {
         ["Auth"] = "01 Authentication",
+        ["Onboarding"] = "01 Authentication",
         ["ExternalIdentity"] = "02 External identity",
         ["ExternalLinks"] = "02 External identity",
         ["OpaqueIdentity"] = "02 External identity",
@@ -82,6 +83,11 @@ public sealed class SecurityAndDocumentationFilter : IOperationFilter
             ("Auth", "Logout") => "Sign out from the current session",
             ("Auth", "LogoutAll") => "Revoke all refresh sessions",
             ("Auth", "Me") => "Get the current local account",
+            ("Onboarding", "Register") => "Request account registration and email confirmation",
+            ("Onboarding", "Confirm") => "Confirm a pending account using an emailed code",
+            ("Onboarding", "Resend") => "Resend email confirmation when the account is pending",
+            ("Onboarding", "ForgotPassword") => "Request a password reset code by username and email",
+            ("Onboarding", "ResetPassword") => "Reset a confirmed account password using an emailed code",
             ("ExternalIdentity", "Me") => "Inspect a validated external identity",
             ("ExternalLinks", "Challenge") => "Create one-time local account ownership proof",
             ("ExternalLinks", "Complete") => "Link verified external user to local account",
@@ -98,6 +104,7 @@ public sealed class SecurityAndDocumentationFilter : IOperationFilter
         operation.Description ??= controller switch
         {
             "Auth" => "Local Identity credentials and session management.",
+            "Onboarding" => "Opt-in; disabled by default. Username remains the sign-in identifier. Confirmation/recovery codes are emailed, not returned by API. Public requests are throttled and generic 202 responses avoid account enumeration.",
             "ExternalIdentity" => "Requires a validated external OAuth access token. No local administrator privileges.",
             "ExternalLinks" => "Account linking requires proof of local and external account ownership. No automatic role mapping.",
             "OpaqueIdentity" => "Requires introspection of an external opaque access token. No local account mapping.",

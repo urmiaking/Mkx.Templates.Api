@@ -56,7 +56,7 @@ public sealed class OpenApiContractTests
             Assert.NotEmpty(operation.GetProperty("tags").EnumerateArray().ToArray());
             Assert.DoesNotContain(operation.GetProperty("tags").EnumerateArray().Select(tag => tag.GetString()), tag => tag == "99 Other");
             Assert.DoesNotContain(":", operation.GetProperty("summary").GetString() ?? "");
-            if (path.Name is not ("/api/auth/login" or "/api/auth/refresh" or "/health/live"))
+            if (path.Name is not ("/api/auth/login" or "/api/auth/refresh" or "/health/live") && !path.Name.StartsWith("/api/onboarding/", StringComparison.Ordinal))
             {
                 Assert.NotEmpty(operation.GetProperty("security").EnumerateArray().ToArray());
                 Assert.True(operation.GetProperty("responses").TryGetProperty("401", out _));
@@ -65,6 +65,11 @@ public sealed class OpenApiContractTests
         }
         Assert.True(operations >= 11, $"Expected at least 11 controller operations, got {operations}");
         AssertScheme(paths, "/api/auth/login", "post", null);
+        AssertScheme(paths, "/api/onboarding/register", "post", null);
+        AssertScheme(paths, "/api/onboarding/confirm", "post", null);
+        AssertScheme(paths, "/api/onboarding/resend-confirmation", "post", null);
+        AssertScheme(paths, "/api/onboarding/forgot-password", "post", null);
+        AssertScheme(paths, "/api/onboarding/reset-password", "post", null);
         AssertScheme(paths, "/api/auth/refresh", "post", null);
         AssertScheme(paths, "/api/auth/me", "get", "LocalJwt");
         AssertScheme(paths, "/api/auth/external/me", "get", "ExternalOidc");

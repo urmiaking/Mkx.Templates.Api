@@ -32,3 +32,6 @@ See [API key lifecycle and security](API_KEYS.md). An administrator can issue a 
 ## External account linking and native client PKCE
 
 Follow ACCOUNT_LINKING.md. AddExternalIdentityLinks migration is required for existing SQL Server installations. No automatic local JWT or Administrator roles are issued from external identity; the client handles PKCE using the system browser.
+
+## Opt-in username registration, email verification and password recovery
+See ACCOUNT_LIFECYCLE.md. Feature disabled by default; enabling requires persistent Data Protection keys and authenticated STARTTLS SMTP secret configuration. No session before email confirmation. SMTP delivery remains unverified without real provider credentials. Full MFA and passkeys remain future phases.

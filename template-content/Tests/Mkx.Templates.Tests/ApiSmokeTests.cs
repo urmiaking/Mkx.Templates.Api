@@ -72,6 +72,44 @@ public sealed class ApiSmokeTests
     }
 
     [Fact]
+    public async Task DefaultOnboardingIsDisabledWithoutDatabaseOrSmtp()
+    {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+        var cases = new[]
+        {
+            ("/api/onboarding/register", """{"username":"demo-user","email":"demo@example.test","password":"LongPassword!789","displayName":"Demo"}"""),
+            ("/api/onboarding/confirm", """{"username":"demo-user","token":"invalid"}"""),
+            ("/api/onboarding/resend-confirmation", """{"username":"demo-user","email":"demo@example.test"}"""),
+            ("/api/onboarding/forgot-password", """{"username":"demo-user","email":"demo@example.test"}"""),
+            ("/api/onboarding/reset-password", """{"username":"demo-user","token":"invalid","newPassword":"LongPassword!789"}""")
+        };
+        foreach (var (path, body) in cases)
+        {
+            using var content = new StringContent(body, System.Text.Encoding.UTF8, "application/json");
+            using var response = await client.PostAsync(path, content, TestContext.Current.CancellationToken);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+    }
+
+    [Fact]
+    public void EnablingOnboardingWithoutSmtpAndPersistentKeysFailsAtStartup()
+    {
+        using var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(web =>
+        {
+            web.UseEnvironment("Development");
+            web.ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(
+                new Dictionary<string, string?>
+                {
+                    ["Jwt:SigningKey"] = new string('K', 64),
+                    ["BootstrapAdmin:Enabled"] = "false",
+                    ["AccountLifecycle:Enabled"] = "true"
+                }));
+        });
+        Assert.ThrowsAny<Exception>(() => factory.CreateClient());
+    }
+
+    [Fact]
     public async Task SwaggerDescribesAuthEndpoints()
     {
         using var factory = CreateFactory();

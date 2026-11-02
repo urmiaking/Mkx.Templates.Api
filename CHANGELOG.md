@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0 - Optional account onboarding and recovery (Phase 7.1)
+
+- Added anonymous, IP-throttled, opt-in username registration, email confirmation and password recovery APIs.
+- Requires authenticated STARTTLS SMTP and a persistent Data Protection key ring before activation.
+- No unconfirmed logins or local JWT issuance; generic recovery responses, expiring confirmation/reset codes, security-stamp invalidation and MFA/admin fail-closed behavior.
+- Added OpenAPI contracts and Identity integration tests. MFA/OTP/passkeys and live SMTP delivery remain unverified future work.
+
 ## 0.4.0 - Public native PKCE registration and external identity account linking
 
 - Isolated LOCAL BirSign authorization-code client requiring S256 PKCE and no client secret; real discovery and authorize redirect verified.
