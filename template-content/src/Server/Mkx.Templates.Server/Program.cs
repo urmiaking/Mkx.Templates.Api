@@ -144,9 +144,15 @@ builder.Services.AddAuthorization(options =>
         .RequireClaim("scope", "integration:write"));    options.AddPolicy("ExternalOpaqueOnly", policy => policy
         .AddAuthenticationSchemes(OpaqueIntrospectionHandler.SchemeName)
         .RequireAuthenticatedUser());
+    var requiredScope = builder.Configuration["ExternalOidc:RequiredScope"] ?? "mkx.api.read";
+    if (string.IsNullOrWhiteSpace(requiredScope))
+        throw new InvalidOperationException("ExternalOidc:RequiredScope cannot be empty.");
     options.AddPolicy("ExternalOidcOnly", policy => policy
         .AddAuthenticationSchemes("ExternalOidc")
-        .RequireAuthenticatedUser());
+        .RequireAuthenticatedUser()
+        .RequireAssertion(context => context.User.FindAll("scope").Any(
+            claim => claim.Value.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Contains(requiredScope, StringComparer.Ordinal))));
 });
 
 var origins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];

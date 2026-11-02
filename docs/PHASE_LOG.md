@@ -80,3 +80,13 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - Published non-draft GitHub Release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.3.0 with attached Mkx.Templates.Api.0.3.0.nupkg. Package installed and generated Portal.Smoke solution built and passed tests without errors.
 - Real SQL Server smoke verified existing authentication, replay/rotation and API-key use/revoke policies; temporary database cleanup exit code 0.
 - Swagger/API documentation issue #5 can be closed. Issue #1 stays open solely for optional OpenIddict authorization-server/account-linking and live IdP verification; there is no hidden partially enabled authorization server.
+
+## 2026-11-02 — Phase 6.3c: Live local BirSign test
+
+- Verified BirSign Development STS uses localhost/BirSignDb. No remote/production changes. Local STS started at https://localhost:44310; discovery and JWKS worked.
+- Added isolated SQL Client mkx.api.local.smoke, ApiScope mkx.api.read and ApiResource mkx.api transactionally only after confirming identifiers absent; SHA256/Base64 secret hash persisted to BirSignDb and protected raw secret stored in Windows user DPAPI. Provisioner rerun returned ALREADY_PRESENT; no duplicate records.
+- Issued real client_credentials JWT from local BirSign: LIVE_BIRSIGN_TOKEN=PASS. Ran Mkx API at http://localhost:5287 with the validated Authority/Audience/RequiredScope. LIVE_BIRSIGN_TO_MKX_API=PASS (200); EXTERNAL_CANNOT_ACCESS_LOCAL_ADMIN=PASS (401).
+- Added five OIDC scope regression tests; source build had zero warnings/errors and 33/33 tests passed.
+- Local BirSignDb is approximately 38 GB, so no full backup was made; insertion was isolated, transactional and rollback-safe. No user SSO or production federation is claimed. Packaged-template, CI and release checks follow.
+
+- The v0.3.1 NuGet package installed successfully. Fresh generated BirSign.Smoke solution built with zero warnings/errors; 33/33 generated tests passed. Both temporary local test hosts were stopped after the live integration. GitHub CI and release verification follow.

@@ -1,6 +1,6 @@
 # Mkx.Templates.Api
 
-**Latest release:** [v0.3.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.3.0) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41475844059).
+**Latest release:** [v0.3.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.3.1) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41475844059).
 
 A backend-only ASP.NET Core 10 solution template, designed around the **same pragmatic Domain / Infrastructure / Shared / Application / Server layers as Mkx.Templates.Blazor**—without a frontend, Blazor, SSR or WASM.
 
@@ -49,3 +49,5 @@ Optional external JWT resource-server support is being implemented separately fr
 
 This is not a self-hosted OAuth authorization server. OpenIddict/opaque introspection and live BirSign integration are explicitly deferred.
 ## API developer portal
+
+Real local BirSign STS test and safe, scoped SQL registration: [runbook](docs/LOCAL_BIRSIGN_INTEGRATION.md). Production and existing clients are untouched.

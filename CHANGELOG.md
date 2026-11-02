@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 — Verified local BirSign OIDC integration (2026-11-02)
+
+- Real local Duende STS-issued JWT accepted by the API resource endpoint, denied access to local administrator endpoints.
+- Exact configurable external scope requirement, machine-token client_id support, five scope policy tests.
+- Local-only idempotent client/scope/resource SQL provisioning and token smoke, with DPAPI-protected credential; no production changes.
+
 ## 0.3.0 — Introspection and API developer portal (2026-11-02)
 
 - Optional RFC 7662 HTTPS opaque token introspection with strict security checks and upstream mock testing.

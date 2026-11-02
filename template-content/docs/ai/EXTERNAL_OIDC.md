@@ -17,3 +17,7 @@ The local `POST /api/auth/login` and `POST /api/auth/refresh` still use the orig
 When external OIDC is disabled (default) the named scheme returns 401 and never trusts an external token. Enabled with missing values or an HTTP authority fails startup. The authority must be reachable from the API server; no default BirSign URL or credential is embedded.
 
 **Integration caveats:** Many OIDC providers issue opaque access tokens rather than JWT, or issue JWTs with an audience that differs from a web client ID. This implementation requires a JWT **access token** with the right audience and HTTPS discovery. Do not put ID tokens in API authorization headers. Opaque token introspection, external account provisioning/role mapping, multi-provider selection and self-hosted OpenIddict remain later optional work. Validate the real BirSign/Keycloak token contract and end-to-end HTTPS discovery before claiming production federation is proven.
+
+## Local BirSign compatibility and scope authorization
+
+ExternalOidcOnly requires the configured ExternalOidc:RequiredScope (default mkx.api.read). A correctly signed JWT with correct issuer/audience but without this exact scope is rejected. Claims may be space-delimited. Machine-to-machine client_credentials tokens may contain client_id but no user sub; /api/auth/external/me supports either identity without assigning local administrator roles. Real local Duende/BirSign client_credentials tests are documented in the parent template repository docs/LOCAL_BIRSIGN_INTEGRATION.md. Production and interactive SSO were not tested.
