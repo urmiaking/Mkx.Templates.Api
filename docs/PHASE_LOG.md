@@ -102,3 +102,9 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - Added ExternalIdentityLink / ExternalLinkChallenge schema and AddExternalIdentityLinks migration; Application service requires two independent proofs: valid LOCAL JWT to mint an unguessable, hashed, five-minute, one-time link challenge, and valid EXTERNAL JWT with a human subject plus API scope to consume it. API explicitly prevents automatic administrator, MFA, username/email or national-ID mapping and issues no local JWT from external access.
 - Unique issuer-subject and user-issuer indexes, atomic challenge consumption and unlink support. Added separate typed OpenAPI endpoints, documented their per-operation security, extended OpenAPI contract tests, and added EF SQLite tests for replay, collision, unlink, admin and MFA restrictions.
 - Local solution build 0 warnings/errors; 36/36 tests. Local ephemeral SQL Server smoke including database migration and cleanup passed. Remote CI, NuGet package and release evidence to follow.
+
+### Delivery and verification
+
+- Main implementation commit bbe5ae3; GitHub Actions https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41484726806 succeeded (build, 36 source tests, NuGet pack, generated project build and 36 generated tests).
+- Published stable non-draft release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.4.0 with Mkx.Templates.Api.0.4.0.nupkg attached. Local generated template build: zero warnings/errors, 36 tests passing. The disposable SQL Server smoke database was deleted successfully. Local BirSign authorize request returned HTTP 302 to /Account/Login with S256 PKCE; real human sign-in was not automated.
+- Local BirSignDb retains only isolated public mkx.api.local.pkce registration alongside earlier isolated machine client. Local test STS was stopped. No production changes and no credentials committed.
