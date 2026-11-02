@@ -18,7 +18,7 @@ jobs:
       - name: Test application
         working-directory: template-content
         run: dotnet test --project Tests/Mkx.Templates.Tests/Mkx.Templates.Tests.csproj -c Release
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '24'
       - uses: dart-lang/setup-dart@v1
