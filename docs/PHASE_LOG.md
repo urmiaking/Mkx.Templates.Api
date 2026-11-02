@@ -163,3 +163,9 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - Fixed previously untyped response schemas for ExternalIdentity_Me, OpaqueIdentity_Me, Integrations_Ping and Health_Live with explicit Shared DTOs and server OpenAPI contract assertions.
 - Added React Native/Expo and Flutter integration examples using platform-secure storage and local SDK packages. No production host, client credentials or API-key material embedded. SDKs are included in generated dotnet-new template, not published to npm/pub.dev.
 - Source .NET build and 55 tests passed; TS compiled and passed 7 Node tests; Dart analyzed with no warnings and passed 7 tests. CI updates check live contract snapshot, generated SDK parity and SDK tests in source and instantiated NuGet package. Package/CI/release evidence to follow; NuGet.org publication remains separate and pending publisher credentials and approval.
+
+### Phase 8 release verification: v0.8.0
+
+- Implementation commit 3a5b0c7 and CI runtime patch fe87b65 merged/pushed to main. Latest independent CI https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41499910376 succeeded: source .NET build and 55/55 tests, actual Swagger snapshot + TS/Dart codegen parity, TypeScript compilation and 7/7 Node tests, Dart analysis and 7/7 tests, NuGet pack, and full re-verification of a freshly instantiated template including both SDKs.
+- Published non-draft GitHub Release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.8.0 with Mkx.Templates.Api.0.8.0.nupkg attached (129 packaged entries, no node_modules, dist or Dart cache). On Windows local generated solution also passed: 55 .NET tests, 7 TS tests, 7 Dart tests, schema parity and zero-warning build.
+- No NuGet.org, npm or pub.dev publishing occurred. GitHub repository has no configured NuGet.org publishing secret at verification time. Issue #3 stays open only for optional external registries / live client integration acceptance.
