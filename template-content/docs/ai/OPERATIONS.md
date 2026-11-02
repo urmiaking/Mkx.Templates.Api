@@ -35,3 +35,5 @@ Follow ACCOUNT_LINKING.md. AddExternalIdentityLinks migration is required for ex
 
 ## Opt-in username registration, email verification and password recovery
 See ACCOUNT_LIFECYCLE.md. Feature disabled by default; enabling requires persistent Data Protection keys and authenticated STARTTLS SMTP secret configuration. No session before email confirmation. SMTP delivery remains unverified without real provider credentials. Full MFA and passkeys remain future phases.
+
+When enabling onboarding during first-time BootstrapAdmin creation, supply BootstrapAdmin__Email to preserve the unique-email Identity requirement; see ACCOUNT_LIFECYCLE.md.

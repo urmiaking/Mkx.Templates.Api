@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Mkx.Templates.Server.Hosting;
 using Mkx.Templates.Application.Abstractions;
 using Mkx.Templates.Application.Services;
 using Mkx.Templates.Domain.Identity;
@@ -108,6 +110,41 @@ public sealed class AccountLifecycleTests
         var user = await users.FindByNameAsync("michael");
         Assert.True(await users.CheckPasswordAsync(user!, "Different password 95!"));
         Assert.False(await users.CheckPasswordAsync(user!, Registration().Password));
+    }
+
+    [Fact]
+    public async Task BootstrapAdminWithOnboardingEnabledNeedsValidEmailAndCanBeCreated()
+    {
+        var incomplete = new ConfigurationBuilder().AddInMemoryCollection(
+            new Dictionary<string, string?>
+            {
+                ["BootstrapAdmin:Enabled"] = "true",
+                ["BootstrapAdmin:Username"] = "first-admin",
+                ["BootstrapAdmin:Password"] = "Strong initial admin password 89!",
+                ["AccountLifecycle:Enabled"] = "true"
+            }).Build();
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => BootstrapAdminSeeder.SeedAsync(null!, incomplete));
+
+        var (provider, connection) = await CreateAsync();
+        await using var _ = provider;
+        await using var __ = connection;
+        var enabled = new ConfigurationBuilder().AddInMemoryCollection(
+            new Dictionary<string, string?>
+            {
+                ["BootstrapAdmin:Enabled"] = "true",
+                ["BootstrapAdmin:Username"] = "first-admin",
+                ["BootstrapAdmin:Password"] = "Strong initial admin password 89!",
+                ["BootstrapAdmin:Email"] = "admin@example.test",
+                ["AccountLifecycle:Enabled"] = "true"
+            }).Build();
+        await BootstrapAdminSeeder.SeedAsync(provider, enabled);
+        var users = provider.GetRequiredService<UserManager<AppUser>>();
+        var user = await users.FindByNameAsync("first-admin");
+        Assert.NotNull(user);
+        Assert.True(user.EmailConfirmed);
+        Assert.Equal("admin@example.test", user.Email);
+        Assert.True(await users.IsInRoleAsync(user, "Administrator"));
     }
 
     [Fact]

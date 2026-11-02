@@ -37,3 +37,6 @@ The SMTP sender is a replaceable Application abstraction: IAccountMessageSender.
 SQLite Identity integration tests verify registration, email confirmation, mismatched email, duplicate identity, expired/invalid behavior, password reset token reuse, MFA exclusion and password update. HTTP tests verify default-disabled endpoints and invalid enablement configuration. SQL Server disposable migration/auth smoke verifies compatibility with existing features. No external mailbox service or live SMTP server has been exercised by these tests. Do not claim successful real email delivery before testing against the actual provider.
 
 Phase 7.2 (fully challenged MFA/OTP), Phase 7.3 (WebAuthn/passkeys), and live SMTP-provider integration remain future work.
+
+## Bootstrap administrator on a new installation
+If AccountLifecycle__Enabled=true and BootstrapAdmin__Enabled=true are both set on the initial startup, also provide BootstrapAdmin__Email=admin@example.com with a valid verified email address. This preserves unique email validation while creating the initial confirmed administrator. Do not put these values in source control. If onboarding is disabled, the older bootstrap flow remains compatible without this email option. Existing accounts are not modified or promoted.

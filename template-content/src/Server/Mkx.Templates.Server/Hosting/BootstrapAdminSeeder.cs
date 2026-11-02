@@ -10,6 +10,12 @@ public static class BootstrapAdminSeeder
         var password = configuration["BootstrapAdmin:Password"];
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             throw new InvalidOperationException("BootstrapAdmin enabled but Username/Password not configured.");
+        var email = configuration["BootstrapAdmin:Email"];
+        if (configuration.GetValue<bool>("AccountLifecycle:Enabled") &&
+            (string.IsNullOrWhiteSpace(email) ||
+             !System.Net.Mail.MailAddress.TryCreate(email, out _)))
+            throw new InvalidOperationException(
+                "AccountLifecycle and BootstrapAdmin enabled: configure a valid BootstrapAdmin:Email.");
         using var scope = provider.CreateScope();
         var users = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
         var roles = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
@@ -20,7 +26,7 @@ public static class BootstrapAdminSeeder
         }
         // Never overwrite an existing user's credentials or silently promote it.
         if (await users.FindByNameAsync(username) is not null) return;
-        var user = new AppUser { UserName = username, DisplayName = "Administrator", EmailConfirmed = true };
+        var user = new AppUser { UserName = username, Email = email, DisplayName = "Administrator", EmailConfirmed = true };
         var result = await users.CreateAsync(user, password);
         if (!result.Succeeded) throw new InvalidOperationException("Bootstrap admin validation failed: " + string.Join(", ", result.Errors.Select(e => e.Code)));
         result = await users.AddToRoleAsync(user, "Administrator");

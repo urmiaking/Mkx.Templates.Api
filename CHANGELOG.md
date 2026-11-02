@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.1 - Bootstrap administrator compatibility
+
+- When onboarding and administrator bootstrap are both enabled, require a configured administrator email for Identity unique-email validation; do not weaken validation or create an unusable administrator.
+- Add regression test for missing and valid BootstrapAdmin Email. Existing installations with onboarding disabled retain the previous bootstrap behavior.
+
 ## 0.5.0 - Optional account onboarding and recovery (Phase 7.1)
 
 - Added anonymous, IP-throttled, opt-in username registration, email confirmation and password recovery APIs.
