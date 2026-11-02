@@ -1,0 +1,36 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using Mkx.Templates.Application.Abstractions;
+using Mkx.Templates.Shared.Contracts;
+
+namespace Mkx.Templates.Server.Controllers;
+
+/// <summary>Administrative credential lifecycle. Never returns key material after creation.</summary>
+[ApiController]
+[Authorize(Policy = "AdminOnly")]
+[Route("api/api-keys")]
+[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+public sealed class ApiKeysController(IApiKeyService keys) : ControllerBase
+{
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateApiKeyRequest request, CancellationToken ct)
+    {
+        if (!Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var creatorId))
+            return Unauthorized();
+
+        var created = await keys.CreateAsync(creatorId, request, ct);
+        if (created is null)
+            return ValidationProblem("API key name, scopes or validity period is not allowed.");
+
+        return StatusCode(StatusCodes.Status201Created, created);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> List(CancellationToken ct) => Ok(await keys.ListAsync(ct));
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Revoke(Guid id, CancellationToken ct)
+        => await keys.RevokeAsync(id, ct) ? NoContent() : NotFound();
+}

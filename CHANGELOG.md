@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 — External identity and service key foundation (2026-11-02)
+
+- Optional standards-based OIDC external JWT access-token validation via HTTPS Authority/JWKS and API Audience, isolated from local Identity/JWT/admin.
+- Service-to-service hashed API keys with explicit scopes, expiry, admin-managed issuance and revocation.
+- New EF Core migration AddApiClientKeys, diagnostic integration endpoints, documentation, and 17 automated tests.
+- Live SQL Server smoke verified key issuance/use/scope denial/revocation without revealing raw key material.
+- Remaining: self-hosted OpenIddict server, opaque token introspection, external user linking and live IdP compatibility verification.
+
 ## 0.1.1 — Stable baseline patch (2026-11-02)
 
 - Fail closed for TwoFactorEnabled accounts until MFA is implemented.

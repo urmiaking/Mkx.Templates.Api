@@ -38,6 +38,28 @@ try {
   if($me.username -ne $env:BootstrapAdmin__Username){throw 'Identity mismatch'}; Write-Output 'ME=PASS'
   $users=Invoke-RestMethod "$base/api/users" -Headers @{Authorization="Bearer $($login.accessToken)"}
   if($users.total -lt 1){throw 'Admin policy failed'}; Write-Output 'ADMIN_POLICY=PASS'
+
+  # API key administration uses LOCAL JWT only. Raw keys must only appear in create response.
+  $adminHeaders=@{Authorization="Bearer $($login.accessToken)"}
+  $created=Invoke-RestMethod "$base/api/api-keys" -Headers $adminHeaders -Method Post -ContentType 'application/json' -Body (@{name='ci-integration-reader';scopes=@('integration:read');validDays=30}|ConvertTo-Json)
+  if(-not $created.apiKey -or $created.apiKey.Length -ne 68){throw 'API key creation failed'}; Write-Output 'API_KEY_CREATE=PASS'
+  $ping=Invoke-RestMethod "$base/api/integrations/ping" -Headers @{'X-API-Key'=$created.apiKey}
+  if($ping.status -ne 'ok'){throw 'API key authentication failed'}; Write-Output 'API_KEY_USE=PASS'
+  $keyList=Invoke-RestMethod "$base/api/api-keys" -Headers $adminHeaders
+  if(($keyList|ConvertTo-Json -Depth 5).Contains($created.apiKey)){throw 'API key leaked from metadata list'}
+  Write-Output 'API_KEY_NOT_DISCLOSED=PASS'
+
+  # Wrong scopes authenticate but fail authorization (403).
+  $writer=Invoke-RestMethod "$base/api/api-keys" -Headers $adminHeaders -Method Post -ContentType 'application/json' -Body (@{name='ci-integration-writer';scopes=@('integration:write');validDays=30}|ConvertTo-Json)
+  $forbidden=$false
+  try{Invoke-WebRequest "$base/api/integrations/ping" -UseBasicParsing -Headers @{'X-API-Key'=$writer.apiKey}|Out-Null}catch{$forbidden=($_.Exception.Response.StatusCode.value__ -eq 403)}
+  if(-not $forbidden){throw 'Insufficient API key scope was accepted'}; Write-Output 'API_KEY_SCOPE_DENIED=PASS'
+
+  $revoked=Invoke-WebRequest "$base/api/api-keys/$($created.id)" -UseBasicParsing -Headers $adminHeaders -Method Delete
+  if($revoked.StatusCode -ne 204){throw 'API key revocation failed'}
+  $keyRejected=$false
+  try{Invoke-WebRequest "$base/api/integrations/ping" -UseBasicParsing -Headers @{'X-API-Key'=$created.apiKey}|Out-Null}catch{$keyRejected=($_.Exception.Response.StatusCode.value__ -eq 401)}
+  if(-not $keyRejected){throw 'Revoked API key was accepted'}; Write-Output 'API_KEY_REVOKE=PASS'
   $refresh=Invoke-RestMethod "$base/api/auth/refresh" -Method Post -ContentType 'application/json' -Body (@{refreshToken=$login.refreshToken}|ConvertTo-Json)
   if(-not $refresh.accessToken -or $refresh.refreshToken -eq $login.refreshToken){throw 'Rotation failed'}; Write-Output 'REFRESH=PASS'
 

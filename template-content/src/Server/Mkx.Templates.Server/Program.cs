@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using System.Text;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,6 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
 builder.Services.AddSingleton<IAccessTokenIssuer, JwtTokenIssuer>();
 
 builder.Services.AddOptions<JwtOptions>()
@@ -105,6 +107,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 // Force validation of external JWT options at startup, before the first HTTP request.
 builder.Services.AddOptions<JwtBearerOptions>("ExternalOidc").ValidateOnStart();
+builder.Services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(
+    ApiKeyAuthenticationHandler.SchemeName, _ => { });
 builder.Services.AddAuthorization(options =>
 {
     // New controllers are protected by default unless explicitly marked [AllowAnonymous].
@@ -113,7 +117,14 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => policy
         .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
         .RequireRole("Administrator"));
-    options.AddPolicy("ExternalOidcOnly", policy => policy
+    options.AddPolicy("IntegrationRead", policy => policy
+        .AddAuthenticationSchemes(ApiKeyAuthenticationHandler.SchemeName)
+        .RequireAuthenticatedUser()
+        .RequireClaim("scope", "integration:read"));
+    options.AddPolicy("IntegrationWrite", policy => policy
+        .AddAuthenticationSchemes(ApiKeyAuthenticationHandler.SchemeName)
+        .RequireAuthenticatedUser()
+        .RequireClaim("scope", "integration:write"));    options.AddPolicy("ExternalOidcOnly", policy => policy
         .AddAuthenticationSchemes("ExternalOidc")
         .RequireAuthenticatedUser());
 });

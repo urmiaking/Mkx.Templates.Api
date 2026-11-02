@@ -1,4 +1,7 @@
 using System.Net;
+using System.Net.Http.Headers;
+using Mkx.Templates.Domain.Identity;
+using Mkx.Templates.Server.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -41,6 +44,14 @@ public sealed class ExternalOidcTests
     {
         using var factory = CreateFactory();
         using var client = factory.CreateClient();
+        var localJwt = new JwtTokenIssuer(Options.Create(new JwtOptions
+        {
+            Issuer = "Mkx.Templates.Api",
+            Audience = "Mkx.Templates.Clients",
+            SigningKey = new string('J', 64)
+        }), TimeProvider.System).Issue(
+            new AppUser { Id = Guid.NewGuid(), UserName = "admin" }, ["Administrator"]).Token;
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localJwt);
         using var response = await client.GetAsync("/api/auth/external/me", TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }

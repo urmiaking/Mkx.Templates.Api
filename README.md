@@ -39,3 +39,12 @@ See [Roadmap](docs/ROADMAP.md), [Phase log](docs/PHASE_LOG.md), [Architecture](d
 
 ## Phase 6 progress
 Optional external JWT resource-server support is being implemented separately from local JWT auth. See [External OIDC guide](template-content/docs/ai/EXTERNAL_OIDC.md) and [Roadmap](docs/ROADMAP.md). OAuth token issuance and OpenIddict are not part of this stage.
+
+### Service credentials and federated API callers
+
+- Administrators using **local JWT** can create expiring scoped API keys at POST /api/api-keys, list metadata at GET /api/api-keys, and revoke a key at DELETE /api/api-keys/{id}.
+- A service calls GET /api/integrations/ping with X-API-Key and integration:read scope. Never use API keys inside mobile clients.
+- Optional external OIDC JWT access-token validation is configured via ExternalOidc:Enabled, Authority (HTTPS) and Audience (resource API). Native clients use the IdP's authorization code + PKCE rather than the local login endpoint.
+- Apply AddApiClientKeys migration to existing databases. Configuration and exact security boundaries: [API Keys](template-content/docs/ai/API_KEYS.md) and [External OIDC](template-content/docs/ai/EXTERNAL_OIDC.md).
+
+This is not a self-hosted OAuth authorization server. OpenIddict/opaque introspection and live BirSign integration are explicitly deferred.

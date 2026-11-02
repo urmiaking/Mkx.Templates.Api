@@ -9,3 +9,5 @@ This is a backend-only .NET 10 solution. Read `docs/ai/ARCHITECTURE.md` and `doc
 - JWT access tokens are short-lived and signed; opaque refresh tokens are hashed, rotated atomically and revocable.
 - No hardcoded credentials, signing keys, production DB strings or generated bin/obj files in Git.
 - Run `dotnet build Mkx.Templates.slnx` and `dotnet test --project Tests/Mkx.Templates.Tests/Mkx.Templates.Tests.csproj` from the solution directory. Keep docs and tests aligned with behavior.
+
+- Keep ExternalOidc, ApiKey and local JWT schemes independent. AdminOnly must remain local JWT only. Do not accidentally grant API keys local user roles. All new integration scopes require a reviewed allowlist change and matching server policy.
