@@ -22,7 +22,7 @@ Last updated: 2026-11-02. Phase completion requires implementation, actual verif
 | 7.1 | Opt-in username registration, email confirmation and password reset | Completed locally; SMTP provider not integrated live | [Guide](../template-content/docs/ai/ACCOUNT_LIFECYCLE.md); 43 tests and SQL smoke; key-ring and SMTP startup safeguards |
 | 7.2 | Local Authenticator TOTP MFA and one-time recovery codes | Completed locally (TOTP only) | RFC6238 Identity integration and replay/one-time recovery tests, SQL migration smoke; [MFA guide](../template-content/docs/ai/AUTHENTICATOR_MFA.md). SMS/email OTP deferred |
 | 7.3 | WebAuthn/Passkeys using .NET 10 Identity, SQL-bound challenges, JWT integration | Backend implemented; hardware/browser interoperability outstanding | [Guide](../template-content/docs/ai/PASSKEYS.md); real SQL Server options/replay smoke, 55 source tests; physical-device signed credential test still needed |
-| 8 | Typed TypeScript and Dart SDKs, mobile samples, public NuGet publication | Planned | [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3); stabilize API contracts first |
+| 8 | Typed TypeScript + Dart SDKs, mobile samples and publication | SDKs completed locally; external registry publication pending | [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3); canonical live OpenAPI snapshot, CI drift checks, React Native/Flutter examples, TypeScript and Dart tests; NuGet.org/npm/pub.dev not published |
 
 ## Definition of done
 

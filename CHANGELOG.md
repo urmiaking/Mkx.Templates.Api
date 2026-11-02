@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0 - OpenAPI-generated TypeScript and Dart SDKs (Phase 8)
+
+- Export actual Development Swagger 3.x contract deterministically (32 operations, 33 DTO schemas) and generate reusable TypeScript and Dart clients with typed requests, responses, paths and query parameters.
+- Transport layers isolate local JWT, external OIDC, opaque access tokens, server-only API keys and anonymous routes; local 401 auto-refresh is single-flight with rotating tokens and one retry, using host-provided secure SessionStore.
+- Added React Native/Expo and Flutter secure-session integration examples; no secrets, passwords or client-side API keys embedded.
+- CI compares the actual live OpenAPI document with its checked-in canonical snapshot, verifies regenerated SDK files, builds/tests TypeScript and Dart and reruns everything in a new dotnet-new instance.
+- Fixed diagnostic endpoints OpenAPI response schemas for external JWT, opaque JWT, service-key ping and live health. NuGet template is distributed via GitHub Releases; registry publication is not automatic.
+
 ## 0.7.0 - Opt-in WebAuthn/Passkeys for API-only apps (Phase 7.3)
 
 - .NET 10 Identity passkey handler verifies WebAuthn attestation and signed assertions; verified passkeys persist in the Identity v3 AspNetUserPasskeys table.

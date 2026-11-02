@@ -12,3 +12,9 @@
 **/appsettings.Local.json
 **/appsettings.Production.json
 artifacts/
+
+# Generated SDK development output
+**/node_modules/
+**/dist/
+**/.dart_tool/
+**/pubspec.lock

@@ -1,6 +1,6 @@
 # Mkx.Templates.Api
 
-**Latest release:** [v0.7.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.7.0) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41488496536).
+**Latest release:** [v0.8.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.8.0) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41488496536).
 
 A backend-only ASP.NET Core 10 solution template, designed around the **same pragmatic Domain / Infrastructure / Shared / Application / Server layers as Mkx.Templates.Blazor**—without a frontend, Blazor, SSR or WASM.
 
@@ -66,3 +66,7 @@ Phase 7.2 supports standard authenticator apps, password plus six-digit TOTP or 
 ## Optional WebAuthn / Passkeys (Phase 7.3)
 
 The .NET 10 API template now includes opt-in native Identity passkeys: discoverable account login, server-backed one-time challenges, registration after local account verification, list/remove and normal local JWT/refresh issuance after a verified WebAuthn assertion. Explicit Passkeys RelyingPartyId and Origin are mandatory; MFA accounts still need a second factor. See template-content/docs/ai/PASSKEYS.md. A full signed credential/device ceremony is not yet verified.
+
+## TypeScript and Dart SDKs (Phase 8)
+
+The generated solution includes local-path TypeScript (clients/typescript) and Dart/Flutter (clients/dart) SDKs for all API operations, plus minimal React Native/Expo and Flutter secure-session integration examples. The canonical openapi/v1.json is exported from the actual Development API; tools/generate_sdks.py updates the models and clients. CI checks API/schema/SDK drift, token refresh and scheme isolation. See template-content/docs/ai/SDK_GENERATION.md for setup and limitations. The NuGet template is released on GitHub; it is not automatically published to NuGet.org and the SDKs are not registered on npm or pub.dev.

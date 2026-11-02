@@ -3,7 +3,7 @@
   <TargetFramework>netstandard2.0</TargetFramework>
   <PackageType>Template</PackageType>
   <PackageId>Mkx.Templates.Api</PackageId>
-  <PackageVersion>0.7.0</PackageVersion>
+  <PackageVersion>0.8.0</PackageVersion>
   <Title>Mkx API Solution Template</Title>
   <Authors>Mkx</Authors>
   <Description>.NET 10 backend-only solution template with Identity, JWT Bearer, rotated refresh tokens and EF Core.</Description>
@@ -17,7 +17,7 @@
 </PropertyGroup>
 <ItemGroup>
   <None Include="README.md" Pack="true" PackagePath="/" />
-  <Content Include="template-content/**/*" Exclude="template-content/**/bin/**;template-content/**/obj/**;template-content/**/TestResults/**;template-content/**/.vs/**;template-content/**/*.user;template-content/**/*.log;template-content/**/.env;template-content/**/.env.*" PackagePath="content/%(RecursiveDir)%(Filename)%(Extension)" />
+  <Content Include="template-content/**/*" Exclude="template-content/**/bin/**;template-content/**/obj/**;template-content/**/TestResults/**;template-content/**/.vs/**;template-content/**/node_modules/**;template-content/**/dist/**;template-content/**/.dart_tool/**;template-content/**/pubspec.lock;template-content/**/*.user;template-content/**/*.log;template-content/**/.env;template-content/**/.env.*" PackagePath="content/%(RecursiveDir)%(Filename)%(Extension)" />
   <Compile Remove="**/*" />
 </ItemGroup>
 </Project>

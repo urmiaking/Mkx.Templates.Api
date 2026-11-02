@@ -92,6 +92,10 @@ public sealed class OpenApiContractTests
         AssertScheme(paths, "/api/api-keys", "post", "LocalJwt");
         AssertScheme(paths, "/api/users", "get", "LocalJwt");
         AssertScheme(paths, "/api/integrations/ping", "get", "ApiKey");
+        AssertJsonResponse(paths, "/api/auth/external/me", "get", "ExternalIdentityResponse");
+        AssertJsonResponse(paths, "/api/auth/opaque/me", "get", "OpaqueIdentityResponse");
+        AssertJsonResponse(paths, "/api/integrations/ping", "get", "IntegrationPingResponse");
+        AssertJsonResponse(paths, "/health/live", "get", "HealthLiveResponse");
         Assert.True(paths.GetProperty("/api/auth/login").GetProperty("post").GetProperty("responses").TryGetProperty("200", out _));
         Assert.True(paths.GetProperty("/api/api-keys").GetProperty("post").GetProperty("responses").TryGetProperty("201", out _));
     }
@@ -124,6 +128,15 @@ public sealed class OpenApiContractTests
         using var css = await client.GetAsync("/swagger-ui/custom.css", TestContext.Current.CancellationToken);
         Assert.NotEqual(HttpStatusCode.OK, json.StatusCode);
         Assert.NotEqual(HttpStatusCode.OK, css.StatusCode);
+    }
+
+    private static void AssertJsonResponse(JsonElement paths, string path, string method, string schemaName)
+    {
+        var reference = paths.GetProperty(path).GetProperty(method)
+            .GetProperty("responses").GetProperty("200")
+            .GetProperty("content").GetProperty("application/json")
+            .GetProperty("schema").GetProperty("$ref").GetString();
+        Assert.Equal("#/components/schemas/" + schemaName, reference);
     }
 
     private static void AssertScheme(JsonElement paths, string path, string method, string? scheme)

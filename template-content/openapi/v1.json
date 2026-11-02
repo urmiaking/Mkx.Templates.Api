@@ -1,0 +1,2560 @@
+{
+  "components": {
+    "schemas": {
+      "AccountRecoveryRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "nullable": true,
+            "type": "string"
+          },
+          "username": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "AccountResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "displayName": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "roles": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "username": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ApiKeySummary": {
+        "additionalProperties": false,
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "name": {
+            "nullable": true,
+            "type": "string"
+          },
+          "prefix": {
+            "nullable": true,
+            "type": "string"
+          },
+          "revokedAt": {
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "AuthenticatorDisableRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "authenticatorCode": {
+            "nullable": true,
+            "type": "string"
+          },
+          "password": {
+            "nullable": true,
+            "type": "string"
+          },
+          "recoveryCode": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "AuthenticatorEnableRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "authenticatorCode": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "AuthenticatorEnableResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "recoveryCodes": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "AuthenticatorSetupRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "password": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "AuthenticatorSetupResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "authenticatorUri": {
+            "nullable": true,
+            "type": "string"
+          },
+          "sharedKey": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "AuthenticatorStatusResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "recoveryCodesLeft": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "setupStarted": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "CompleteExternalLinkRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "challenge": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ConfirmAccountRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "token": {
+            "nullable": true,
+            "type": "string"
+          },
+          "username": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "CreateApiKeyRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "nullable": true,
+            "type": "string"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "validDays": {
+            "format": "int32",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "CreatedApiKeyResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "apiKey": {
+            "nullable": true,
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "name": {
+            "nullable": true,
+            "type": "string"
+          },
+          "prefix": {
+            "nullable": true,
+            "type": "string"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ExternalIdentityResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "authentication": {
+            "nullable": true,
+            "type": "string"
+          },
+          "clientId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "issuer": {
+            "nullable": true,
+            "type": "string"
+          },
+          "subject": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ExternalLinkChallengeResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "challenge": {
+            "nullable": true,
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ExternalLinkedAccountResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "displayName": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "userName": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "HealthLiveResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "IntegrationPingResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "client": {
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "LoginRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "authenticatorCode": {
+            "nullable": true,
+            "type": "string"
+          },
+          "password": {
+            "nullable": true,
+            "type": "string"
+          },
+          "recoveryCode": {
+            "nullable": true,
+            "type": "string"
+          },
+          "username": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "OpaqueIdentityResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "authentication": {
+            "nullable": true,
+            "type": "string"
+          },
+          "issuer": {
+            "nullable": true,
+            "type": "string"
+          },
+          "subject": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PagedUsersResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/UserSummaryResponse"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "page": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "pageSize": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "total": {
+            "format": "int32",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "PasskeyCeremonyResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "ceremonyId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "optionsJson": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PasskeyCompletionRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "authenticatorCode": {
+            "nullable": true,
+            "type": "string"
+          },
+          "ceremonyId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "credentialJson": {
+            "nullable": true,
+            "type": "string"
+          },
+          "recoveryCode": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PasskeyEnrollmentRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "authenticatorCode": {
+            "nullable": true,
+            "type": "string"
+          },
+          "password": {
+            "nullable": true,
+            "type": "string"
+          },
+          "recoveryCode": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PasskeyRemoveRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "authenticatorCode": {
+            "nullable": true,
+            "type": "string"
+          },
+          "credentialId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "password": {
+            "nullable": true,
+            "type": "string"
+          },
+          "recoveryCode": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PasskeySummary": {
+        "additionalProperties": false,
+        "properties": {
+          "credentialId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ProblemDetails": {
+        "additionalProperties": {},
+        "properties": {
+          "detail": {
+            "nullable": true,
+            "type": "string"
+          },
+          "instance": {
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "format": "int32",
+            "nullable": true,
+            "type": "integer"
+          },
+          "title": {
+            "nullable": true,
+            "type": "string"
+          },
+          "type": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RefreshRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "refreshToken": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RegisterAccountRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "displayName": {
+            "nullable": true,
+            "type": "string"
+          },
+          "email": {
+            "nullable": true,
+            "type": "string"
+          },
+          "password": {
+            "nullable": true,
+            "type": "string"
+          },
+          "username": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ResetAccountPasswordRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "newPassword": {
+            "nullable": true,
+            "type": "string"
+          },
+          "token": {
+            "nullable": true,
+            "type": "string"
+          },
+          "username": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RevokeRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "refreshToken": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "TokenResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "accessToken": {
+            "nullable": true,
+            "type": "string"
+          },
+          "accessTokenExpiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "refreshToken": {
+            "nullable": true,
+            "type": "string"
+          },
+          "refreshTokenExpiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "tokenType": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UserSummaryResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "displayName": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "userName": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "description": "Administrator-issued service key (never put in client apps).",
+        "in": "header",
+        "name": "X-API-Key",
+        "type": "apiKey"
+      },
+      "ExternalOidc": {
+        "bearerFormat": "JWT",
+        "description": "External IdP JWT ACCESS token for ExternalOidc:Audience, not an ID token.",
+        "scheme": "bearer",
+        "type": "http"
+      },
+      "LocalJwt": {
+        "bearerFormat": "JWT",
+        "description": "Local ASP.NET Identity JWT from POST /api/auth/login.",
+        "scheme": "bearer",
+        "type": "http"
+      },
+      "OpaqueToken": {
+        "bearerFormat": "opaque",
+        "description": "External opaque access token, validated over HTTPS via OAuth introspection.",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "name": "Mkx Templates"
+    },
+    "description": "Backend API reference. Local JWT, external OAuth JWT and service API keys are separate schemes. Use the security scheme shown on each operation. API documentation is development-only.",
+    "title": "Mkx • API",
+    "version": "v1"
+  },
+  "openapi": "3.0.4",
+  "paths": {
+    "/api/api-keys": {
+      "get": {
+        "description": "Local Administrator only. Key material is returned once on creation.",
+        "operationId": "ApiKeys_List",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ApiKeySummary"
+                  },
+                  "type": "array"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ApiKeySummary"
+                  },
+                  "type": "array"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ApiKeySummary"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "List API key metadata, never secrets",
+        "tags": [
+          "04 API key management"
+        ]
+      },
+      "post": {
+        "description": "Local Administrator only. Key material is returned once on creation.",
+        "operationId": "ApiKeys_Create",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiKeyRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiKeyRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedApiKeyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedApiKeyResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedApiKeyResponse"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Create a scoped API key (secret returned once)",
+        "tags": [
+          "04 API key management"
+        ]
+      }
+    },
+    "/api/api-keys/{id}": {
+      "delete": {
+        "description": "Local Administrator only. Key material is returned once on creation.",
+        "operationId": "ApiKeys_Revoke",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Revoke an API key immediately",
+        "tags": [
+          "04 API key management"
+        ]
+      }
+    },
+    "/api/auth/authenticator/disable": {
+      "post": {
+        "description": "Local JWT only. Setup requires password; activation requires TOTP and returns recovery codes once. Never log the setup secret or codes. Enabled accounts require password plus a second factor for login.",
+        "operationId": "Authenticator_Disable",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticatorDisableRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticatorDisableRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticatorDisableRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Disable MFA with password and authenticator or recovery code",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/auth/authenticator/enable": {
+      "post": {
+        "description": "Local JWT only. Setup requires password; activation requires TOTP and returns recovery codes once. Never log the setup secret or codes. Enabled accounts require password plus a second factor for login.",
+        "operationId": "Authenticator_Enable",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticatorEnableRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticatorEnableRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticatorEnableRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatorEnableResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatorEnableResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatorEnableResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Activate authenticator MFA using a valid code",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/auth/authenticator/setup": {
+      "post": {
+        "description": "Local JWT only. Setup requires password; activation requires TOTP and returns recovery codes once. Never log the setup secret or codes. Enabled accounts require password plus a second factor for login.",
+        "operationId": "Authenticator_Setup",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticatorSetupRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticatorSetupRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticatorSetupRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatorSetupResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatorSetupResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatorSetupResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Start TOTP enrollment after password reauthentication",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/auth/authenticator/status": {
+      "get": {
+        "description": "Local JWT only. Setup requires password; activation requires TOTP and returns recovery codes once. Never log the setup secret or codes. Enabled accounts require password plus a second factor for login.",
+        "operationId": "Authenticator_Status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatorStatusResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatorStatusResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatorStatusResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Inspect local authenticator enrollment status",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/auth/external-links": {
+      "delete": {
+        "description": "Account linking requires proof of local and external account ownership. No automatic role mapping.",
+        "operationId": "ExternalLinks_Unlink",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Remove your external identity link",
+        "tags": [
+          "02 External identity"
+        ]
+      }
+    },
+    "/api/auth/external-links/challenge": {
+      "post": {
+        "description": "Account linking requires proof of local and external account ownership. No automatic role mapping.",
+        "operationId": "ExternalLinks_Challenge",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalLinkChallengeResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalLinkChallengeResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalLinkChallengeResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Create one-time local account ownership proof",
+        "tags": [
+          "02 External identity"
+        ]
+      }
+    },
+    "/api/auth/external-links/complete": {
+      "post": {
+        "description": "Account linking requires proof of local and external account ownership. No automatic role mapping.",
+        "operationId": "ExternalLinks_Complete",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteExternalLinkRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteExternalLinkRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteExternalLinkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "ExternalOidc": []
+          }
+        ],
+        "summary": "Link verified external user to local account",
+        "tags": [
+          "02 External identity"
+        ]
+      }
+    },
+    "/api/auth/external-links/me": {
+      "get": {
+        "description": "Account linking requires proof of local and external account ownership. No automatic role mapping.",
+        "operationId": "ExternalLinks_Me",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalLinkedAccountResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalLinkedAccountResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalLinkedAccountResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "ExternalOidc": []
+          }
+        ],
+        "summary": "Resolve verified external identity to a linked local profile",
+        "tags": [
+          "02 External identity"
+        ]
+      }
+    },
+    "/api/auth/external/me": {
+      "get": {
+        "description": "Requires a validated external OAuth access token. No local administrator privileges.",
+        "operationId": "ExternalIdentity_Me",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalIdentityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalIdentityResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalIdentityResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          }
+        },
+        "security": [
+          {
+            "ExternalOidc": []
+          }
+        ],
+        "summary": "Inspect a validated external identity",
+        "tags": [
+          "02 External identity"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "description": "Local Identity credentials and session management.",
+        "operationId": "Auth_Login",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "summary": "Sign in with a username and password",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "description": "Local Identity credentials and session management.",
+        "operationId": "Auth_Logout",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Sign out from the current session",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/auth/logout-all": {
+      "post": {
+        "description": "Local Identity credentials and session management.",
+        "operationId": "Auth_LogoutAll",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Revoke all refresh sessions",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "description": "Local Identity credentials and session management.",
+        "operationId": "Auth_Me",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Get the current local account",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/auth/opaque/me": {
+      "get": {
+        "description": "Requires introspection of an external opaque access token. No local account mapping.",
+        "operationId": "OpaqueIdentity_Me",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpaqueIdentityResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpaqueIdentityResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpaqueIdentityResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          }
+        },
+        "security": [
+          {
+            "OpaqueToken": []
+          }
+        ],
+        "summary": "Inspect a validated opaque OAuth access token",
+        "tags": [
+          "02 External identity"
+        ]
+      }
+    },
+    "/api/auth/refresh": {
+      "post": {
+        "description": "Local Identity credentials and session management.",
+        "operationId": "Auth_Refresh",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "summary": "Rotate a refresh token",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/integrations/ping": {
+      "get": {
+        "description": "Requires a service API key with integration:read scope.",
+        "operationId": "Integrations_Ping",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationPingResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationPingResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationPingResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "summary": "Verify service API-key credentials and scopes",
+        "tags": [
+          "05 Service integrations"
+        ]
+      }
+    },
+    "/api/onboarding/confirm": {
+      "post": {
+        "description": "Opt-in; disabled by default. Username remains the sign-in identifier. Confirmation/recovery codes are emailed, not returned by API. Public requests are throttled and generic 202 responses avoid account enumeration.",
+        "operationId": "Onboarding_Confirm",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmAccountRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmAccountRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "summary": "Confirm a pending account using an emailed code",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/onboarding/forgot-password": {
+      "post": {
+        "description": "Opt-in; disabled by default. Username remains the sign-in identifier. Confirmation/recovery codes are emailed, not returned by API. Public requests are throttled and generic 202 responses avoid account enumeration.",
+        "operationId": "Onboarding_ForgotPassword",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountRecoveryRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountRecoveryRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountRecoveryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "summary": "Request a password reset code by username and email",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/onboarding/register": {
+      "post": {
+        "description": "Opt-in; disabled by default. Username remains the sign-in identifier. Confirmation/recovery codes are emailed, not returned by API. Public requests are throttled and generic 202 responses avoid account enumeration.",
+        "operationId": "Onboarding_Register",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterAccountRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterAccountRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "summary": "Request account registration and email confirmation",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/onboarding/resend-confirmation": {
+      "post": {
+        "description": "Opt-in; disabled by default. Username remains the sign-in identifier. Confirmation/recovery codes are emailed, not returned by API. Public requests are throttled and generic 202 responses avoid account enumeration.",
+        "operationId": "Onboarding_Resend",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountRecoveryRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountRecoveryRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountRecoveryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "summary": "Resend email confirmation when the account is pending",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/onboarding/reset-password": {
+      "post": {
+        "description": "Opt-in; disabled by default. Username remains the sign-in identifier. Confirmation/recovery codes are emailed, not returned by API. Public requests are throttled and generic 202 responses avoid account enumeration.",
+        "operationId": "Onboarding_ResetPassword",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetAccountPasswordRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetAccountPasswordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetAccountPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "summary": "Reset a confirmed account password using an emailed code",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/passkeys": {
+      "get": {
+        "description": "Opt-in. WebAuthn challenges are SQL-backed, short-lived and one-use; RP ID and browser Origin must match configured values. Registration/removal requires local JWT and proof of account control; login uses cryptographic assertion. Additional MFA still required for MFA accounts.",
+        "operationId": "Passkeys_List",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PasskeySummary"
+                  },
+                  "type": "array"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PasskeySummary"
+                  },
+                  "type": "array"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PasskeySummary"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "List the current local account registered passkeys",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/passkeys/login/complete": {
+      "post": {
+        "description": "Opt-in. WebAuthn challenges are SQL-backed, short-lived and one-use; RP ID and browser Origin must match configured values. Registration/removal requires local JWT and proof of account control; login uses cryptographic assertion. Additional MFA still required for MFA accounts.",
+        "operationId": "Passkeys_LoginComplete",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyCompletionRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyCompletionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyCompletionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "summary": "Verify a WebAuthn assertion and issue local JWT credentials",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/passkeys/login/options": {
+      "post": {
+        "description": "Opt-in. WebAuthn challenges are SQL-backed, short-lived and one-use; RP ID and browser Origin must match configured values. Registration/removal requires local JWT and proof of account control; login uses cryptographic assertion. Additional MFA still required for MFA accounts.",
+        "operationId": "Passkeys_LoginOptions",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyCeremonyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyCeremonyResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyCeremonyResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "summary": "Issue anonymous discoverable-passkey assertion options",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/passkeys/register/complete": {
+      "post": {
+        "description": "Opt-in. WebAuthn challenges are SQL-backed, short-lived and one-use; RP ID and browser Origin must match configured values. Registration/removal requires local JWT and proof of account control; login uses cryptographic assertion. Additional MFA still required for MFA accounts.",
+        "operationId": "Passkeys_RegisterComplete",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyCompletionRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyCompletionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyCompletionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Verify WebAuthn attestation and register a passkey to its owner",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/passkeys/register/options": {
+      "post": {
+        "description": "Opt-in. WebAuthn challenges are SQL-backed, short-lived and one-use; RP ID and browser Origin must match configured values. Registration/removal requires local JWT and proof of account control; login uses cryptographic assertion. Additional MFA still required for MFA accounts.",
+        "operationId": "Passkeys_RegisterOptions",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyEnrollmentRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyEnrollmentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyEnrollmentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyCeremonyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyCeremonyResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyCeremonyResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Create short-lived passkey attestation options for a verified local user",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/passkeys/remove": {
+      "post": {
+        "description": "Opt-in. WebAuthn challenges are SQL-backed, short-lived and one-use; RP ID and browser Origin must match configured values. Registration/removal requires local JWT and proof of account control; login uses cryptographic assertion. Additional MFA still required for MFA accounts.",
+        "operationId": "Passkeys_Remove",
+        "requestBody": {
+          "content": {
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyRemoveRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyRemoveRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasskeyRemoveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          },
+          "429": {
+            "description": "Rate limit exceeded. Retry after the window resets."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "Remove a passkey after local password and MFA verification",
+        "tags": [
+          "01 Authentication"
+        ]
+      }
+    },
+    "/api/users": {
+      "get": {
+        "description": "A local Administrator JWT is required.",
+        "operationId": "Users_List",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "default": 1,
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "default": 20,
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedUsersResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedUsersResponse"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedUsersResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Missing, expired or invalid credentials."
+          },
+          "403": {
+            "description": "Authenticated but not permitted by the endpoint policy."
+          }
+        },
+        "security": [
+          {
+            "LocalJwt": []
+          }
+        ],
+        "summary": "List accounts (administrator)",
+        "tags": [
+          "03 Users & access"
+        ]
+      }
+    },
+    "/health/live": {
+      "get": {
+        "description": "Returns 200 when the API process is responding. No database access.",
+        "operationId": "Health_Live",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthLiveResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "API process liveness",
+        "tags": [
+          "06 Health"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "04 API key management"
+    },
+    {
+      "name": "01 Authentication"
+    },
+    {
+      "name": "02 External identity"
+    },
+    {
+      "name": "05 Service integrations"
+    },
+    {
+      "name": "03 Users & access"
+    },
+    {
+      "name": "06 Health"
+    }
+  ]
+}

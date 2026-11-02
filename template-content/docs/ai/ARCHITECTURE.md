@@ -35,3 +35,7 @@ AuthenticatorService owns enrollment and MFA state; AuthService enforces the sec
 ## WebAuthn Passkeys
 
 Application PasskeyService calls the official .NET 10 IPasskeyHandler, and delegates credential persistence to UserManager. Domain PasskeyCeremony and Infrastructure EF SQL store its state, purpose, expiry and local account binding. Server PasskeysController exposes typed WebAuthn operations and enforces explicit local JWT or anonymous schemes, behind an opt-in Origin/RP policy. Never replace the official FIDO2 signature handler with application-level crypto. Read PASSKEYS.md.
+
+## Typed SDKs
+
+The API remains backend-only and framework-agnostic. The actual development Swagger document is snapshotted into openapi/v1.json by tools/export_openapi.py. tools/generate_sdks.py deterministically produces TypeScript and Dart request/response models and operation clients. Each platform owns a small, manually reviewed HTTP transport with scheme separation and rotating local token support; generated files must never be edited directly. See SDK_GENERATION.md and preserve stable API operation IDs.

@@ -18,6 +18,28 @@ jobs:
       - name: Test application
         working-directory: template-content
         run: dotnet test --project Tests/Mkx.Templates.Tests/Mkx.Templates.Tests.csproj -c Release
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - name: Check live OpenAPI contract and generated SDK drift
+        working-directory: template-content
+        run: |
+          python3 tools/export_openapi.py --check --configuration Release
+          python3 tools/generate_sdks.py --check
+      - name: Verify TypeScript SDK
+        working-directory: template-content/clients/typescript
+        run: |
+          npm ci --ignore-scripts --no-audit
+          npm test
+      - name: Verify Dart SDK
+        working-directory: template-content/clients/dart
+        run: |
+          dart pub get
+          dart analyze --fatal-infos
+          dart test
       - name: Package template
         run: dotnet pack Mkx.Templates.Api.csproj -c Release -o artifacts
       - name: Instantiate and verify packaged template
@@ -30,3 +52,12 @@ jobs:
           dotnet build "$RUNNER_TEMP/generated/Smoke.Api.slnx" -c Release
           cd "$RUNNER_TEMP/generated"
           dotnet test --project Tests/Smoke.Api.Tests/Smoke.Api.Tests.csproj -c Release
+          python3 tools/export_openapi.py --check --configuration Release
+          python3 tools/generate_sdks.py --check
+          cd clients/typescript
+          npm ci --ignore-scripts --no-audit
+          npm test
+          cd ../dart
+          dart pub get
+          dart analyze --fatal-infos
+          dart test

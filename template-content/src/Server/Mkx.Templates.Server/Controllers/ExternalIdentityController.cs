@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Mkx.Templates.Shared.Contracts;
 
 namespace Mkx.Templates.Server.Controllers;
 
@@ -11,6 +12,7 @@ namespace Mkx.Templates.Server.Controllers;
 public sealed class ExternalIdentityController : ControllerBase
 {
     [HttpGet("me")]
+    [ProducesResponseType(typeof(ExternalIdentityResponse), StatusCodes.Status200OK)]
     public IActionResult Me()
     {
         var subject = User.FindFirstValue("sub");
@@ -18,6 +20,6 @@ public sealed class ExternalIdentityController : ControllerBase
         if (string.IsNullOrWhiteSpace(subject) && string.IsNullOrWhiteSpace(clientId))
             return Forbid();
 
-        return Ok(new { subject, clientId, issuer = User.FindFirstValue("iss"), authentication = "external-oidc" });
+        return Ok(new ExternalIdentityResponse(subject, clientId, User.FindFirstValue("iss"), "external-oidc"));
     }
 }

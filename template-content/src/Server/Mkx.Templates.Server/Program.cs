@@ -15,6 +15,7 @@ using Mkx.Templates.Infrastructure.Persistence;
 using Mkx.Templates.Server.Auth;
 using Mkx.Templates.Server.Hosting;
 using Mkx.Templates.Server.OpenApi;
+using Mkx.Templates.Shared.Contracts;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Threading.RateLimiting;
 
@@ -285,7 +286,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/health/ready").AllowAnonymous();
-app.MapGet("/health/live", () => Results.Ok(new { status = "healthy" }))
+app.MapGet("/health/live", () => TypedResults.Ok(new HealthLiveResponse("healthy")))
     .WithName("Health_Live").WithTags("06 Health").WithSummary("API process liveness")
     .WithDescription("Returns 200 when the API process is responding. No database access.")
     .AllowAnonymous();

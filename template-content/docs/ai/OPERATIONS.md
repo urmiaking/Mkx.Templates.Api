@@ -45,3 +45,7 @@ See AUTHENTICATOR_MFA.md. Apply migration AddAuthenticatorReplayFence to existin
 ## WebAuthn Passkeys
 
 See PASSKEYS.md. Disabled by default: enabling requires trusted Passkeys__RelyingPartyId and Passkeys__Origin, HTTPS except loopback, and the AddPasskeyCeremonies SQL migration (including AspNetUserPasskeys). The authenticated browser frontend origin is verified exactly. Device/mobile associated-domain tests are still required before production sign-off. No passkey state is kept client-side; the API preserves MFA checks.
+
+## Generated clients / API contract
+
+Read SDK_GENERATION.md before adding/changing DTOs or endpoints. After .NET build, re-export actual Swagger, run deterministic SDK generation and verify both TypeScript/Dart tests and a newly generated dotnet-new template. SDKs never ship secrets and never treat API-key access as a mobile user credential. A registry publication requires separate authorization.

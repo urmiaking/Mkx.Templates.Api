@@ -16,6 +16,7 @@
     "source": "./", "target": "./",
     "exclude": [
       "**/[Bb]in/**", "**/[Oo]bj/**", "**/TestResults/**", "**/.git/**", "**/.vs/**",
+      "**/node_modules/**", "**/dist/**", "**/.dart_tool/**", "**/pubspec.lock",
       "**/*.user", "**/*.log", "**/appsettings.Local.json", "**/.env", "**/.env.*"
     ]
   }]
