@@ -44,3 +44,5 @@ Version v0.2.0 delivers phases 6.1 and 6.2. Phase 6.3 remains open; see [Issue #
 Phase 6.3c released as [v0.3.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.3.1), [CI passed](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41480571413). Production BirSign and human login remain untested.
 
 Phase 6.3d is available in [v0.4.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.4.0); [CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41484726806) succeeded with 36/36 source and generated tests. Interactive user sign-in/code redemption and production federation remain open on [Issue #1](https://github.com/urmiaking/Mkx.Templates.Api/issues/1).
+
+Phase 7.1 released in [v0.5.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.5.1) with 43/43 tests and [successful CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41488496536); OTP/MFA, passkeys and live SMTP-provider verification stay in [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2).

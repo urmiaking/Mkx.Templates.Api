@@ -121,3 +121,9 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 
 - Verified that enabling email-unique onboarding while first-time BootstrapAdmin is also active requires BootstrapAdmin__Email. Validated the email and used it for the initial confirmed administrator; no silent email assignment, no existing-account update.
 - Added regression test for missing email startup rejection and valid administrator creation. 43/43 source tests and zero build warnings/errors. All existing SQL Server smoke scenarios remain compatible; final package, generated-project and CI evidence to follow.
+
+### Release verification
+
+- Implementation commit 0ce7861 and compatibility fix commit d91ce49 were pushed to main. GitHub Actions run https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41488496536 passed source build, 43/43 source tests, NuGet packaging, generated-solution build and 43/43 generated tests.
+- Published GitHub Release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.5.1 with Mkx.Templates.Api.0.5.1.nupkg attached. Local final package instantiation succeeded with 0 warnings/errors and 43 generated tests passed; disposable SQL Server smoke passed with cleanup exit code 0.
+- Issue #2 stays open for OTP/MFA, passkey/WebAuthn, provider-specific SMTP delivery testing and abuse controls; these have not been marked implemented or enabled.
