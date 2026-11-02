@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mkx.Templates.Domain.Identity;
+using Mkx.Templates.Shared.Contracts;
 namespace Mkx.Templates.Server.Controllers;
 [ApiController]
 [Authorize(Policy = "AdminOnly")]
@@ -10,6 +11,7 @@ namespace Mkx.Templates.Server.Controllers;
 public sealed class UsersController(UserManager<AppUser> users) : ControllerBase
 {
     [HttpGet]
+    [ProducesResponseType(typeof(PagedUsersResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> List([FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken ct = default)
     {
         page = Math.Max(1, page);
@@ -17,7 +19,7 @@ public sealed class UsersController(UserManager<AppUser> users) : ControllerBase
         var query = users.Users.AsNoTracking();
         var total = await query.CountAsync(ct);
         var items = await query.OrderBy(x => x.UserName).Skip((page - 1) * pageSize).Take(pageSize)
-            .Select(x => new { x.Id, x.UserName, x.DisplayName }).ToListAsync(ct);
-        return Ok(new { items, total, page, pageSize });
+            .Select(x => new UserSummaryResponse(x.Id, x.UserName, x.DisplayName)).ToListAsync(ct);
+        return Ok(new PagedUsersResponse(items, total, page, pageSize));
     }
 }

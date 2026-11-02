@@ -15,6 +15,8 @@ namespace Mkx.Templates.Server.Controllers;
 public sealed class ApiKeysController(IApiKeyService keys) : ControllerBase
 {
     [HttpPost]
+    [ProducesResponseType(typeof(CreatedApiKeyResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(CreateApiKeyRequest request, CancellationToken ct)
     {
         if (!Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var creatorId))
@@ -28,9 +30,12 @@ public sealed class ApiKeysController(IApiKeyService keys) : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(IReadOnlyList<ApiKeySummary>), StatusCodes.Status200OK)]
     public async Task<IActionResult> List(CancellationToken ct) => Ok(await keys.ListAsync(ct));
 
     [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Revoke(Guid id, CancellationToken ct)
         => await keys.RevokeAsync(id, ct) ? NoContent() : NotFound();
 }

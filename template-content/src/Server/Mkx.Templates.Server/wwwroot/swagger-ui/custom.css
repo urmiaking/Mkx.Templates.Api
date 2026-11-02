@@ -1,0 +1,56 @@
+/* Mkx API developer portal. This stylesheet is packaged in every generated template. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root{color-scheme:dark;--mkx-bg:#0b1220;--mkx-panel:#111e30;--mkx-border:#27364a;--mkx-text:#e8eff8;--mkx-muted:#aab9cb;--mkx-accent:#49d6bf}
+html,body{min-height:100%;background:var(--mkx-bg)!important}
+body,.swagger-ui{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif!important;color:var(--mkx-text)!important}
+.swagger-ui .topbar{padding:16px 24px!important;background:linear-gradient(115deg,#111d31,#162d42 56%,#124047)!important;border-bottom:1px solid #315563;box-shadow:0 8px 34px #030b1555}
+.swagger-ui .topbar .wrapper{max-width:1320px}
+.swagger-ui .topbar .download-url-wrapper{display:none!important}
+.swagger-ui .topbar .link:before{content:"MKX  /  ";color:var(--mkx-accent);font-weight:700;letter-spacing:.06em}
+.swagger-ui .topbar .link svg{display:none}
+.swagger-ui .topbar .link:after{content:"API Developer Portal";color:var(--mkx-text);font-size:17px;letter-spacing:-.02em}
+.swagger-ui .wrapper{max-width:1320px;padding:0 24px}
+.swagger-ui .information-container{padding:30px 0 20px}
+.swagger-ui .info{margin:18px 0 10px}
+.swagger-ui .info .title{color:#fff!important;font-size:34px;font-weight:700;letter-spacing:-.045em}
+.swagger-ui .info .title small{background:#16574f!important;border-radius:999px;padding:5px 10px}
+.swagger-ui .info p,.swagger-ui .info li,.swagger-ui .info a,.swagger-ui .info .base-url{color:var(--mkx-muted)!important}
+.swagger-ui .scheme-container{background:var(--mkx-panel)!important;border:1px solid var(--mkx-border);border-radius:16px;box-shadow:none!important;padding:18px 14px;margin:15px 0 22px}
+.swagger-ui .scheme-container .schemes{gap:14px}
+.swagger-ui .auth-wrapper .authorize{background:#163e43!important;border-color:#4fbbab!important;color:#a9f8e5!important;border-radius:10px;font-weight:600}
+.swagger-ui .filter-container .filter{width:280px;max-width:100%;background:#0a1828;border:1px solid #3b5268;border-radius:10px;color:#f0f7ff;padding:12px}
+.swagger-ui .opblock-tag-section{margin:0 0 17px;background:#101b2b;border:1px solid var(--mkx-border);border-radius:15px;overflow:hidden}
+.swagger-ui .opblock-tag{padding:19px 22px;color:#e8f7fb!important;border-bottom:1px solid #243347!important;font-size:18px;font-weight:600}
+.swagger-ui .opblock-tag:hover{background:#1a3041}
+.swagger-ui .opblock-tag .markdown p{color:var(--mkx-muted)!important}
+.swagger-ui .opblock-tag svg,.swagger-ui .opblock-summary-control svg{fill:#afc7d7!important}
+.swagger-ui .opblock{margin:13px 17px;background:#142233!important;border-radius:11px;border:1px solid #354457!important;box-shadow:none!important;overflow:hidden}
+.swagger-ui .opblock .opblock-summary{border:0!important;padding:11px 15px}
+.swagger-ui .opblock .opblock-summary-method{min-width:75px;border-radius:7px;text-shadow:none;font-weight:700}
+.swagger-ui .opblock .opblock-summary-path,.swagger-ui .opblock .opblock-summary-description,.swagger-ui .opblock .opblock-summary-operation-id{color:#e3f0fc!important}
+.swagger-ui .opblock .opblock-summary-description{color:#aec5d8!important;font-weight:400}
+.swagger-ui .opblock.opblock-get{border-left:4px solid #62c9b3!important}
+.swagger-ui .opblock.opblock-post{border-left:4px solid #6eacfa!important}
+.swagger-ui .opblock.opblock-delete{border-left:4px solid #ff828a!important}
+.swagger-ui .opblock.opblock-put,.swagger-ui .opblock.opblock-patch{border-left:4px solid #f1b760!important}
+.swagger-ui .opblock-body,.swagger-ui .opblock-body pre,.swagger-ui .opblock .opblock-section-header{background:#101d2c!important;color:#deebf4!important}
+.swagger-ui .opblock .opblock-section-header{box-shadow:none;border-top:1px solid #294052}
+.swagger-ui .opblock .opblock-section-header h4,.swagger-ui .opblock .opblock-title_normal,.swagger-ui .responses-inner h4,.swagger-ui .responses-inner h5,.swagger-ui label,.swagger-ui .parameter__name,.swagger-ui .response-col_status,.swagger-ui table thead tr th{color:#edf8fc!important}
+.swagger-ui .markdown p,.swagger-ui .markdown li,.swagger-ui .parameter__type,.swagger-ui .parameter__in,.swagger-ui .response-col_description,.swagger-ui .renderedMarkdown p,.swagger-ui .model-title,.swagger-ui .model{color:#bfd0df!important}
+.swagger-ui table tbody tr td{background:#0e1b2b;color:#bfd0df;border-color:#243a50}
+.swagger-ui input,.swagger-ui select,.swagger-ui textarea{background:#13283b;color:#edf5fa;border:1px solid #526980;border-radius:8px;padding:8px}
+.swagger-ui .btn{border-radius:9px;color:#e1edf7;border-color:#71899d}
+.swagger-ui .btn.execute{background:#238779;border-color:#238779;color:white}
+.swagger-ui .btn.try-out__btn{color:#9df8de;border-color:#369c89}
+.swagger-ui .models{background:#0d1a2a;border:1px solid #27384c;border-radius:15px}
+.swagger-ui section.models h4,.swagger-ui section.models h4 span{color:#e4f6ff!important}
+.swagger-ui .model-box{background:#162739}
+.swagger-ui .prop-type,.swagger-ui .prop-format{color:#8cd7c9}
+.swagger-ui .dialog-ux .modal-ux{background:#142335;border:1px solid #42576e;border-radius:16px;color:#eef8fd}
+.swagger-ui .dialog-ux .modal-ux-header h3,.swagger-ui .dialog-ux .modal-ux-content h4{color:#eef8fd!important}
+.swagger-ui .dialog-ux .modal-ux-content p{color:#c6d9e7}
+.swagger-ui .authorization__btn svg{fill:#80cdbd}
+.swagger-ui .errors-wrapper{background:#35202d;color:#fff}
+@media(max-width:700px){.swagger-ui .wrapper{padding:0 12px}.swagger-ui .opblock{margin:10px 8px}.swagger-ui .opblock-tag{padding:15px}.swagger-ui .info .title{font-size:25px}.swagger-ui .opblock .opblock-summary{flex-wrap:wrap;row-gap:7px}.swagger-ui .opblock .opblock-summary-path{font-size:12px;word-break:break-word}.swagger-ui .scheme-container{padding:12px 9px}}
+
+.swagger-ui .topbar .link img{display:none!important}

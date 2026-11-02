@@ -48,3 +48,4 @@ Optional external JWT resource-server support is being implemented separately fr
 - Apply AddApiClientKeys migration to existing databases. Configuration and exact security boundaries: [API Keys](template-content/docs/ai/API_KEYS.md) and [External OIDC](template-content/docs/ai/EXTERNAL_OIDC.md).
 
 This is not a self-hosted OAuth authorization server. OpenIddict/opaque introspection and live BirSign integration are explicitly deferred.
+## API developer portal

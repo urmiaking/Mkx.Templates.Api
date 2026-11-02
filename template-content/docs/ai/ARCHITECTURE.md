@@ -18,3 +18,5 @@ Controllers are adapters; use cases live in Application; HTTP contracts stay in 
 - Do not rely on UI authorization hiding; the server enforces role checks. CORS is allowlist-only for browsers.
 ## Optional authentication adapters (Phase 6)
 The Server layer owns named ExternalOidc JWT Bearer and ApiKey authentication schemes. Application owns IApiKeyService and the key lifecycle; Infrastructure stores only hashed ApiClientKeys; Shared defines scope constants and administration contracts. AdminOnly explicitly uses the local JWT scheme. Resource endpoints must opt into the external or API-key policies; schemes never silently import external users or grant local Administrator. See EXTERNAL_OIDC.md and API_KEYS.md.
+
+## API contracts and introspection

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0 — Introspection and API developer portal (2026-11-02)
+
+- Optional RFC 7662 HTTPS opaque token introspection with strict security checks and upstream mock testing.
+- Dark responsive Swagger UI with stable API contracts, security schemes, response DTOs and preserved agent instructions.
+- Existing Identity JWT, external JWT and API keys remain independent. Live IdP testing and full OpenIddict server are deferred.
+
 ## 0.2.0 — External identity and service key foundation (2026-11-02)
 
 - Optional standards-based OIDC external JWT access-token validation via HTTPS Authority/JWKS and API Audience, isolated from local Identity/JWT/admin.

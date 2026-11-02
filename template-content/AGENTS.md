@@ -11,3 +11,5 @@ This is a backend-only .NET 10 solution. Read `docs/ai/ARCHITECTURE.md` and `doc
 - Run `dotnet build Mkx.Templates.slnx` and `dotnet test --project Tests/Mkx.Templates.Tests/Mkx.Templates.Tests.csproj` from the solution directory. Keep docs and tests aligned with behavior.
 
 - Keep ExternalOidc, ApiKey and local JWT schemes independent. AdminOnly must remain local JWT only. Do not accidentally grant API keys local user roles. All new integration scopes require a reviewed allowlist change and matching server policy.
+
+- MANDATORY: before adding or changing an endpoint, read docs/ai/OPENAPI.md; maintain the same themed Swagger, grouped module tags, stable Controller_Action IDs, explicit response DTOs/status codes and correct LocalJwt/ExternalOidc/OpaqueToken/ApiKey security. Add/extend OpenApiContractTests. Do not leave endpoints under 99 Other or expose Swagger in production. Opaque introspection never grants local roles.

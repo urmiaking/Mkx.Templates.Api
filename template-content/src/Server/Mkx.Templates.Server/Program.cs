@@ -13,16 +13,31 @@ using Mkx.Templates.Domain.Identity;
 using Mkx.Templates.Infrastructure.Persistence;
 using Mkx.Templates.Server.Auth;
 using Mkx.Templates.Server.Hosting;
+using Mkx.Templates.Server.OpenApi;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(ApiDocumentation.Configure);
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
+builder.Services.AddOptions<OpaqueIntrospectionOptions>()
+    .Bind(builder.Configuration.GetSection(OpaqueIntrospectionOptions.Section))
+    .Validate(options => options.IsValid(),
+        "OpaqueIntrospection requires HTTPS Endpoint and Issuer, API Audience, ClientId, and ClientSecret.")
+    .ValidateOnStart();
+builder.Services.AddHttpClient(OpaqueIntrospectionHandler.HttpClientName, client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(6);
+    client.MaxResponseContentBufferSize = 16 * 1024;
+}).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    AllowAutoRedirect = false
+});
 builder.Services.AddSingleton<IAccessTokenIssuer, JwtTokenIssuer>();
 
 builder.Services.AddOptions<JwtOptions>()
@@ -107,6 +122,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 // Force validation of external JWT options at startup, before the first HTTP request.
 builder.Services.AddOptions<JwtBearerOptions>("ExternalOidc").ValidateOnStart();
+builder.Services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, OpaqueIntrospectionHandler>(
+    OpaqueIntrospectionHandler.SchemeName, _ => { });
 builder.Services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(
     ApiKeyAuthenticationHandler.SchemeName, _ => { });
 builder.Services.AddAuthorization(options =>
@@ -124,7 +141,10 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("IntegrationWrite", policy => policy
         .AddAuthenticationSchemes(ApiKeyAuthenticationHandler.SchemeName)
         .RequireAuthenticatedUser()
-        .RequireClaim("scope", "integration:write"));    options.AddPolicy("ExternalOidcOnly", policy => policy
+        .RequireClaim("scope", "integration:write"));    options.AddPolicy("ExternalOpaqueOnly", policy => policy
+        .AddAuthenticationSchemes(OpaqueIntrospectionHandler.SchemeName)
+        .RequireAuthenticatedUser());
+    options.AddPolicy("ExternalOidcOnly", policy => policy
         .AddAuthenticationSchemes("ExternalOidc")
         .RequireAuthenticatedUser());
 });
@@ -163,7 +183,19 @@ if (!app.Environment.IsDevelopment())
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseStaticFiles();
+    app.UseSwaggerUI(options =>
+    {
+        options.DocumentTitle = "Mkx API | Developer Portal";
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Mkx API v1");
+        options.InjectStylesheet("/swagger-ui/custom.css");
+        options.EnableDeepLinking();
+        options.EnableFilter();
+        options.DisplayOperationId();
+        options.DisplayRequestDuration();
+        options.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);
+        options.DefaultModelsExpandDepth(-1);
+    });
 }
 app.UseRateLimiter();
 if (origins.Length > 0) app.UseCors("Clients");
@@ -171,7 +203,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/health/ready").AllowAnonymous();
-app.MapGet("/health/live", () => Results.Ok(new { status = "healthy" })).AllowAnonymous();
+app.MapGet("/health/live", () => Results.Ok(new { status = "healthy" }))
+    .WithName("Health_Live").WithTags("06 Health").WithSummary("API process liveness")
+    .WithDescription("Returns 200 when the API process is responding. No database access.")
+    .AllowAnonymous();
 app.Run();
 
 public partial class Program { }

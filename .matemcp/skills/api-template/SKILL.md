@@ -1,3 +1,5 @@
 # API template maintenance
 
 When editing `Mkx.Templates.Api`, inspect `template-content/AGENTS.md`, `docs/ROADMAP.md`, and relevant `template-content/docs/ai/` first. The entire application that `dotnet new` produces lives under `template-content`; root is only NuGet packaging, CI and delivery docs. Keep architecture aligned with Mkx.Templates.Blazor's pragmatic backend layers (Domain, Infrastructure, Shared, Application, Server) without copying UI dependencies. Each delivery phase must update `docs/ROADMAP.md` and `docs/PHASE_LOG.md` with honest evidence; verify generated project and package, not just source. Avoid embedding any secrets.
+
+For API route changes read template-content/docs/ai/OPENAPI.md and .matemcp/skills/openapi-contract/SKILL.md, then validate the generated OpenAPI JSON, UI CSS and packaged template tests.
