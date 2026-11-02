@@ -36,3 +36,5 @@ Stabilization patch v0.1.1: see Phase Log and Issue #4. Initial v0.1.0 remains a
 Version v0.2.0 delivers phases 6.1 and 6.2. Phase 6.3 remains open; see [Issue #1](https://github.com/urmiaking/Mkx.Templates.Api/issues/1). OIDC provider interoperability with BirSign/Keycloak has **not** been verified against a live provider.
 
 | 6.3c | Live local BirSign client_credentials and protected API resource | Verified locally | Local BirSignDb client/scope/resource; genuine JWT accepted (200), local admin denied (401), [runbook](LOCAL_BIRSIGN_INTEGRATION.md); 33/33 tests |
+
+Phase 6.3c released as [v0.3.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.3.1), [CI passed](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41480571413). Production BirSign and human login remain untested.

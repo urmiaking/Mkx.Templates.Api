@@ -90,3 +90,7 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - Local BirSignDb is approximately 38 GB, so no full backup was made; insertion was isolated, transactional and rollback-safe. No user SSO or production federation is claimed. Packaged-template, CI and release checks follow.
 
 - The v0.3.1 NuGet package installed successfully. Fresh generated BirSign.Smoke solution built with zero warnings/errors; 33/33 generated tests passed. Both temporary local test hosts were stopped after the live integration. GitHub CI and release verification follow.
+
+### Verified delivery: v0.3.1
+- Commit d72f648: GitHub Actions https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41480571413 passed source/build, 33 tests, pack, generated-solution build and 33 generated tests.
+- Release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.3.1 published with Mkx.Templates.Api.0.3.1.nupkg. Local STS and API test sessions closed; Issue #1 retains optional real-user SSO/authorization-server work.
