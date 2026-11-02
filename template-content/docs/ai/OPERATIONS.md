@@ -20,3 +20,6 @@ Known limits: no self-service registration, password recovery, SMS/OTP, passkeys
 - Auth endpoints use a per-remote-IP rate limiter. The default RateLimit:AuthRequestsPerMinute is 10, configurable from environment/secret-managed configuration. Set trusted reverse-proxy forwarding deliberately; do not blindly trust client-supplied X-Forwarded-For.
 - A second use of a rotated refresh token invalidates the entire refresh family. Logout and logout-all invalidate refresh tokens; already issued access JWTs remain valid until expiry.
 - Accounts with TwoFactorEnabled are denied local password login and refresh until the optional MFA phase provides a complete two-step authentication protocol; never bypass the second factor.
+
+## Optional external OAuth/OIDC
+See [External OIDC resource-server configuration](EXTERNAL_OIDC.md). Disabled by default, validates HTTPS metadata and API access-token audience. Neither local account linking nor OAuth token issuance is provided.

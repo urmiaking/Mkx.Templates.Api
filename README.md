@@ -36,3 +36,6 @@ Development Swagger: `/swagger`. API includes `POST /api/auth/login`, `/refresh`
 See [Roadmap](docs/ROADMAP.md), [Phase log](docs/PHASE_LOG.md), [Architecture](docs/ARCHITECTURE.md), and optional disposable SQL Server smoke script `scripts/smoke-sql.ps1`.
 
 **Planned, not included yet:** external OIDC/OpenIddict, API-key integration, account self-registration/recovery, OTP/MFA/passkeys and generated TypeScript/Dart SDKs. Native public OAuth clients should use authorization code + PKCE after the OIDC phase.
+
+## Phase 6 progress
+Optional external JWT resource-server support is being implemented separately from local JWT auth. See [External OIDC guide](template-content/docs/ai/EXTERNAL_OIDC.md) and [Roadmap](docs/ROADMAP.md). OAuth token issuance and OpenIddict are not part of this stage.

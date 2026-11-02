@@ -11,6 +11,7 @@ Last updated: 2026-11-02. Phase completion requires implementation, actual verif
 | 4 | Source/generator/build/security verification | Completed | 0-warning source/generated builds; 6/6 tests for each; full SQL smoke and cleanup |
 | 5 | GitHub repository, CI, push, release | Completed | Public repository; successful GitHub Actions run 41358930031; v0.1.0 released with NuGet asset |
 | 5.1 | Stabilize v0.1.x: refresh replay, auth fallback, SQL smoke, package | Completed | [Issue #4](https://github.com/urmiaking/Mkx.Templates.Api/issues/4); 8/8 source and generated tests, SQL smoke PASS, [CI success](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41360362576), [v0.1.1 Release](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.1.1) |
+| 6.1 | Optional external OIDC JWT access-token validation, isolated from local JWT | Implemented; local tests passed | 12/12 tests; HTTPS issuer and audience configuration; no local admin escalation; integration IdP test still needed |
 | 6 | Optional external OIDC (BirSign/Keycloak), OpenIddict server, API keys | Planned | [Issue #1](https://github.com/urmiaking/Mkx.Templates.Api/issues/1); OAuth code + PKCE for native clients |
 | 7 | Account registration/recovery, OTP/MFA, WebAuthn/passkeys | Planned | [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2); provider-specific configuration |
 | 8 | Typed TypeScript and Dart SDKs, mobile samples, public NuGet publication | Planned | [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3); stabilize API contracts first |

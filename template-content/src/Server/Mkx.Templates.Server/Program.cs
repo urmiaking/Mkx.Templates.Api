@@ -47,6 +47,7 @@ builder.Services.AddIdentityCore<AppUser>(options =>
     options.Lockout.AllowedForNewUsers = true;
 }).AddRoles<IdentityRole<Guid>>().AddEntityFrameworkStores<AppDbContext>()
   .AddSignInManager().AddDefaultTokenProviders();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -60,13 +61,61 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true, ClockSkew = TimeSpan.FromSeconds(30),
             NameClaimType = ClaimTypes.Name, RoleClaimType = ClaimTypes.Role
         };
+    })
+    .AddJwtBearer("ExternalOidc", options =>
+    {
+        options.MapInboundClaims = false;
+        options.RequireHttpsMetadata = true;
+        // Resolve from IConfiguration during options construction (works with test overrides too).
+        var externalEnabled = builder.Configuration.GetValue<bool>("ExternalOidc:Enabled");
+        var externalAuthority = builder.Configuration["ExternalOidc:Authority"];
+        var externalAudience = builder.Configuration["ExternalOidc:Audience"];
+        if (externalEnabled)
+        {
+            if (!Uri.TryCreate(externalAuthority, UriKind.Absolute, out var authorityUri) ||
+                authorityUri.Scheme != Uri.UriSchemeHttps ||
+                string.IsNullOrWhiteSpace(externalAudience))
+                throw new InvalidOperationException("Enabled ExternalOidc requires an HTTPS Authority and non-empty Audience.");
+            // Microsoft JWT middleware resolves signing keys from the IdP discovery/JWKS over HTTPS.
+            options.Authority = externalAuthority;
+            options.Audience = externalAudience;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.FromSeconds(30),
+                NameClaimType = "sub",
+                RoleClaimType = "roles"
+            };
+        }
+        else
+        {
+            // Register a fail-closed scheme so the external endpoint returns 401 when disabled.
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    context.NoResult();
+                    return Task.CompletedTask;
+                }
+            };
+        }
     });
+// Force validation of external JWT options at startup, before the first HTTP request.
+builder.Services.AddOptions<JwtBearerOptions>("ExternalOidc").ValidateOnStart();
 builder.Services.AddAuthorization(options =>
 {
     // New controllers are protected by default unless explicitly marked [AllowAnonymous].
     options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser().Build();
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Administrator"));
+    options.AddPolicy("AdminOnly", policy => policy
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireRole("Administrator"));
+    options.AddPolicy("ExternalOidcOnly", policy => policy
+        .AddAuthenticationSchemes("ExternalOidc")
+        .RequireAuthenticatedUser());
 });
 
 var origins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];

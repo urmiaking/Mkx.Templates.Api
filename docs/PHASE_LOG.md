@@ -51,3 +51,8 @@ Scope remains API-only Identity + JWT. OIDC, passkeys, SMS/OTP, account recovery
 - CI maintenance commit: 6073b30, updating checkout to v7 and setup-dotnet to v6. Final workflow https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41360362576 succeeded including source build, source tests, package generation, generated app build and generated app tests.
 - GitHub v0.1.1 release: https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.1.1, with attached Mkx.Templates.Api.0.1.1.nupkg; package is installed and usable with dotnet new mkx-api.
 - Local working tree clean and no secrets or build outputs intentionally committed. Phase 5.1 finished; Issues #1-3 remain future scope.
+## 2026-11-02 - Phase 6.1: External OAuth/OIDC resource-server authentication
+
+Added independent named JWT bearer scheme ExternalOidc, with HTTPS Authority and configured API Audience. The API relies on standard provider discovery/JWKS verification, does not create local users and never maps external roles into local Administrator privileges. GET /api/auth/external/me accepts only the external scheme; local login/refresh continue unchanged. Disabled external provider fails closed (401); enabled provider with HTTP/missing Authority or Audience fails startup. Configuration is resolved during options construction to respect runtime/config overrides. Documented the provider access-token and native PKCE requirements under template-content/docs/ai/EXTERNAL_OIDC.md.
+
+Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other IdP credential supplied; real external token/JWKS integration is NOT yet tested. OpenIddict authorization server, multiple providers, opaque token introspection and account linking remain future work.
