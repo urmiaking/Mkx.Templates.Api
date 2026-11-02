@@ -13,6 +13,7 @@ public sealed class AuthService(
     AppDbContext db,
     UserManager<AppUser> users,
     IAccessTokenIssuer tokens,
+    IAuthenticatorReplayGuard replay,
     TimeProvider clock) : IAuthService
 {
     private static readonly TimeSpan RefreshLifetime = TimeSpan.FromDays(30);
@@ -20,7 +21,7 @@ public sealed class AuthService(
     public async Task<TokenResponse?> LoginAsync(LoginRequest request, CancellationToken ct)
     {
         var user = await users.FindByNameAsync(request.Username);
-        if (user is null || !user.EmailConfirmed || user.TwoFactorEnabled || await users.IsLockedOutAsync(user))
+        if (user is null || !user.EmailConfirmed || await users.IsLockedOutAsync(user))
             return null;
 
         if (!await users.CheckPasswordAsync(user, request.Password))
@@ -29,6 +30,24 @@ public sealed class AuthService(
             return null;
         }
 
+        if (user.TwoFactorEnabled)
+        {
+            // Username/password must be accompanied by exactly one valid second factor.
+            // Recovery codes are redeemed and removed by ASP.NET Identity.
+            var totpValid = request.AuthenticatorCode is not null &&
+                request.RecoveryCode is null &&
+                await users.VerifyTwoFactorTokenAsync(user, "Authenticator", request.AuthenticatorCode);
+            var recoveryValid = request.RecoveryCode is not null &&
+                request.AuthenticatorCode is null &&
+                (await users.RedeemTwoFactorRecoveryCodeAsync(user, request.RecoveryCode)).Succeeded;
+            if (totpValid && !await replay.TryConsumeAsync(user, request.AuthenticatorCode!, ct))
+                totpValid = false;
+            if (!totpValid && !recoveryValid)
+            {
+                await users.AccessFailedAsync(user);
+                return null;
+            }
+        }
         await users.ResetAccessFailedCountAsync(user);
         return await CreateSessionAsync(user, Guid.NewGuid(), ct);
     }
@@ -55,7 +74,7 @@ public sealed class AuthService(
             return null;
 
         var user = await users.FindByIdAsync(session.UserId.ToString());
-        if (user is null || !user.EmailConfirmed || user.TwoFactorEnabled || await users.IsLockedOutAsync(user))
+        if (user is null || !user.EmailConfirmed || await users.IsLockedOutAsync(user))
             return null;
 
         if (!string.Equals(await users.GetSecurityStampAsync(user), session.SecurityStamp, StringComparison.Ordinal))

@@ -7,3 +7,5 @@ For API route changes read template-content/docs/ai/OPENAPI.md and .matemcp/skil
 External account linking rule: follow template-content/docs/ai/ACCOUNT_LINKING.md. Keep the one-time hashed proof, explicit issuer+sub identity, exact external scope, distinct JWT schemes, local admin exclusion and migration/security regression tests.
 
 Account lifecycle guardrail: consult template-content/docs/ai/ACCOUNT_LIFECYCLE.md, preserve opt-in SMTP, persistent Data Protection key storage and username-only login. No unconfirmed token issuance, email-code logging, administrator anonymous recovery, or bypass of existing MFA fail-closed logic.
+
+Authenticator MFA guardrail: see template-content/docs/ai/AUTHENTICATOR_MFA.md. Maintain TOTP replay fence, unique SQL constraint, stamp rotation/refresh revocation, LocalJwt-only management and MFA tests. SMS OTP and passkeys remain out of scope.

@@ -17,3 +17,5 @@ This is a backend-only .NET 10 solution. Read `docs/ai/ARCHITECTURE.md` and `doc
 - Maintain account-link two-party proof: signed-in local nonadmin starts a short-lived hashed challenge, validated human external token with exact issuer/scope consumes it once; no email/name/national-ID auto-link, no administrator or MFA bypass, no local JWT issuance from external identity. Read docs/ai/ACCOUNT_LINKING.md.
 
 - For onboarding changes, read docs/ai/ACCOUNT_LIFECYCLE.md. Keep USERNAME login, confirmed account required, email-only delivery of codes, persistent DP keys, opt-in SMTP, generic recovery responses, source-IP throttling and zero tokens in logs. Do not enable MFA flag before implementing an actual challenge protocol; administrator recovery remains excluded.
+
+- MFA guardrail: read docs/ai/AUTHENTICATOR_MFA.md. Never issue JWT for MFA-enabled users without password plus validated TOTP or a single-use recovery code; enforce replay guard and refresh revocation when MFA changes; keep local JWT management isolated from external OIDC and API key schemes; do not log setup keys or recovery codes.

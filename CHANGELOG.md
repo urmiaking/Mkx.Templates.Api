@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 - TOTP authenticator MFA and recovery (Phase 7.2)
+
+- Authenticator setup, verification, disablement and eight single-use recovery codes with password reauthentication.
+- MFA-protected username/password login requires an additional verified TOTP or recovery code; existing refresh semantics preserved only for MFA-verified sessions.
+- Persisted TOTP replay fence with unique SQL key and expiration; MFA state changes rotate security stamps and revoke refresh sessions.
+- Additional Swagger operations, typed contracts, Identity integration tests and SQL migration. SMS/email OTP and passkeys are not implemented.
+
 ## 0.5.1 - Bootstrap administrator compatibility
 
 - When onboarding and administrator bootstrap are both enabled, require a configured administrator email for Identity unique-email validation; do not weaken validation or create an unusable administrator.

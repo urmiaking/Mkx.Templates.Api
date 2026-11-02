@@ -18,9 +18,9 @@ Last updated: 2026-11-02. Phase completion requires implementation, actual verif
 | 6.3d | Native Authorization Code + PKCE client registration and secure external account linking | Implemented; interactive login not exercised | Real local BirSign authorize request 302 to Login; two-party proof, unique issuer/subject and revocation; 36 passing tests; [guide](../template-content/docs/ai/ACCOUNT_LINKING.md) |
 | 6.4 | Responsive themed Swagger, structured OpenAPI and enforceable agent conventions | Completed (local and packaged tests) | [Issue #5](https://github.com/urmiaking/Mkx.Templates.Api/issues/5); JSON contract and CSS tests |
 | 6 | External JWT/opaque federation, API keys and optional OpenIddict server | API resource-server baseline complete; full authorization server deferred | [Issue #1](https://github.com/urmiaking/Mkx.Templates.Api/issues/1); OAuth code + PKCE for native clients |
-| 7 | Account registration/recovery, OTP/MFA, WebAuthn/passkeys | In progress (7.1 implemented) | [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2); provider-specific configuration |
+| 7 | Account registration/recovery, OTP/MFA, WebAuthn/passkeys | In progress (7.1 plus 7.2 TOTP implemented) | [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2); provider-specific configuration |
 | 7.1 | Opt-in username registration, email confirmation and password reset | Completed locally; SMTP provider not integrated live | [Guide](../template-content/docs/ai/ACCOUNT_LIFECYCLE.md); 43 tests and SQL smoke; key-ring and SMTP startup safeguards |
-| 7.2 | Actual MFA/OTP challenge, safe recovery and multi-factor enrollment | Planned | Existing TwoFactorEnabled accounts remain fail-closed; no second-factor bypass |
+| 7.2 | Local Authenticator TOTP MFA and one-time recovery codes | Completed locally (TOTP only) | RFC6238 Identity integration and replay/one-time recovery tests, SQL migration smoke; [MFA guide](../template-content/docs/ai/AUTHENTICATOR_MFA.md). SMS/email OTP deferred |
 | 7.3 | FIDO2/WebAuthn passkeys (registration, assertion, attestation policy) | Planned | Secure origin/RP ID requirements and cross-device testing |
 | 8 | Typed TypeScript and Dart SDKs, mobile samples, public NuGet publication | Planned | [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3); stabilize API contracts first |
 

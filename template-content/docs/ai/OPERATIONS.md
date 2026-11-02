@@ -19,7 +19,7 @@ Known limits: no self-service registration, password recovery, SMS/OTP, passkeys
 - /health/live and /health/ready are explicitly anonymous so infrastructure probes can work. They return health status only. Swagger is available only in Development.
 - Auth endpoints use a per-remote-IP rate limiter. The default RateLimit:AuthRequestsPerMinute is 10, configurable from environment/secret-managed configuration. Set trusted reverse-proxy forwarding deliberately; do not blindly trust client-supplied X-Forwarded-For.
 - A second use of a rotated refresh token invalidates the entire refresh family. Logout and logout-all invalidate refresh tokens; already issued access JWTs remain valid until expiry.
-- Accounts with TwoFactorEnabled are denied local password login and refresh until the optional MFA phase provides a complete two-step authentication protocol; never bypass the second factor.
+- MFA-enabled users require password plus a verified six-digit TOTP or one-time recovery code at login. MFA-verified refresh sessions are allowed to rotate, and old sessions are revoked on MFA state changes.
 
 ## Optional external OAuth/OIDC
 See [External OIDC resource-server configuration](EXTERNAL_OIDC.md). Disabled by default, validates HTTPS metadata and API access-token audience. Neither local account linking nor OAuth token issuance is provided.
@@ -37,3 +37,7 @@ Follow ACCOUNT_LINKING.md. AddExternalIdentityLinks migration is required for ex
 See ACCOUNT_LIFECYCLE.md. Feature disabled by default; enabling requires persistent Data Protection keys and authenticated STARTTLS SMTP secret configuration. No session before email confirmation. SMTP delivery remains unverified without real provider credentials. Full MFA and passkeys remain future phases.
 
 When enabling onboarding during first-time BootstrapAdmin creation, supply BootstrapAdmin__Email to preserve the unique-email Identity requirement; see ACCOUNT_LIFECYCLE.md.
+
+## Authenticator MFA
+
+See AUTHENTICATOR_MFA.md. Apply migration AddAuthenticatorReplayFence to existing installations before enabling MFA. Never expose authenticator secrets or recovery codes in logs. MFA users must supply a second factor at login; already-issued access JWTs expire naturally, while refresh sessions are revoked on MFA state changes.

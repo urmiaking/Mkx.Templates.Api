@@ -14,6 +14,7 @@ public static class ApiDocumentation
     {
         ["Auth"] = "01 Authentication",
         ["Onboarding"] = "01 Authentication",
+        ["Authenticator"] = "01 Authentication",
         ["ExternalIdentity"] = "02 External identity",
         ["ExternalLinks"] = "02 External identity",
         ["OpaqueIdentity"] = "02 External identity",
@@ -83,6 +84,10 @@ public sealed class SecurityAndDocumentationFilter : IOperationFilter
             ("Auth", "Logout") => "Sign out from the current session",
             ("Auth", "LogoutAll") => "Revoke all refresh sessions",
             ("Auth", "Me") => "Get the current local account",
+            ("Authenticator", "Status") => "Inspect local authenticator enrollment status",
+            ("Authenticator", "Setup") => "Start TOTP enrollment after password reauthentication",
+            ("Authenticator", "Enable") => "Activate authenticator MFA using a valid code",
+            ("Authenticator", "Disable") => "Disable MFA with password and authenticator or recovery code",
             ("Onboarding", "Register") => "Request account registration and email confirmation",
             ("Onboarding", "Confirm") => "Confirm a pending account using an emailed code",
             ("Onboarding", "Resend") => "Resend email confirmation when the account is pending",
@@ -104,6 +109,7 @@ public sealed class SecurityAndDocumentationFilter : IOperationFilter
         operation.Description ??= controller switch
         {
             "Auth" => "Local Identity credentials and session management.",
+            "Authenticator" => "Local JWT only. Setup requires password; activation requires TOTP and returns recovery codes once. Never log the setup secret or codes. Enabled accounts require password plus a second factor for login.",
             "Onboarding" => "Opt-in; disabled by default. Username remains the sign-in identifier. Confirmation/recovery codes are emailed, not returned by API. Public requests are throttled and generic 202 responses avoid account enumeration.",
             "ExternalIdentity" => "Requires a validated external OAuth access token. No local administrator privileges.",
             "ExternalLinks" => "Account linking requires proof of local and external account ownership. No automatic role mapping.",

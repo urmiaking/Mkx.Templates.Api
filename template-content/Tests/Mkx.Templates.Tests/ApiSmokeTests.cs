@@ -53,6 +53,25 @@ public sealed class ApiSmokeTests
     }
 
     [Fact]
+    public async Task AuthenticatorOperationsDenyAnonymousAccess()
+    {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+        foreach (var (method, path) in new[]
+        {
+            (HttpMethod.Get, "/api/auth/authenticator/status"),
+            (HttpMethod.Post, "/api/auth/authenticator/setup"),
+            (HttpMethod.Post, "/api/auth/authenticator/enable"),
+            (HttpMethod.Post, "/api/auth/authenticator/disable")
+        })
+        {
+            using var request = new HttpRequestMessage(method, path);
+            using var response = await client.SendAsync(request, TestContext.Current.CancellationToken);
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+    }
+
+    [Fact]
     public async Task ExternalLinkEndpointsRejectAnonymousCalls()
     {
         using var factory = CreateFactory();

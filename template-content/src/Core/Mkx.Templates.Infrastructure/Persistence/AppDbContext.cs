@@ -10,10 +10,19 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<ApiClientKey> ApiClientKeys => Set<ApiClientKey>();
     public DbSet<ExternalIdentityLink> ExternalIdentityLinks => Set<ExternalIdentityLink>();
     public DbSet<ExternalLinkChallenge> ExternalLinkChallenges => Set<ExternalLinkChallenge>();
+    public DbSet<RedeemedAuthenticatorCode> RedeemedAuthenticatorCodes => Set<RedeemedAuthenticatorCode>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.Entity<AppUser>(b => { b.Property(x => x.DisplayName).HasMaxLength(160); });
+        builder.Entity<RedeemedAuthenticatorCode>(b =>
+        {
+            b.HasKey(x => new { x.UserId, x.Digest });
+            b.Property(x => x.Digest).HasMaxLength(64).IsRequired();
+            b.HasIndex(x => x.ExpiresAtUtc);
+            b.HasOne<AppUser>().WithMany().HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
         builder.Entity<ExternalIdentityLink>(b =>
         {
             b.HasKey(x => x.Id);

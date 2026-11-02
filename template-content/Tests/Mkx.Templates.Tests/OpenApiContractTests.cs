@@ -72,6 +72,10 @@ public sealed class OpenApiContractTests
         AssertScheme(paths, "/api/onboarding/reset-password", "post", null);
         AssertScheme(paths, "/api/auth/refresh", "post", null);
         AssertScheme(paths, "/api/auth/me", "get", "LocalJwt");
+        AssertScheme(paths, "/api/auth/authenticator/status", "get", "LocalJwt");
+        AssertScheme(paths, "/api/auth/authenticator/setup", "post", "LocalJwt");
+        AssertScheme(paths, "/api/auth/authenticator/enable", "post", "LocalJwt");
+        AssertScheme(paths, "/api/auth/authenticator/disable", "post", "LocalJwt");
         AssertScheme(paths, "/api/auth/external/me", "get", "ExternalOidc");
         AssertScheme(paths, "/api/auth/opaque/me", "get", "OpaqueToken");
         AssertScheme(paths, "/api/auth/external-links/challenge", "post", "LocalJwt");

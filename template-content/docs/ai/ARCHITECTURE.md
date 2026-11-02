@@ -27,3 +27,7 @@ Domain owns ExternalIdentityLink and ExternalLinkChallenge; Infrastructure owns 
 
 ## Account lifecycle
 Application AccountLifecycleService uses Identity user/token managers and IAccountMessageSender; Server OnboardingController exposes anonymous, throttled operations, while SmtpAccountMessageSender handles opt-in STARTTLS delivery. Feature flags are fixed at startup to prevent configuration reload bypass. See ACCOUNT_LIFECYCLE.md.
+
+## Authenticator MFA
+
+AuthenticatorService owns enrollment and MFA state; AuthService enforces the second factor at Login. AuthenticatorReplayGuard persists unique per-user/secret TOTP digest fences in Infrastructure. Do not issue JWT before both factors. Refer to AUTHENTICATOR_MFA.md.

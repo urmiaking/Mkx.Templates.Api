@@ -1,4 +1,4 @@
-﻿# Opt-in username account onboarding and recovery (Phase 7.1)
+# Opt-in username account onboarding and recovery (Phase 7.1)
 
 This is a backend API template with USERNAME-based authentication. Email is a verified delivery channel, not the login identifier. Registration and recovery are **disabled by default**; neither this feature nor SMTP is activated on a fresh installation.
 
@@ -28,7 +28,7 @@ All routes are POST, anonymous, throttled, and under /api/onboarding.
 - /forgot-password: JSON Username, Email. Generic 202 even for unknown account. Sends code only to the verified address for a confirmed, unlocked, non-admin, non-MFA account.
 - /reset-password: JSON Username, Token, NewPassword. Returns 204 after successful Identity password reset; invalid/expired returns 400. Reset updates Identity security stamp and prevents reuse of existing refresh sessions. Already-issued JWTs remain valid until their short expiration.
 
-Never put codes in GET URLs or logs. Messages contain codes in plain email bodies; email itself is not end-to-end encrypted. Do not represent this as a phishing-resistant recovery factor. Administrator accounts cannot use anonymous password reset. Accounts with TwoFactorEnabled remain fail-closed for password login, refresh and recovery until a complete MFA challenge/recovery protocol is implemented.
+Never put codes in GET URLs or logs. Messages contain codes in plain email bodies; email itself is not end-to-end encrypted. Do not represent this as a phishing-resistant recovery factor. Administrator accounts cannot use anonymous password reset. Accounts with TwoFactorEnabled require password plus TOTP or one-time recovery code at login. Anonymous email-password recovery remains disabled for MFA users; see AUTHENTICATOR_MFA.md.
 
 The SMTP sender is a replaceable Application abstraction: IAccountMessageSender. Provider-specific email or SMS integrations may implement this interface instead, but never silently log token values or bypass sender verification. Changing transport requires integration tests and explicit verification.
 
@@ -36,7 +36,7 @@ The SMTP sender is a replaceable Application abstraction: IAccountMessageSender.
 
 SQLite Identity integration tests verify registration, email confirmation, mismatched email, duplicate identity, expired/invalid behavior, password reset token reuse, MFA exclusion and password update. HTTP tests verify default-disabled endpoints and invalid enablement configuration. SQL Server disposable migration/auth smoke verifies compatibility with existing features. No external mailbox service or live SMTP server has been exercised by these tests. Do not claim successful real email delivery before testing against the actual provider.
 
-Phase 7.2 (fully challenged MFA/OTP), Phase 7.3 (WebAuthn/passkeys), and live SMTP-provider integration remain future work.
+Phase 7.2 authenticator TOTP is implemented (see AUTHENTICATOR_MFA.md); SMS/email login OTP, WebAuthn/passkeys and live SMTP-provider integration remain future work.
 
 ## Bootstrap administrator on a new installation
 If AccountLifecycle__Enabled=true and BootstrapAdmin__Enabled=true are both set on the initial startup, also provide BootstrapAdmin__Email=admin@example.com with a valid verified email address. This preserves unique email validation while creating the initial confirmed administrator. Do not put these values in source control. If onboarding is disabled, the older bootstrap flow remains compatible without this email option. Existing accounts are not modified or promoted.

@@ -50,6 +50,8 @@ if (onboardingEnabled)
         o.TokenLifespan = TimeSpan.FromMinutes(20));
 }
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthenticatorService, AuthenticatorService>();
+builder.Services.AddScoped<IAuthenticatorReplayGuard, AuthenticatorReplayGuard>();
 builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
 builder.Services.AddScoped<IExternalAccountLinkService, ExternalAccountLinkService>();
 builder.Services.AddScoped<IAccountLifecycleService, AccountLifecycleService>();

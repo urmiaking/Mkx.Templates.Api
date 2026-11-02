@@ -1,6 +1,6 @@
 # Mkx.Templates.Api
 
-**Latest release:** [v0.5.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.5.1) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41488496536).
+**Latest release:** [v0.6.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.6.0) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41488496536).
 
 A backend-only ASP.NET Core 10 solution template, designed around the **same pragmatic Domain / Infrastructure / Shared / Application / Server layers as Mkx.Templates.Blazor**—without a frontend, Blazor, SSR or WASM.
 
@@ -58,3 +58,7 @@ The LOCAL BirSign public PKCE client is registered by scripts/birsign-local-pkce
 
 ## Optional account registration and recovery
 Phase 7.1 introduces username registration with email confirmation and token-based password reset, disabled by default. Configure persistent Data Protection keys and authenticated STARTTLS SMTP delivery before enabling it. The setup and limitations are documented in template-content/docs/ai/ACCOUNT_LIFECYCLE.md. MFA and passkeys are not enabled.
+
+## TOTP authenticator MFA
+
+Phase 7.2 supports standard authenticator apps, password plus six-digit TOTP or one-time recovery code, and secure disablement. A SQL-backed replay fence prevents reusing OTPs, and MFA changes revoke refresh tokens. Read template-content/docs/ai/AUTHENTICATOR_MFA.md. SMS OTP and WebAuthn/passkeys remain future work.

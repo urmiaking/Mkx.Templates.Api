@@ -341,6 +341,25 @@ namespace Mkx.Templates.Infrastructure.Persistence.Migrations
                     b.ToTable("ExternalLinkChallenges");
                 });
 
+            modelBuilder.Entity("Mkx.Templates.Domain.Identity.RedeemedAuthenticatorCode", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "Digest");
+
+                    b.HasIndex("ExpiresAtUtc");
+
+                    b.ToTable("RedeemedAuthenticatorCodes");
+                });
+
             modelBuilder.Entity("Mkx.Templates.Domain.Identity.RefreshSession", b =>
                 {
                     b.Property<Guid>("Id")
@@ -459,6 +478,15 @@ namespace Mkx.Templates.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Mkx.Templates.Domain.Identity.RedeemedAuthenticatorCode", b =>
+                {
+                    b.HasOne("Mkx.Templates.Domain.Identity.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Mkx.Templates.Domain.Identity.RefreshSession", b =>
