@@ -276,6 +276,71 @@ namespace Mkx.Templates.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Mkx.Templates.Domain.Identity.ExternalIdentityLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Issuer")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTimeOffset>("LinkedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Issuer", "Subject")
+                        .IsUnique();
+
+                    b.HasIndex("UserId", "Issuer")
+                        .IsUnique();
+
+                    b.ToTable("ExternalIdentityLinks");
+                });
+
+            modelBuilder.Entity("Mkx.Templates.Domain.Identity.ExternalLinkChallenge", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ConsumedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("ExpiresAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAt");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ExternalLinkChallenges");
+                });
+
             modelBuilder.Entity("Mkx.Templates.Domain.Identity.RefreshSession", b =>
                 {
                     b.Property<Guid>("Id")
@@ -372,6 +437,28 @@ namespace Mkx.Templates.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Mkx.Templates.Domain.Identity.ExternalIdentityLink", b =>
+                {
+                    b.HasOne("Mkx.Templates.Domain.Identity.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Mkx.Templates.Domain.Identity.ExternalLinkChallenge", b =>
+                {
+                    b.HasOne("Mkx.Templates.Domain.Identity.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mkx.Templates.Domain.Identity.RefreshSession", b =>

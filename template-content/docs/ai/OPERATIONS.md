@@ -28,3 +28,7 @@ See [External OIDC resource-server configuration](EXTERNAL_OIDC.md). Disabled by
 See [API key lifecycle and security](API_KEYS.md). An administrator can issue a scoped, expiring key; the raw secret is returned once. Apply the included AddApiClientKeys EF migration to existing databases and keep keys in the consumer service secret manager. Do not embed them in mobile/web clients.
 
 ## Structured Swagger & opaque tokens
+
+## External account linking and native client PKCE
+
+Follow ACCOUNT_LINKING.md. AddExternalIdentityLinks migration is required for existing SQL Server installations. No automatic local JWT or Administrator roles are issued from external identity; the client handles PKCE using the system browser.

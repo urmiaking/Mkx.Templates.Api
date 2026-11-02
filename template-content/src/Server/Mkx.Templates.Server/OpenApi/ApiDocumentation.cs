@@ -14,6 +14,7 @@ public static class ApiDocumentation
     {
         ["Auth"] = "01 Authentication",
         ["ExternalIdentity"] = "02 External identity",
+        ["ExternalLinks"] = "02 External identity",
         ["OpaqueIdentity"] = "02 External identity",
         ["Users"] = "03 Users & access",
         ["ApiKeys"] = "04 API key management",
@@ -82,6 +83,10 @@ public sealed class SecurityAndDocumentationFilter : IOperationFilter
             ("Auth", "LogoutAll") => "Revoke all refresh sessions",
             ("Auth", "Me") => "Get the current local account",
             ("ExternalIdentity", "Me") => "Inspect a validated external identity",
+            ("ExternalLinks", "Challenge") => "Create one-time local account ownership proof",
+            ("ExternalLinks", "Complete") => "Link verified external user to local account",
+            ("ExternalLinks", "Me") => "Resolve verified external identity to a linked local profile",
+            ("ExternalLinks", "Unlink") => "Remove your external identity link",
             ("OpaqueIdentity", "Me") => "Inspect a validated opaque OAuth access token",
             ("ApiKeys", "Create") => "Create a scoped API key (secret returned once)",
             ("ApiKeys", "Revoke") => "Revoke an API key immediately",
@@ -94,6 +99,7 @@ public sealed class SecurityAndDocumentationFilter : IOperationFilter
         {
             "Auth" => "Local Identity credentials and session management.",
             "ExternalIdentity" => "Requires a validated external OAuth access token. No local administrator privileges.",
+            "ExternalLinks" => "Account linking requires proof of local and external account ownership. No automatic role mapping.",
             "OpaqueIdentity" => "Requires introspection of an external opaque access token. No local account mapping.",
             "ApiKeys" => "Local Administrator only. Key material is returned once on creation.",
             "Integrations" => "Requires a service API key with integration:read scope.",

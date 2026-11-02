@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 - Public native PKCE registration and external identity account linking
+
+- Isolated LOCAL BirSign authorization-code client requiring S256 PKCE and no client secret; real discovery and authorize redirect verified.
+- Two-party explicit local/external identity linking via a five-minute, one-time hashed challenge. Unique issuer/subject indexes, unlink and linked-profile lookup; no automatic role mapping or local JWT exchange.
+- New EF migration, OpenAPI operations, SQLite security tests and local SQL migration smoke. Interactive human login/code exchange remains deferred.
+
 ## 0.3.1 — Verified local BirSign OIDC integration (2026-11-02)
 
 - Real local Duende STS-issued JWT accepted by the API resource endpoint, denied access to local administrator endpoints.

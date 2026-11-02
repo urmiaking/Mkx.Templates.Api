@@ -25,6 +25,7 @@ builder.Services.AddSwaggerGen(ApiDocumentation.Configure);
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
+builder.Services.AddScoped<IExternalAccountLinkService, ExternalAccountLinkService>();
 builder.Services.AddOptions<OpaqueIntrospectionOptions>()
     .Bind(builder.Configuration.GetSection(OpaqueIntrospectionOptions.Section))
     .Validate(options => options.IsValid(),

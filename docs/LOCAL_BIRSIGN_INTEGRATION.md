@@ -48,3 +48,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/birsign-local-smoke.
 It requests a **real JWT** from local BirSign via `client_credentials`, checks issuer/audience/scope, calls `GET /api/auth/external/me` on the Mkx API and confirms success, then verifies that the same external token gets **401** from local-administrator-only `GET /api/users`. Use `-TokenOnly` to check the STS without starting Mkx API.
 
 The scripts never print credentials or tokens, and do not access production. This demonstrates service-to-service OIDC resource-server integration. For human browser/mobile SSO, register a different client using Authorization Code + PKCE and a genuine redirect URI; do not reuse this smoke client. The local test does not claim testing production BirSign or its real-user login flow.
+
+## Public native PKCE client (LOCAL only)
+
+From repository root, run: sqlcmd -S localhost -d BirSignDb -E -b -i scripts/birsign-local-pkce.sql. It only registers mkx.api.local.pkce with authorization_code + S256 PKCE, no client secret and exact local loopback redirect. Repeat is idempotent. Start local STS and run powershell -NoProfile -ExecutionPolicy Bypass -File scripts/birsign-local-pkce-smoke.ps1; the real authorize endpoint returned HTTP 302 to /Account/Login. No human login or code redemption is claimed. See template-content/docs/ai/ACCOUNT_LINKING.md for the API binding flow.

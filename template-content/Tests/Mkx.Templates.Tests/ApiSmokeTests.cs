@@ -53,6 +53,25 @@ public sealed class ApiSmokeTests
     }
 
     [Fact]
+    public async Task ExternalLinkEndpointsRejectAnonymousCalls()
+    {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+        foreach (var (method, path) in new[]
+        {
+            (HttpMethod.Post, "/api/auth/external-links/challenge"),
+            (HttpMethod.Post, "/api/auth/external-links/complete"),
+            (HttpMethod.Get, "/api/auth/external-links/me"),
+            (HttpMethod.Delete, "/api/auth/external-links")
+        })
+        {
+            using var request = new HttpRequestMessage(method, path);
+            using var response = await client.SendAsync(request, TestContext.Current.CancellationToken);
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+    }
+
+    [Fact]
     public async Task SwaggerDescribesAuthEndpoints()
     {
         using var factory = CreateFactory();

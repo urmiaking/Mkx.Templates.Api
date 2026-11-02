@@ -1,6 +1,6 @@
 # Mkx.Templates.Api
 
-**Latest release:** [v0.3.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.3.1) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41475844059).
+**Latest release:** [v0.4.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.4.0) — NuGet template package attached; [CI passing](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41475844059).
 
 A backend-only ASP.NET Core 10 solution template, designed around the **same pragmatic Domain / Infrastructure / Shared / Application / Server layers as Mkx.Templates.Blazor**—without a frontend, Blazor, SSR or WASM.
 
@@ -51,3 +51,7 @@ This is not a self-hosted OAuth authorization server. OpenIddict/opaque introspe
 ## API developer portal
 
 Real local BirSign STS test and safe, scoped SQL registration: [runbook](docs/LOCAL_BIRSIGN_INTEGRATION.md). Production and existing clients are untouched.
+
+## Native user PKCE and external account linking
+
+The LOCAL BirSign public PKCE client is registered by scripts/birsign-local-pkce.sql and tested with scripts/birsign-local-pkce-smoke.ps1. Separate endpoints under /api/auth/external-links associate verified user issuer+subject with a confirmed nonadmin local account using a one-time, hashed challenge. See template-content/docs/ai/ACCOUNT_LINKING.md. No automatic user provisioning or full interactive login is claimed.

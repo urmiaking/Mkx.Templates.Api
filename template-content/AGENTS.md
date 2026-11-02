@@ -13,3 +13,5 @@ This is a backend-only .NET 10 solution. Read `docs/ai/ARCHITECTURE.md` and `doc
 - Keep ExternalOidc, ApiKey and local JWT schemes independent. AdminOnly must remain local JWT only. Do not accidentally grant API keys local user roles. All new integration scopes require a reviewed allowlist change and matching server policy.
 
 - MANDATORY: before adding or changing an endpoint, read docs/ai/OPENAPI.md; maintain the same themed Swagger, grouped module tags, stable Controller_Action IDs, explicit response DTOs/status codes and correct LocalJwt/ExternalOidc/OpaqueToken/ApiKey security. Add/extend OpenApiContractTests. Do not leave endpoints under 99 Other or expose Swagger in production. Opaque introspection never grants local roles.
+
+- Maintain account-link two-party proof: signed-in local nonadmin starts a short-lived hashed challenge, validated human external token with exact issuer/scope consumes it once; no email/name/national-ID auto-link, no administrator or MFA bypass, no local JWT issuance from external identity. Read docs/ai/ACCOUNT_LINKING.md.

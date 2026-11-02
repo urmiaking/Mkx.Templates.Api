@@ -69,6 +69,10 @@ public sealed class OpenApiContractTests
         AssertScheme(paths, "/api/auth/me", "get", "LocalJwt");
         AssertScheme(paths, "/api/auth/external/me", "get", "ExternalOidc");
         AssertScheme(paths, "/api/auth/opaque/me", "get", "OpaqueToken");
+        AssertScheme(paths, "/api/auth/external-links/challenge", "post", "LocalJwt");
+        AssertScheme(paths, "/api/auth/external-links/complete", "post", "ExternalOidc");
+        AssertScheme(paths, "/api/auth/external-links/me", "get", "ExternalOidc");
+        AssertScheme(paths, "/api/auth/external-links", "delete", "LocalJwt");
         AssertScheme(paths, "/health/live", "get", null);
         AssertScheme(paths, "/api/api-keys", "post", "LocalJwt");
         AssertScheme(paths, "/api/users", "get", "LocalJwt");

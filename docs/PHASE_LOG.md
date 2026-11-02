@@ -94,3 +94,11 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 ### Verified delivery: v0.3.1
 - Commit d72f648: GitHub Actions https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41480571413 passed source/build, 33 tests, pack, generated-solution build and 33 generated tests.
 - Release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.3.1 published with Mkx.Templates.Api.0.3.1.nupkg. Local STS and API test sessions closed; Issue #1 retains optional real-user SSO/authorization-server work.
+
+## 2026-11-02 - Phase 6.3d: public client PKCE and secure external user binding
+
+- Added a separate public native-client registration mkx.api.local.pkce in localhost/BirSignDb using scripts/birsign-local-pkce.sql: authorization_code only, S256 PKCE required, no client secret, loopback-only callback and exactly openid/profile/mkx.api.read scopes. Isolated SQL transaction, idempotent second run, no modification to existing or production clients.
+- The REAL local Duende STS discovery and authorize endpoint accepted a PKCE S256 request and redirected HTTP 302 to /Account/Login. The user login step and the code-for-token exchange were not exercised; no user passwords were available or used.
+- Added ExternalIdentityLink / ExternalLinkChallenge schema and AddExternalIdentityLinks migration; Application service requires two independent proofs: valid LOCAL JWT to mint an unguessable, hashed, five-minute, one-time link challenge, and valid EXTERNAL JWT with a human subject plus API scope to consume it. API explicitly prevents automatic administrator, MFA, username/email or national-ID mapping and issues no local JWT from external access.
+- Unique issuer-subject and user-issuer indexes, atomic challenge consumption and unlink support. Added separate typed OpenAPI endpoints, documented their per-operation security, extended OpenAPI contract tests, and added EF SQLite tests for replay, collision, unlink, admin and MFA restrictions.
+- Local solution build 0 warnings/errors; 36/36 tests. Local ephemeral SQL Server smoke including database migration and cleanup passed. Remote CI, NuGet package and release evidence to follow.

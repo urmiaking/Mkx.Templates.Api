@@ -20,3 +20,7 @@ Controllers are adapters; use cases live in Application; HTTP contracts stay in 
 The Server layer owns named ExternalOidc JWT Bearer and ApiKey authentication schemes. Application owns IApiKeyService and the key lifecycle; Infrastructure stores only hashed ApiClientKeys; Shared defines scope constants and administration contracts. AdminOnly explicitly uses the local JWT scheme. Resource endpoints must opt into the external or API-key policies; schemes never silently import external users or grant local Administrator. See EXTERNAL_OIDC.md and API_KEYS.md.
 
 ## API contracts and introspection
+
+## External identity mapping
+
+Domain owns ExternalIdentityLink and ExternalLinkChallenge; Infrastructure owns unique indexes and one-time proof persistence; Application ExternalAccountLinkService uses separate verified local and external proofs; Server ExternalLinksController enforces two independent schemes. Refer to ACCOUNT_LINKING.md for restrictions and lifecycle.
