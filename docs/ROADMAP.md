@@ -54,3 +54,5 @@ Phase 7.3 backend shipped in [v0.7.0](https://github.com/urmiaking/Mkx.Templates
 Phase 8 typed SDK baseline delivered in [v0.8.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.8.0) with [successful CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41499910376): 55 .NET, 7 TypeScript, 7 Dart tests (each repeated on a freshly generated template), OpenAPI drift checks. External package registries and real client-device acceptance remain [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3).
 
 Phase 8.1 adds verified TypeScript/Dart real SQL-backed SDK HTTP smoke and GET-only automatic refresh retry; public NuGet.org publication remains gated on encrypted GitHub Environment NUGET_API_KEY and owner authorization.
+
+Phase 8.1 package [v0.8.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.8.1) passed [CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/42000808210) and is ready for manual NuGet.org publication via protected nuget-publish environment. Registry upload remains pending a GitHub environment NUGET_API_KEY secret.

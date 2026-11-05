@@ -176,3 +176,9 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - Both SDKs independently verified real username/password login, protected user read, refresh after intentionally invalid access token, persisted rotated credentials, administrator read and logout against a disposable SQL Server database. Other existing smoke probes passed; database removed.
 - Added explicit manual NuGet.org publication workflow: only on main, validates an existing published GitHub Release, downloads its original nupkg, checks package identity/version and SDKs, and requires a protected GitHub Environment nuget-publish and encrypted NUGET_API_KEY.
 - NuGet.org had no Mkx.Templates.Api registry version at check time, and GitHub repository had no NUGET_API_KEY secret. Do not claim public NuGet publishing until the key is connected, job passes and registry metadata is verified.
+
+### v0.8.1 release and NuGet.org publishing gate
+
+- Source commit 21ac878 merged/pushed to main. GitHub Actions https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/42000808210 succeeded, covering source and generated-project build, 55 .NET tests, 8 TypeScript tests, 8 Dart tests, OpenAPI snapshot and deterministic SDK generator parity.
+- GitHub Release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.8.1 published non-draft with Mkx.Templates.Api.0.8.1.nupkg attached; NuGet manifest ID/version verified and package contains both SDKs with no transient artifacts.
+- Created GitHub Environment nuget-publish and committed manual-only workflow publish-nuget.yml. NuGet.org upload NOT yet performed because GitHub secret NUGET_API_KEY has not been provided. Once the repository owner connects it, explicitly dispatch the workflow for version 0.8.1 and verify package metadata on NuGet.org. Never paste the key in chat.
