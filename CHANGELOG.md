@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.1 - Real SQL-backed SDK integration and safe NuGet delivery
+
+- Added real SQL Server/API integration smoke for TypeScript and Dart SDKs: username login, real JWT, refresh token rotation on GET 401, protected admin read and logout.
+- Local SDK automatic refresh retries are now limited to GET/HEAD to prevent replay of mutating requests after 401. Added tests to both SDKs.
+- Added an explicit manual GitHub Actions workflow for publishing the previously verified GitHub Release NuGet artifact to NuGet.org using a protected nuget-publish environment secret NUGET_API_KEY. No automatic public publishing on pushes.
+- Real NuGet.org upload requires a NuGet API key and authorized dispatch; GitHub Release availability does not mean registry publication.
+
 ## 0.8.0 - OpenAPI-generated TypeScript and Dart SDKs (Phase 8)
 
 - Export actual Development Swagger 3.x contract deterministically (32 operations, 33 DTO schemas) and generate reusable TypeScript and Dart clients with typed requests, responses, paths and query parameters.

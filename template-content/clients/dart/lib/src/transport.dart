@@ -92,7 +92,8 @@ class ApiTransport {
     // package:http does not automatically follow redirects on this request.
     req.followRedirects = false;
     final res = await http.Response.fromStream(await httpClient.send(req));
-    if (res.statusCode == 401 && security == 'LocalJwt' && retry && sessionStore != null) {
+    if (res.statusCode == 401 && security == 'LocalJwt' && retry &&
+        (method == 'GET' || method == 'HEAD') && sessionStore != null) {
       final newest = (await sessionStore!.read())?.accessToken;
       if (newest != null && newest != usedLocal) {
         return request(method, path, security, body: body, query: query, retry: false);

@@ -1,0 +1,67 @@
+﻿name: Publish verified NuGet package
+
+# Explicit invocation only. Never push on ordinary commits or release events.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Existing tested GitHub Release version, e.g. 0.8.1"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-nuget-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: nuget-publish
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+      - name: Download exact existing GitHub Release asset and verify identity
+        shell: bash
+        env:
+          VERSION: ${{ inputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z][0-9A-Za-z.-]*)?$ ]]; then
+            echo "Invalid SemVer release version" >&2
+            exit 1
+          fi
+          TAG="v$VERSION"
+          if [[ "$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft')" != "false" ]]; then
+            echo "Require a published, non-draft GitHub Release" >&2
+            exit 1
+          fi
+          git fetch origin "refs/tags/$TAG:refs/tags/$TAG"
+          git merge-base --is-ancestor "$TAG" origin/main
+          mkdir -p release-assets
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --pattern "Mkx.Templates.Api.$VERSION.nupkg" --dir release-assets
+          python3 scripts/verify-release-package.py \
+            "release-assets/Mkx.Templates.Api.$VERSION.nupkg" "$VERSION"
+          echo "PACKAGE=release-assets/Mkx.Templates.Api.$VERSION.nupkg" >> "$GITHUB_ENV"
+      - name: Publish verified package to NuGet.org
+        shell: bash
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$NUGET_API_KEY" ]]; then
+            echo "Missing NUGET_API_KEY: add this secret to the nuget-publish environment before publishing." >&2
+            exit 1
+          fi
+          dotnet nuget push "$PACKAGE" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --api-key "$NUGET_API_KEY"

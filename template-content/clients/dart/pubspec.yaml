@@ -1,6 +1,6 @@
-﻿name: mkx_templates_api_client
+name: mkx_templates_api_client
 description: Generated HTTP client and typed models for Mkx.Templates API.
-version: 0.8.0
+version: 0.8.1
 environment:
   sdk: '>=3.4.0 <4.0.0'
 dependencies:

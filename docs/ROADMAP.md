@@ -52,3 +52,5 @@ Phase 7.2 TOTP MFA shipped in [v0.6.0](https://github.com/urmiaking/Mkx.Template
 Phase 7.3 backend shipped in [v0.7.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.7.0), with 55/55 source and generated tests and [successful CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41495598154). Hardware/browser signed WebAuthn and native app association remain outstanding acceptance checks in [Issue #2](https://github.com/urmiaking/Mkx.Templates.Api/issues/2).
 
 Phase 8 typed SDK baseline delivered in [v0.8.0](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.8.0) with [successful CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41499910376): 55 .NET, 7 TypeScript, 7 Dart tests (each repeated on a freshly generated template), OpenAPI drift checks. External package registries and real client-device acceptance remain [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3).
+
+Phase 8.1 adds verified TypeScript/Dart real SQL-backed SDK HTTP smoke and GET-only automatic refresh retry; public NuGet.org publication remains gated on encrypted GitHub Environment NUGET_API_KEY and owner authorization.

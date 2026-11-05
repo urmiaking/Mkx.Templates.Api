@@ -37,6 +37,29 @@ try {
   if(-not $ready){throw 'API startup timeout'}
   $login=Invoke-RestMethod "$base/api/auth/login" -Method Post -ContentType 'application/json' -Body (@{username=$env:BootstrapAdmin__Username;password=$env:BootstrapAdmin__Password}|ConvertTo-Json)
   if(-not $login.accessToken -or -not $login.refreshToken){throw 'Missing tokens'}; Write-Output 'LOGIN=PASS'
+  # Optional live SDK proof against THIS disposable SQL database.
+  # Never print or persist the randomly generated bootstrap password/tokens.
+  $env:MKX_SMOKE_BASE_URL=$base
+  $env:MKX_SMOKE_USERNAME=$env:BootstrapAdmin__Username
+  $env:MKX_SMOKE_PASSWORD=$env:BootstrapAdmin__Password
+  Push-Location clients/typescript
+  try {
+    npm ci --ignore-scripts --no-audit --no-fund | Out-Null
+    if($LASTEXITCODE -ne 0){throw 'TypeScript dependency install failed'}
+    npm run build | Out-Null
+    if($LASTEXITCODE -ne 0){throw 'TypeScript compile failed'}
+    node test/live_sql_smoke.mjs
+    if($LASTEXITCODE -ne 0){throw 'TypeScript SDK real HTTP smoke failed'}
+  } finally { Pop-Location }
+  Push-Location clients/dart
+  try {
+    dart pub get | Out-Null
+    if($LASTEXITCODE -ne 0){throw 'Dart dependency install failed'}
+    dart run test/live_sql_smoke.dart
+    if($LASTEXITCODE -ne 0){throw 'Dart SDK real HTTP smoke failed'}
+  } finally { Pop-Location }
+  Remove-Item Env:MKX_SMOKE_BASE_URL,Env:MKX_SMOKE_USERNAME,Env:MKX_SMOKE_PASSWORD -ErrorAction SilentlyContinue
+
 
   # Real SQL Server + HTTP passkey options, with no biometric device needed.
   $passkeyOptions=Invoke-RestMethod "$base/api/passkeys/login/options" -Method Post -ContentType 'application/json' -Body '{}'
@@ -125,6 +148,7 @@ try {
   if($proc -and -not $proc.HasExited){Stop-Process $proc.Id -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 1}
   $env:BootstrapAdmin__Enabled='false'
   if($created){dotnet ef database drop --force --project src/Core/Mkx.Templates.Infrastructure --startup-project src/Server/Mkx.Templates.Server --no-build --no-color; Write-Output "DATABASE_CLEANUP_EXIT=$LASTEXITCODE"}
+  Remove-Item Env:MKX_SMOKE_BASE_URL,Env:MKX_SMOKE_USERNAME,Env:MKX_SMOKE_PASSWORD -ErrorAction SilentlyContinue
   Remove-Item Env:BootstrapAdmin__Password,Env:BootstrapAdmin__Username,Env:Jwt__SigningKey,Env:ConnectionStrings__DefaultConnection,Env:ASPNETCORE_URLS,Env:RateLimit__AuthRequestsPerMinute,Env:Logging__LogLevel__Microsoft__EntityFrameworkCore,Env:Passkeys__Enabled,Env:Passkeys__RelyingPartyId,Env:Passkeys__Origin -ErrorAction SilentlyContinue
   Remove-Item ($log+'.out'),($log+'.err') -Force -ErrorAction SilentlyContinue
 }

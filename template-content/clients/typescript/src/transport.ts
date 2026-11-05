@@ -76,7 +76,8 @@ export class ApiTransport {
       method, headers, body: body === undefined ? undefined : JSON.stringify(body),
       redirect: "error",
     });
-    if (response.status === 401 && scheme === "LocalJwt" && retry && this.options.sessionStore) {
+    if (response.status === 401 && scheme === "LocalJwt" && retry &&
+        (method === "GET" || method === "HEAD") && this.options.sessionStore) {
       // When a parallel request has already refreshed, retry with the newer token.
       const newest = (await this.options.sessionStore.read())?.accessToken;
       if (newest && newest !== usedLocal)

@@ -133,3 +133,21 @@ test("invalid origin or embedded URL credentials are refused", () => {
     assert.throws(() => new MkxApiClient({ baseUrl }));
   }
 });
+
+test("mutating LocalJwt operation never refreshes and resends after 401", async () => {
+  let refresh = 0;
+  let logout = 0;
+  const client = new MkxApiClient({
+    baseUrl: "https://api.example.test",
+    sessionStore: mockStore({ accessToken: "expired", refreshToken: "rotating" }),
+    fetcher: async (url) => {
+      if (url.endsWith("/api/auth/refresh")) refresh++;
+      if (url.endsWith("/api/auth/logout")) logout++;
+      return ok({ error: "Unauthorized" }, 401);
+    }
+  });
+  await assert.rejects(client.authLogout({ refreshToken: "rotating" }),
+    error => error instanceof ApiHttpError && error.status === 401);
+  assert.equal(logout, 1);
+  assert.equal(refresh, 0);
+});

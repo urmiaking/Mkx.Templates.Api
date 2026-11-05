@@ -1,4 +1,4 @@
-﻿# Typed TypeScript and Dart SDKs (Phase 8)
+# Typed TypeScript and Dart SDKs (Phase 8)
 
 The API template ships two **versioned, local-path SDK libraries** in clients/typescript and clients/dart. Both are deterministically generated from openapi/v1.json, a canonical snapshot of the actual running Swagger endpoint. The current contract has 32 operations, 33 schemas and four distinct authentication schemes. Generated model and operation files are never edited by hand.
 
@@ -55,7 +55,7 @@ Then use package:mkx_templates_api_client/mkx_api.dart, and implement the Sessio
 
 ## Security and HTTP behavior
 
-- LocalJwt uses ONLY SessionStore local bearer tokens. On HTTP 401, the SDK performs a single-flight POST /api/auth/refresh, stores the rotated session through SessionStore, and retries the failed local request ONCE. The refresh request carries no Authorization header. Do not instantiate competing clients using the same refresh session store without cross-instance rotation coordination.
+- LocalJwt uses ONLY SessionStore local bearer tokens. On HTTP 401 for GET/HEAD only, the SDK performs a single-flight POST /api/auth/refresh, stores the rotated session through SessionStore, and retries that read-only request ONCE. Write operations (POST/PUT/PATCH/DELETE) never refresh or retry automatically, since side effects might already have occurred. The refresh request carries no Authorization header. Do not instantiate competing clients using the same refresh session store without cross-instance rotation coordination.
 - ExternalOidc uses ONLY externalAccessToken, OpaqueToken uses ONLY opaqueAccessToken. No silent mapping to the local JWT scheme; no local refresh on external or opaque 401.
 - ApiKey uses ONLY the X-API-Key provider and is appropriate for **server-to-server** use. Do not configure that provider in public browser, React Native, or Flutter apps.
 - Anonymous routes have NO bearer token or API key, even if the host has a local session. A missing scheme-specific credential fails before network access.
@@ -67,3 +67,17 @@ Then use package:mkx_templates_api_client/mkx_api.dart, and implement the Sessio
 The NuGet **template** containing both client libraries is shipped as a GitHub Release artifact. Neither client is published to npm or pub.dev, and NuGet.org publishing requires explicit owner authorization and publisher credentials. Do not claim a registry publish on the basis of a local pack or GitHub Release.
 
 TypeScript and Dart are compiled/analyzed and transport-tested with mock HTTP clients for session rotation, concurrency, security scheme isolation and errors. The source and newly generated API build/test separately. Live React Native, Expo, Flutter device/web deployment and real passkey hardware are not verified by these SDK tests.
+
+## Real HTTP + disposable SQL Server verification
+
+From repository root on a development machine with local SQL Server:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke-sql.ps1
+
+Creates a unique disposable database and runs the local API on loopback. Both TypeScript and Dart clients independently verify actual username/password login, JWT, rotated refresh on unauthorized GET, admin authorization and logout. Existing API-key and WebAuthn challenges are also tested. The temporary database is dropped on cleanup.
+
+## NuGet.org publication (manual and secure)
+
+The NuGet.org release job is in .github/workflows/publish-nuget.yml, manually dispatched on main after a verified GitHub Release is available. It requires GitHub Environment nuget-publish and an encrypted secret named NUGET_API_KEY with NuGet.org push permission for package Mkx.Templates.Api. Configure the secret in the GitHub Environment; never paste it into source, workflow inputs, issues, logs or chat.
+
+Select Publish verified NuGet package -> Run workflow and provide the existing release version 0.8.1. The job downloads that exact already-tested release asset, verifies package identity/version and both SDKs, then publishes without rebuilding. Check https://www.nuget.org/packages/Mkx.Templates.Api afterwards. NuGet IDs are unique and any conflicting existing owner prevents publication.

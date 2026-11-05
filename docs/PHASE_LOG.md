@@ -169,3 +169,10 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - Implementation commit 3a5b0c7 and CI runtime patch fe87b65 merged/pushed to main. Latest independent CI https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/41499910376 succeeded: source .NET build and 55/55 tests, actual Swagger snapshot + TS/Dart codegen parity, TypeScript compilation and 7/7 Node tests, Dart analysis and 7/7 tests, NuGet pack, and full re-verification of a freshly instantiated template including both SDKs.
 - Published non-draft GitHub Release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.8.0 with Mkx.Templates.Api.0.8.0.nupkg attached (129 packaged entries, no node_modules, dist or Dart cache). On Windows local generated solution also passed: 55 .NET tests, 7 TS tests, 7 Dart tests, schema parity and zero-warning build.
 - No NuGet.org, npm or pub.dev publishing occurred. GitHub repository has no configured NuGet.org publishing secret at verification time. Issue #3 stays open only for optional external registries / live client integration acceptance.
+
+## 2026-11-05 - Phase 8.1: real SDK HTTP/SQL verification and manual NuGet publishing
+
+- Restricted automatic SDK refresh/retry to safe GET/HEAD operations. POST/PUT/PATCH/DELETE are never replayed automatically; one new regression test in each SDK confirms this.
+- Both SDKs independently verified real username/password login, protected user read, refresh after intentionally invalid access token, persisted rotated credentials, administrator read and logout against a disposable SQL Server database. Other existing smoke probes passed; database removed.
+- Added explicit manual NuGet.org publication workflow: only on main, validates an existing published GitHub Release, downloads its original nupkg, checks package identity/version and SDKs, and requires a protected GitHub Environment nuget-publish and encrypted NUGET_API_KEY.
+- NuGet.org had no Mkx.Templates.Api registry version at check time, and GitHub repository had no NUGET_API_KEY secret. Do not claim public NuGet publishing until the key is connected, job passes and registry metadata is verified.

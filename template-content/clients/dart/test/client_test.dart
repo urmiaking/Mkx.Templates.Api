@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -120,6 +120,24 @@ void main() {
     api.close();
   });
 
+  test('mutating local operation never auto-refreshes and repeats after 401', () async {
+    var refresh = 0;
+    var logout = 0;
+    final api = MkxApiClient(
+      baseUrl: 'https://api.example.test',
+      sessionStore: MemorySession(LocalTokens('expired', 'rotating')),
+      client: MockClient((request) async {
+        if (request.url.path == '/api/auth/refresh') refresh++;
+        if (request.url.path == '/api/auth/logout') logout++;
+        return reply({}, 401);
+      }),
+    );
+    await expectLater(api.authLogout(const RevokeRequest(refreshToken: 'rotating')),
+      throwsA(isA<ApiHttpException>().having((error) => error.status, 'status', 401)));
+    expect(logout, 1);
+    expect(refresh, 0);
+    api.close();
+  });
   test('invalid API URL scheme or user info is rejected', () {
     for (final address in ['file:///tmp/test', 'https://user:pass@host.test', 'https://host.test/path']) {
       expect(() => MkxApiClient(baseUrl: address), throwsArgumentError);
