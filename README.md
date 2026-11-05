@@ -70,3 +70,6 @@ The .NET 10 API template now includes opt-in native Identity passkeys: discovera
 ## TypeScript and Dart SDKs (Phase 8)
 
 The generated solution includes local-path TypeScript (clients/typescript) and Dart/Flutter (clients/dart) SDKs for all API operations, plus minimal React Native/Expo and Flutter secure-session integration examples. The canonical openapi/v1.json is exported from the actual Development API; tools/generate_sdks.py updates the models and clients. CI checks API/schema/SDK drift, token refresh and scheme isolation. See template-content/docs/ai/SDK_GENERATION.md for setup and limitations. The NuGet template is released on GitHub; it is not automatically published to NuGet.org and the SDKs are not registered on npm or pub.dev.
+
+## NuGet.org Trusted Publishing
+Publishing uses NuGet Trusted Publishers via GitHub OIDC, not a long-lived API key. The manual workflow is .github/workflows/deploy.yaml with environment production, NuGet/login@v1 and NuGet owner mskhodadadi. NuGet.org must trust urmiaking/Mkx.Templates.Api, deploy.yaml and production. The workflow downloads and validates an existing GitHub Release package.

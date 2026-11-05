@@ -1,4 +1,4 @@
-﻿name: Publish verified NuGet package
+name: Publish verified NuGet package (Trusted Publishing)
 
 # Explicit invocation only. Never push on ordinary commits or release events.
 on:
@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 concurrency:
   group: publish-nuget-${{ inputs.version }}
@@ -20,7 +21,7 @@ jobs:
   publish:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: nuget-publish
+    environment: production
     steps:
       - uses: actions/checkout@v7
         with:
@@ -52,16 +53,17 @@ jobs:
           python3 scripts/verify-release-package.py \
             "release-assets/Mkx.Templates.Api.$VERSION.nupkg" "$VERSION"
           echo "PACKAGE=release-assets/Mkx.Templates.Api.$VERSION.nupkg" >> "$GITHUB_ENV"
-      - name: Publish verified package to NuGet.org
+      - name: Obtain short-lived NuGet credentials via GitHub OIDC
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: mskhodadadi
+      - name: Publish exact verified package to NuGet.org
         shell: bash
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
         run: |
           set -euo pipefail
-          if [[ -z "$NUGET_API_KEY" ]]; then
-            echo "Missing NUGET_API_KEY: add this secret to the nuget-publish environment before publishing." >&2
-            exit 1
-          fi
           dotnet nuget push "$PACKAGE" \
             --source "https://api.nuget.org/v3/index.json" \
             --api-key "$NUGET_API_KEY"

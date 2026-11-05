@@ -76,8 +76,17 @@ From repository root on a development machine with local SQL Server:
 
 Creates a unique disposable database and runs the local API on loopback. Both TypeScript and Dart clients independently verify actual username/password login, JWT, rotated refresh on unauthorized GET, admin authorization and logout. Existing API-key and WebAuthn challenges are also tested. The temporary database is dropped on cleanup.
 
-## NuGet.org publication (manual and secure)
+## NuGet.org publication via Trusted Publishing (OIDC)
 
-The NuGet.org release job is in .github/workflows/publish-nuget.yml, manually dispatched on main after a verified GitHub Release is available. It requires GitHub Environment nuget-publish and an encrypted secret named NUGET_API_KEY with NuGet.org push permission for package Mkx.Templates.Api. Configure the secret in the GitHub Environment; never paste it into source, workflow inputs, issues, logs or chat.
+No permanent NuGet API key is required. NuGet.org Trusted Publishers authorizes this repo via GitHub OIDC. The NuGet.org policy for owner mskhodadadi must specify:
 
-Select Publish verified NuGet package -> Run workflow and provide the existing release version 0.8.1. The job downloads that exact already-tested release asset, verifies package identity/version and both SDKs, then publishes without rebuilding. Check https://www.nuget.org/packages/Mkx.Templates.Api afterwards. NuGet IDs are unique and any conflicting existing owner prevents publication.
+- Repository owner: urmiaking
+- Repository: Mkx.Templates.Api
+- Workflow file: deploy.yaml (exact filename inside .github/workflows)
+- Environment: production
+
+The manual GitHub Actions workflow is .github/workflows/deploy.yaml. It requires the id-token: write permission and uses NuGet/login@v1 with NuGet user mskhodadadi to acquire a short-lived NuGet.org API key. No key is committed or saved as a GitHub Secret. The workflow downloads the exact existing GitHub Release package, checks package identity/version and contents, then publishes it without rebuilding.
+
+To publish: Actions > Publish verified NuGet package (Trusted Publishing) > Run workflow on main and enter an existing GitHub release version. Then verify at https://www.nuget.org/packages/Mkx.Templates.Api . NuGet.org package IDs are unique and mismatched policy fields prevent authorization.
+
+The workflow is manually dispatched, not auto-triggered on every push. It respects GitHub Environment approvals if enabled.

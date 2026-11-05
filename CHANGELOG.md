@@ -4,8 +4,8 @@
 
 - Added real SQL Server/API integration smoke for TypeScript and Dart SDKs: username login, real JWT, refresh token rotation on GET 401, protected admin read and logout.
 - Local SDK automatic refresh retries are now limited to GET/HEAD to prevent replay of mutating requests after 401. Added tests to both SDKs.
-- Added an explicit manual GitHub Actions workflow for publishing the previously verified GitHub Release NuGet artifact to NuGet.org using a protected nuget-publish environment secret NUGET_API_KEY. No automatic public publishing on pushes.
-- Real NuGet.org upload requires a NuGet API key and authorized dispatch; GitHub Release availability does not mean registry publication.
+- Added a manual GitHub Actions workflow for publishing the previously verified GitHub Release NuGet artifact to NuGet.org via NuGet Trusted Publishers (GitHub OIDC): deploy.yaml, production environment, NuGet/login@v1. No permanent API key secret.
+- Real NuGet.org upload requires a matching trusted publishing policy and authorized workflow dispatch; GitHub Release availability alone does not mean registry publication.
 
 ## 0.8.0 - OpenAPI-generated TypeScript and Dart SDKs (Phase 8)
 

@@ -182,3 +182,9 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - Source commit 21ac878 merged/pushed to main. GitHub Actions https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/42000808210 succeeded, covering source and generated-project build, 55 .NET tests, 8 TypeScript tests, 8 Dart tests, OpenAPI snapshot and deterministic SDK generator parity.
 - GitHub Release https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.8.1 published non-draft with Mkx.Templates.Api.0.8.1.nupkg attached; NuGet manifest ID/version verified and package contains both SDKs with no transient artifacts.
 - Created GitHub Environment nuget-publish and committed manual-only workflow publish-nuget.yml. NuGet.org upload NOT yet performed because GitHub secret NUGET_API_KEY has not been provided. Once the repository owner connects it, explicitly dispatch the workflow for version 0.8.1 and verify package metadata on NuGet.org. Never paste the key in chat.
+
+### NuGet publishing policy correction
+
+- NuGet.org Trusted Publishers (OIDC) was configured by the owner with repository urmiaking/Mkx.Templates.Api, workflow deploy.yaml, GitHub Environment production and NuGet package owner mskhodadadi.
+- Replaced earlier static-API-key publish-nuget.yml with deploy.yaml using official NuGet/login@v1 and id-token: write. No NUGET_API_KEY GitHub Secret is needed. The existing tested GitHub Release package is checked before publishing.
+- The React reference repository uses the same NuGet/login@v1 and production environment OIDC pattern; the API workflow filename is exactly deploy.yaml to match its own NuGet.org trust policy.
