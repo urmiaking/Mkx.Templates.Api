@@ -188,3 +188,10 @@ Verification: 12/12 local tests, 0 warning/error build. No live BirSign or other
 - NuGet.org Trusted Publishers (OIDC) was configured by the owner with repository urmiaking/Mkx.Templates.Api, workflow deploy.yaml, GitHub Environment production and NuGet package owner mskhodadadi.
 - Replaced earlier static-API-key publish-nuget.yml with deploy.yaml using official NuGet/login@v1 and id-token: write. No NUGET_API_KEY GitHub Secret is needed. The existing tested GitHub Release package is checked before publishing.
 - The React reference repository uses the same NuGet/login@v1 and production environment OIDC pattern; the API workflow filename is exactly deploy.yaml to match its own NuGet.org trust policy.
+
+### NuGet.org Trusted Publishing SUCCESS — 2026-11-05
+
+- Verified .github/workflows/deploy.yaml using GitHub OIDC and NuGet/login@v1, matching the NuGet.org policy (urmiaking/Mkx.Templates.Api, workflow deploy.yaml, environment production, NuGet owner mskhodadadi). No long-lived API key configured or needed.
+- Explicitly dispatched verified version 0.8.1 via GitHub Actions run https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/42003369889. The workflow exchanged OIDC for a temporary NuGet key, downloaded and verified the exact GitHub Release package, pushed to NuGet.org and completed SUCCESS.
+- The NuGet push log confirms HTTP Created and "Your package was pushed." for Mkx.Templates.Api.0.8.1.nupkg. Public package index was not yet updated (flat-container returned 404 immediately afterward); check registry propagation separately. NuGet emitted a nonblocking missing license metadata warning; a future release may add owner-approved SPDX/license file.
+- The previously created unused nuget-publish environment and static-key guidance have been superseded by production OIDC. Remaining SDK scope is npm/pub.dev publishing (if desired) and physical client/device interoperability, not NuGet.org authentication.

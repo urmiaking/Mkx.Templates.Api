@@ -73,3 +73,5 @@ The generated solution includes local-path TypeScript (clients/typescript) and D
 
 ## NuGet.org Trusted Publishing
 Publishing uses NuGet Trusted Publishers via GitHub OIDC, not a long-lived API key. The manual workflow is .github/workflows/deploy.yaml with environment production, NuGet/login@v1 and NuGet owner mskhodadadi. NuGet.org must trust urmiaking/Mkx.Templates.Api, deploy.yaml and production. The workflow downloads and validates an existing GitHub Release package.
+
+Version 0.8.1 was pushed successfully to NuGet.org using Trusted Publishing: https://www.nuget.org/packages/Mkx.Templates.Api/0.8.1 . Registry indexing can take additional time after the successful push. Publishing evidence: https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/42003369889 .

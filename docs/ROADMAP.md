@@ -58,3 +58,5 @@ Phase 8.1 adds verified TypeScript/Dart real SQL-backed SDK HTTP smoke and GET-o
 Phase 8.1 package [v0.8.1](https://github.com/urmiaking/Mkx.Templates.Api/releases/tag/v0.8.1) passed [CI](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/42000808210) and is ready for manual NuGet.org publication via protected nuget-publish environment. Registry upload remains pending a GitHub environment NUGET_API_KEY secret.
 
 Correction: NuGet.org uses the configured Trusted Publisher with GitHub OIDC instead of a long-lived API key; workflow .github/workflows/deploy.yaml, environment production, and NuGet user mskhodadadi.
+
+NuGet.org publication completed via Trusted Publishing (GitHub OIDC) for Mkx.Templates.Api 0.8.1: [successful deployment](https://github.com/urmiaking/Mkx.Templates.Api/actions/runs/42003369889). NuGet accepted the package (HTTP Created); public search/index propagation may lag. npm/pub.dev and real app-device interoperability remain independent optional tasks.
