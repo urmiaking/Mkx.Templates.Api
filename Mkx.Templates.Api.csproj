@@ -6,8 +6,8 @@
   <PackageVersion>0.8.1</PackageVersion>
   <Title>Mkx API Solution Template</Title>
   <Authors>Mkx</Authors>
-  <Description>.NET 10 backend-only solution template with Identity, JWT Bearer, rotated refresh tokens and EF Core.</Description>
-  <PackageTags>dotnet-new;templates;api;net10;slnx</PackageTags>
+  <Description>.NET 11 backend-only solution template with Identity, JWT Bearer, rotated refresh tokens and EF Core.</Description>
+  <PackageTags>dotnet-new;templates;api;net11;slnx</PackageTags>
   <PackageReadmeFile>README.md</PackageReadmeFile>
   <IncludeContentInPack>true</IncludeContentInPack>
   <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -17,7 +17,8 @@
 </PropertyGroup>
 <ItemGroup>
   <None Include="README.md" Pack="true" PackagePath="/" />
-  <Content Include="template-content/**/*" Exclude="template-content/**/bin/**;template-content/**/obj/**;template-content/**/TestResults/**;template-content/**/.vs/**;template-content/**/node_modules/**;template-content/**/dist/**;template-content/**/.dart_tool/**;template-content/**/pubspec.lock;template-content/**/*.user;template-content/**/*.log;template-content/**/.env;template-content/**/.env.*" PackagePath="content/%(RecursiveDir)%(Filename)%(Extension)" />
+  <Content Include="template-content/**/*" Exclude="template-content/src/Server/Mkx.Templates.Server/Dockerfile;template-content/**/bin/**;template-content/**/obj/**;template-content/**/TestResults/**;template-content/**/.vs/**;template-content/**/node_modules/**;template-content/**/dist/**;template-content/**/.dart_tool/**;template-content/**/pubspec.lock;template-content/**/*.user;template-content/**/*.log;template-content/**/.env;template-content/**/.env.*" PackagePath="content/%(RecursiveDir)%(Filename)%(Extension)" />
+  <Content Include="template-content/src/Server/Mkx.Templates.Server/Dockerfile" Pack="true" PackagePath="content/src/Server/Mkx.Templates.Server/" />
   <Compile Remove="**/*" />
 </ItemGroup>
 </Project>

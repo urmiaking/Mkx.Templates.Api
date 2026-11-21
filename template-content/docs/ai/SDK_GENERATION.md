@@ -4,7 +4,7 @@ The API template ships two **versioned, local-path SDK libraries** in clients/ty
 
 ## Regenerate after any API contract change
 
-Run from the generated solution root (Python 3.10+, .NET 10 required):
+Run from the generated solution root (Python 3.10+, .NET 11 required):
 
     dotnet build Mkx.Templates.slnx -c Release
     python tools/export_openapi.py --configuration Release

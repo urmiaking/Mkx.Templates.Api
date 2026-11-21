@@ -1,5 +1,14 @@
 # Mkx.Templates.Api — Phase execution log
 
+## 2026-11-21 - Phase 9: .NET 11 SDK, runtime, packages and template portability
+
+- Updated all six generated projects to net11.0, pinned SDK 11.0.100 and upgraded matching Microsoft / ASP.NET Core / EF Core dependencies to 11.0.0. Third-party package major versions remain unchanged.
+- Updated GitHub CI, manual Trusted Publishing workflow and Linux SDK/ASP.NET runtime Docker images to 11.0.
+- Corrected packing of extensionless Dockerfile to its actual path inside NuGet; release-package verifier now requires that Dockerfile.
+- Verified source Release build (0 warnings, 0 errors), source test project (55/55), NuGet packaging, fresh installed dotnet-new API generation and generated Release build (0 warnings, 0 errors), generated tests (55/55).
+- A live SQL Server smoke test, physical WebAuthn ceremonies and Docker image runtime execution are not covered by this change and remain separately verifiable.
+
+
 ## 2026-11-02 · Phase 0 — Completed: Inspect Blazor architecture
 
 Inspected `D:\source\Mkx.Templates.Blazor` and read its AGENTS, ARCHITECTURE, AUTHENTICATION, DATABASE, SERVICE_ARCHITECTURE and GUARDRAILS guidance. Adopted its pragmatic Domain / Infrastructure / Shared / Application / Server layers, retaining Application-to-Infrastructure dependency and excluding SSR/WASM/Client/cookie-specific adapters. Documented the tradeoff in ADR 0001.

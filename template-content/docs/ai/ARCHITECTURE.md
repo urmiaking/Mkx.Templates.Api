@@ -34,7 +34,7 @@ AuthenticatorService owns enrollment and MFA state; AuthService enforces the sec
 
 ## WebAuthn Passkeys
 
-Application PasskeyService calls the official .NET 10 IPasskeyHandler, and delegates credential persistence to UserManager. Domain PasskeyCeremony and Infrastructure EF SQL store its state, purpose, expiry and local account binding. Server PasskeysController exposes typed WebAuthn operations and enforces explicit local JWT or anonymous schemes, behind an opt-in Origin/RP policy. Never replace the official FIDO2 signature handler with application-level crypto. Read PASSKEYS.md.
+Application PasskeyService calls the official .NET 11 IPasskeyHandler, and delegates credential persistence to UserManager. Domain PasskeyCeremony and Infrastructure EF SQL store its state, purpose, expiry and local account binding. Server PasskeysController exposes typed WebAuthn operations and enforces explicit local JWT or anonymous schemes, behind an opt-in Origin/RP policy. Never replace the official FIDO2 signature handler with application-level crypto. Read PASSKEYS.md.
 
 ## Typed SDKs
 

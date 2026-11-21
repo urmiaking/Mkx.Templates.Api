@@ -1,6 +1,6 @@
-﻿# Passkeys / WebAuthn - optional API-only foundation (Phase 7.3)
+# Passkeys / WebAuthn - optional API-only foundation (Phase 7.3)
 
-This template uses ASP.NET Core Identity .NET 10 built-in WebAuthn cryptographic handling (IPasskeyHandler<AppUser>) and the EF Core Identity passkey store. The API issues normal local JWT/rotating refresh tokens only after a signed assertion is verified. No Identity cookie, frontend, or homemade FIDO2 verifier is bundled.
+This template uses ASP.NET Core Identity .NET 11 built-in WebAuthn cryptographic handling (IPasskeyHandler<AppUser>) and the EF Core Identity passkey store. The API issues normal local JWT/rotating refresh tokens only after a signed assertion is verified. No Identity cookie, frontend, or homemade FIDO2 verifier is bundled.
 
 ## Configure the Relying Party before enabling
 

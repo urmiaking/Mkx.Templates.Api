@@ -65,7 +65,7 @@ Phase 7.2 supports standard authenticator apps, password plus six-digit TOTP or 
 
 ## Optional WebAuthn / Passkeys (Phase 7.3)
 
-The .NET 10 API template now includes opt-in native Identity passkeys: discoverable account login, server-backed one-time challenges, registration after local account verification, list/remove and normal local JWT/refresh issuance after a verified WebAuthn assertion. Explicit Passkeys RelyingPartyId and Origin are mandatory; MFA accounts still need a second factor. See template-content/docs/ai/PASSKEYS.md. A full signed credential/device ceremony is not yet verified.
+The .NET 11 API template now includes opt-in native Identity passkeys: discoverable account login, server-backed one-time challenges, registration after local account verification, list/remove and normal local JWT/refresh issuance after a verified WebAuthn assertion. Explicit Passkeys RelyingPartyId and Origin are mandatory; MFA accounts still need a second factor. See template-content/docs/ai/PASSKEYS.md. A full signed credential/device ceremony is not yet verified.
 
 ## TypeScript and Dart SDKs (Phase 8)
 

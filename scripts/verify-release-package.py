@@ -1,4 +1,4 @@
-﻿"""Read-only NuGet package identity verification for manual public publishing."""
+"""Read-only NuGet package identity verification for manual public publishing."""
 import re
 import sys
 import zipfile
@@ -25,6 +25,8 @@ def verify(file: Path, version: str) -> None:
         for path in ("clients/typescript/src/client.ts", "clients/dart/lib/src/client.dart"):
             if not any(name.endswith(path) for name in members):
                 raise ValueError(f"SDK payload missing: {path}")
+        if "content/src/Server/Mkx.Templates.Server/Dockerfile" not in members:
+            raise ValueError("Server Dockerfile missing from package.")
         forbidden = ("/node_modules/", "/bin/", "/obj/", "/.dart_tool/", "/dist/")
         if any(any(folder in "/" + name for folder in forbidden) for name in members):
             raise ValueError("Transient build files detected in package.")

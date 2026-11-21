@@ -1,6 +1,6 @@
 # Mkx.Templates.Api — Roadmap
 
-Last updated: 2026-11-02. Phase completion requires implementation, actual verification, and an entry in [PHASE_LOG.md](PHASE_LOG.md).
+Last updated: 2026-11-21. Phase completion requires implementation, actual verification, and an entry in [PHASE_LOG.md](PHASE_LOG.md).
 
 | Phase | Scope | Status | Evidence |
 |---|---|---|---|
@@ -22,13 +22,13 @@ Last updated: 2026-11-02. Phase completion requires implementation, actual verif
 | 7.1 | Opt-in username registration, email confirmation and password reset | Completed locally; SMTP provider not integrated live | [Guide](../template-content/docs/ai/ACCOUNT_LIFECYCLE.md); 43 tests and SQL smoke; key-ring and SMTP startup safeguards |
 | 7.2 | Local Authenticator TOTP MFA and one-time recovery codes | Completed locally (TOTP only) | RFC6238 Identity integration and replay/one-time recovery tests, SQL migration smoke; [MFA guide](../template-content/docs/ai/AUTHENTICATOR_MFA.md). SMS/email OTP deferred |
 | 7.3 | WebAuthn/Passkeys using .NET 10 Identity, SQL-bound challenges, JWT integration | Backend implemented; hardware/browser interoperability outstanding | [Guide](../template-content/docs/ai/PASSKEYS.md); real SQL Server options/replay smoke, 55 source tests; physical-device signed credential test still needed |
-| 8 | Typed TypeScript + Dart SDKs, mobile samples and publication | SDKs completed locally; external registry publication pending | [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3); canonical live OpenAPI snapshot, CI drift checks, React Native/Flutter examples, TypeScript and Dart tests; NuGet.org/npm/pub.dev not published |
+| 9 | Migrate generated solution, .NET/EF/Identity packages, Docker and CI to .NET 11 | Completed locally; publishing pending | .NET 11 Release build 0 warnings; 55/55 source and packaged tests; NuGet Dockerfile integrity |\n| 8 | Typed TypeScript + Dart SDKs, mobile samples and publication | SDKs completed locally; external registry publication pending | [Issue #3](https://github.com/urmiaking/Mkx.Templates.Api/issues/3); canonical live OpenAPI snapshot, CI drift checks, React Native/Flutter examples, TypeScript and Dart tests; NuGet.org/npm/pub.dev not published |
 
 ## Definition of done
 
 1. Code implemented in the correct backend layer, with documentation reflecting any architecture change.
 2. `dotnet build Mkx.Templates.slnx` from `template-content` passes.
-3. `dotnet test --project Tests/Mkx.Templates.Tests/Mkx.Templates.Tests.csproj` passes from `template-content`. (.NET 10 Microsoft.Testing.Platform requires using the application's `global.json`; invoking `dotnet test` on the solution directly discovered zero tests.)
+3. `dotnet test --project Tests/Mkx.Templates.Tests/Mkx.Templates.Tests.csproj` passes from `template-content`. (The Microsoft.Testing.Platform runner requires using the application's `global.json`; invoking `dotnet test` on the solution directly discovered zero tests.)
 4. NuGet package installs; a new `dotnet new mkx-api` project builds and tests.
 5. For persistence/security work, optional local `scripts/smoke-sql.ps1` passes against a disposable SQL Server database.
 6. Update [Phase Log](PHASE_LOG.md) with verification results and limitations.
